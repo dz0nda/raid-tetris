@@ -1,4 +1,4 @@
-import { io } from "socket.io-client";
+const io = require('socket.io-client');
 
 // initSocket returns a promise
 // success: resolve a new socket object
@@ -14,7 +14,7 @@ export const initSocket = (port) =>
 
     // define event handler for sucessfull connection
     socket.on('connect', () => {
-      logger.info('connected');
+      // logger.info('connected');
       resolve(socket);
     });
 

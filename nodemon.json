@@ -1,11 +1,3 @@
 {
-    "ignore": [
-      "**/*.test.js",
-      "**/*.spec.js",
-      "node_modules",
-      "src/client"
-    ],
-    "watch": [
-      "src/server"
-    ]
-  }
+  "watch": ["src/server/"]
+}
