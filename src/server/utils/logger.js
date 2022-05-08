@@ -1,26 +1,9 @@
-import { createLogger, transports } from 'winston';
+import winston from 'winston';
 
-var logger = createLogger(
-    {
-        level: 'info',
-        transports: [
-            new (transports.Console)()
-        ]
-    },
-    {
-        level: 'error',
-        transports: [
-            new (transports.Console)()
-        ]
-    }
-);
+winston.clear();
+winston.add(winston.transports.Console, { colorize: true, prettyPrint: true });
 
-export default logger;
-
-// winston.clear();
-// winston.add(winston.transports.Console, { colorize: true, prettyPrint: true });
-
-// module.exports = winston;
+module.exports = winston;
 
 // import winston from 'winston';
 
