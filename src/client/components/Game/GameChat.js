@@ -73,7 +73,6 @@ function GameChat(props) {
             <Typography
               variant="body2"
               color={user === 'server' ? 'textSecondary' : 'textPrimary'}
-              // className={classes.text({ user })}
               style={{ fontStyle: user === 'server' ? 'italic' : 'normal' }}
             >
               {text}

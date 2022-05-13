@@ -3,6 +3,7 @@ import ev from '../../shared/events';
 export const appState = {
   id: null,
   connected: false,
+  isLogged: false,
   isLoading: true,
   infos: {
     nbPlayers: 0,
@@ -15,6 +16,7 @@ export const appState = {
   },
 };
 
+// eslint-disable-next-line default-param-last
 const appReducer = (state = appState, action) => {
   switch (action.type) {
     case ev.UPDATE_CONNECTION: {

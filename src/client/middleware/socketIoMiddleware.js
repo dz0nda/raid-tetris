@@ -1,4 +1,3 @@
-// import * as socketMiddleware from 'socket.io-middleware';
 import * as socketMiddleware from './src';
 import * as EVENTS from './socketIo';
 import params from '../../shared/params';

@@ -6,8 +6,6 @@ export const dispatch = (action, data, dispatch) => {
 
   const { message } = payload;
 
-  // dispatch(actions.updatePlayer({ game }));
-
   if (status === 100) {
     dispatch({
       type: ev.UPDATE_LOG,

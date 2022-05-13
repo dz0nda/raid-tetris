@@ -14,7 +14,6 @@ export const initSocket = (port) =>
 
     // define event handler for sucessfull connection
     socket.on('connect', () => {
-      // logger.info('connected');
       resolve(socket);
     });
 
@@ -32,12 +31,10 @@ export const destroySocket = (socket) =>
     // check if socket connected
     if (socket.connected) {
       // disconnect socket
-      // logger.info('disconnecting...');
       socket.disconnect();
       resolve(true);
     } else {
       // not connected
-      // logger.info('no connection to break...');
       resolve(false);
     }
   });

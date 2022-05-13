@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
@@ -13,7 +13,11 @@ function App(props) {
   const { connected, reqConnect } = props;
   const { host, port } = params.server;
 
-  if (!connected) reqConnect({ host, port });
+  useEffect(() => {
+    if (!connected) {
+      reqConnect({ host, port });
+    }
+  }, [connected]);
 
   return (
     <Grid container direction="column" justifyContent="space-between" style={{ height: '100vh' }}>

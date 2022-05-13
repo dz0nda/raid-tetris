@@ -29,9 +29,9 @@ function Main(props) {
   return (
     <>
       <Switch>
-        <Route exact path="/" component={Login} />
         <Route path="/:room[:name]" component={Game} />
-        <Route component={Error404} />
+        {/* <Route path="/" component={Login} /> */}
+        <Route component={Login} />
       </Switch>
       <Backdrop
         className={classes.backdrop}
