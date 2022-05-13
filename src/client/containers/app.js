@@ -16,7 +16,7 @@ function App(props) {
   if (!connected) reqConnect({ host, port });
 
   return (
-    <Grid container direction="column" justify="space-between" style={{ height: '100vh' }}>
+    <Grid container direction="column" justifyContent="space-between" style={{ height: '100vh' }}>
       <Grid item style={{ height: '7vh' }}>
         <Header />
       </Grid>

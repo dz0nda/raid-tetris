@@ -8,7 +8,7 @@ function HeaderHome(props) {
   const { reqLogout } = props;
 
   return (
-    <Grid container justify="center">
+    <Grid container justifyContent="center">
       <RedIconButton onClick={reqLogout}>
         <HomeIcon />
       </RedIconButton>

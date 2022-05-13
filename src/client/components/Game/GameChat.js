@@ -52,7 +52,7 @@ function GameChat(props) {
     return (
       <ListItem key={id}>
         <Grid container>
-          <Grid item container justify="space-between">
+          <Grid item container justifyContent="space-between">
             <Grid item>
               <Typography
                 variant="body2"

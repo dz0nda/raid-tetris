@@ -5,7 +5,7 @@ import logo from '../../img/header.png';
 
 function HeaderLogo() {
   return (
-    <Grid container justify="center">
+    <Grid container justifyContent="center">
       <img src={logo} width="35%" alt="Logo" />
     </Grid>
   );

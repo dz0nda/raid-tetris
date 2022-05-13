@@ -32,7 +32,7 @@ function Game() {
 
   return (
     <Container maxWidth="lg" className={classes.container}>
-      <Grid container spacing={2} alignItems="center" justify="center" className={classes.gridItem}>
+      <Grid container spacing={2} alignItems="center" justifyContent="center" className={classes.gridItem}>
         <Grid item sm={12} md lg className={classes.game}>
           <GameRoomContainer />
         </Grid>

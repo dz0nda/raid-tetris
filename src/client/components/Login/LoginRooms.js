@@ -19,7 +19,7 @@ function LoginGamesMap(games, onClickRoom) {
 
   if (length === 0) {
     return (
-      <Grid container item justify="center">
+      <Grid container item justifyContent="center">
         No rooms available
       </Grid>
     );
@@ -45,7 +45,7 @@ function LoginRooms(props) {
   const { games, onClickRoom } = props;
 
   return (
-    <Grid container justify="center" alignItems="center" spacing={10}>
+    <Grid container justifyContent="center" alignItems="center" spacing={10}>
       <Grid item xs={12}>
         <Card>
           <CardHeader title="Available rooms" />
