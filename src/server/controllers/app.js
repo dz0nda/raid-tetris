@@ -50,7 +50,6 @@ const reslogout = (req, res) => {
     delete socket.redTetris;
     RedTetris.unsetSocket(socket.id);
 
-    console.log("destroy games");
     if (Game.isEmpty()) {
       RedTetris.unsetGame(Game.getRoom());
     } else resUpdateGame(res.io, Game);
@@ -74,18 +73,22 @@ const connect = (req, res) => {
 
 const disconnect = (req, res) => {
   const { socket } = req;
-  const { room } = RedTetris.getSocket(socket.id).redTetris;
+  const { redTetris } = RedTetris.getSocket(socket.id);
 
-  if (room) {
-    reslogout(
-      {
-        socket: req.socket,
-        data: {
-          room,
+  if (redTetris) {
+    const { room } = redTetris;
+
+    if (room) {
+      reslogout(
+        {
+          socket: req.socket,
+          data: {
+            room,
+          },
         },
-      },
-      res,
-    );
+        res,
+      );
+    }
   }
 
   logger.info(`socket: ${req.socket.id} disconnected.`);

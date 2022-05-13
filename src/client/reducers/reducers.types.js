@@ -79,7 +79,6 @@ export const gameStatePropTypes = PropTypes.shape(gameStateProp);
 export const appStateProp = {
   id: PropTypes.string.isRequired,
   connected: PropTypes.bool.isRequired,
-  logged: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   nbPlayers: PropTypes.number.isRequired,
   nbGames: PropTypes.number.isRequired,

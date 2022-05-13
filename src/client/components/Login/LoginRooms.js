@@ -25,6 +25,7 @@ function LoginGamesMap(games, onClickRoom) {
     );
   }
 
+  // eslint-disable-next-line react/destructuring-assignment
   return games.map((game) => (
     <ListItem value={game} key={game.room}>
       <ListItemText primary={`${game.room}`} secondary={`Owned by ${game.settings.owner}`} />

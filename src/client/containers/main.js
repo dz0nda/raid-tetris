@@ -12,7 +12,6 @@ import useWindowDimensions from '../hooks/useWindowDimensions';
 import Snackbar from './Snackbar';
 import Login from '../components/Login/Login';
 import Game from '../components/Game/Game';
-import Error404 from '../components/Common/Error404';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -30,8 +29,7 @@ function Main(props) {
     <>
       <Switch>
         <Route path="/:room[:name]" component={Game} />
-        {/* <Route path="/" component={Login} /> */}
-        <Route component={Login} />
+        <Route path="/" component={Login} />
       </Switch>
       <Backdrop
         className={classes.backdrop}

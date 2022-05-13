@@ -6,6 +6,26 @@ export const dispatch = (action, data, dispatch) => {
   const { status } = data;
 
   if (status === 200) {
+    dispatch({
+      type: ev.UPDATE_GAME,
+      payload: {
+        game : {
+          room: '',
+          settings: {
+            owner: '',
+            started: false,
+            status: 'STOPPED',
+            pieces: [],
+            dropTime: 0,
+            nbPlayers: 0,
+            nbLoosers: 0,
+          },
+          players: {},
+          chat: [],
+        },
+      },
+    });
+
     dispatch(push('/'));
 
     dispatch({

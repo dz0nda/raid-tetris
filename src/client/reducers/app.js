@@ -3,7 +3,6 @@ import ev from '../../shared/events';
 export const appState = {
   id: null,
   connected: false,
-  isLogged: false,
   isLoading: true,
   infos: {
     nbPlayers: 0,
