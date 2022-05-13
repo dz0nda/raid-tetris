@@ -83,7 +83,7 @@ export const appStateProp = {
   isLoading: PropTypes.bool.isRequired,
   nbPlayers: PropTypes.number.isRequired,
   nbGames: PropTypes.number.isRequired,
-  games: PropTypes.arrayOf(PropTypes.shape(PropTypes.string)),
+  games: PropTypes.arrayOf(gameStatePropTypes),
 };
 
 export const appStatePropTypes = PropTypes.shape(appStateProp);
