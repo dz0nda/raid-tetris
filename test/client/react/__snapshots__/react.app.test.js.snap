@@ -2389,7 +2389,10 @@ exports[`# React Tests - App Components snapshot renders - LOGIN 1`] = `
                                         "url": "/",
                                       }
                                     }
+                                    name=""
                                     reqLogin={[Function]}
+                                    reqPush={[Function]}
+                                    room=""
                                   >
                                     <LoginForm
                                       handleSubmit={[Function]}
