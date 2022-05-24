@@ -54,7 +54,7 @@ function GameRoom(props) {
   const renderPlayersHeader = () => {
     return (
       <AppBar position="static" color="default">
-        <Grid container justify="space-between" alignItems="center">
+        <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
             <Tabs value={0} indicatorColor="primary" textColor="primary">
               <Tab disabled className={classes.tabRanking} label="Players" style={{ color: 'red' }} />
@@ -71,7 +71,7 @@ function GameRoom(props) {
   };
 
   return (
-    <Grid container justify="center" alignItems="center" className={classes.grid}>
+    <Grid container justifyContent="center" alignItems="center" className={classes.grid}>
       <Grid item sm={6} md={10}>
         <Box className={classes.box}>
           <Grid container spacing={1}>

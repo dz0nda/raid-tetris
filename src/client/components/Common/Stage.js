@@ -5,7 +5,6 @@ import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 
-// import Cell from './Cell';
 import { TETROMINOS } from '../../helpers/tetrominos';
 
 const useCellStyles = makeStyles({
@@ -50,11 +49,10 @@ const useStyles = makeStyles({
       ${props.height},
       calc(${props.size}vh / ${props.width}))`,
     gridTemplateColumns: `repeat(${props.width}, 1fr)`,
-    // gridGap: '1px',
+    gridGap: '1px',
     border: '1px solid black',
     width: '100%',
     padding: props.type === 'stagePiece' ? '5px' : 0,
-    // height: '100%',
     background: 'black',
   }),
 });

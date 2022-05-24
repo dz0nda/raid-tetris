@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
   paper: (props) => ({
-    // backgroundColor: 'rgba(0,0,0,0.1)',
     backgroundColor: props.dark ? 'rgba(0, 0, 0, 0.4)' : 0,
   }),
   typography: {

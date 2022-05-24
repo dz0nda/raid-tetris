@@ -103,14 +103,10 @@ export default class Player {
     this.setStagePiece(0, pieces[this.nbPiece + 1]);
     this.setStagePiece(1, pieces[this.nbPiece + 2]);
 
-    // this.setShadow();
     while (this.checkCollision(0, 0)) {
-      // this.collided = true;
       this.loose = true;
       this.piece.form.shape.shift();
     }
-
-    // this.setFlushUpdate();
   }
 
   setMallus(lines) {

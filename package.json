@@ -6,7 +6,7 @@
     "author": "",
     "license": "",
     "scripts": {
-        "client:dist": "webpack --mode production --progress --colors",
+        "client:dist": "webpack --mode production --progress",
         "client:dev": "webpack-dev-server --mode development --devtool inline-source-map",
         "server:dist": "babel src --out-dir dist",
         "server:dev": "nodemon --exec babel-node ./src/server/server.js",
@@ -47,6 +47,7 @@
         "winston": "^2.4.5"
     },
     "devDependencies": {
+        "@babel/cli": "^7.17.10",
         "@babel/core": "^7.17.10",
         "@babel/eslint-parser": "^7.17.0",
         "@babel/node": "^7.17.10",

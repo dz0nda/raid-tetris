@@ -33,7 +33,7 @@ function GameBoard(props) {
 
   return (
     <Card>
-      <Grid container justify="center" alignItems="center" className={classes.root}>
+      <Grid container justifyContent="center" alignItems="center" className={classes.root}>
         <Grid item xs={8}>
           <Box className={classes.stage}>
             <Stage stage={stage} />

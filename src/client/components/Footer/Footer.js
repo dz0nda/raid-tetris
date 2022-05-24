@@ -1,14 +1,14 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
+import { Grid, Typography, Link } from '@material-ui/core';
 
-import FooterAuthors from './FooterAuthors';
-
-function Footer() {
+export default function Footer() {
   return (
-    <Grid container justify="center">
-      <FooterAuthors />
+    <Grid container justifyContent="center">
+      <Typography variant="caption" color="textSecondary">
+        <Link color="inherit" href="https://github.com/dz0nda">
+          dzonda
+        </Link>
+      </Typography>
     </Grid>
   );
 }
-
-export default Footer;

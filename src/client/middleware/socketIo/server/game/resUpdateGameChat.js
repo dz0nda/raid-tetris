@@ -1,4 +1,3 @@
-// import { useHistory } from 'react-router-dom';
 import ev from '../../../../../shared/events';
 
 // eslint-disable-next-line no-shadow

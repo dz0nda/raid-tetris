@@ -43,11 +43,6 @@ class Piece {
         color: '48, 211, 56',
       },
       T: {
-        // shape: [
-        //   [0, 0, 0],
-        //   ['T', 'T', 'T'],
-        //   [0, 'T', 0],
-        // ],
         shape: [
           [0, 'T', 0],
           ['T', 'T', 'T'],
@@ -69,30 +64,18 @@ class Piece {
     this.form = TETROMINOS[randTetromino];
   }
 
-  // cleanPiece(newStage) {
-  //   this.form.shape.forEach((row, y) => {
-  //     row.forEach((value, x) => {
-  //       if (value !== 0) {
-  //         newStage[y + 0][x + 3] = [value, `${'clear'}`];
-  //       }
-  //     });
-  //   });
-  // }
-
   rotate(dir) {
     // Make the rows to become cols (transpose)
     const rotatedTetro = this.form.shape.map((_, index) => this.form.shape.map((col) => col[index]));
-    // Reverse each row to get a rotated matrix
 
+    // Reverse each row to get a rotated matrix
     if (dir > 0) {
       const rotated = rotatedTetro.map((row) => row.reverse());
       this.form.shape = rotated;
-
-      // return rotated;
     }
+
     const rotated = rotatedTetro.reverse();
     this.form.shape = rotated;
-    // return rotated;
   }
 }
 

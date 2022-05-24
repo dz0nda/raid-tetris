@@ -18,6 +18,7 @@ export const playerState = {
   win: false,
 };
 
+// eslint-disable-next-line default-param-last
 const playerReducer = (state = playerState, action) => {
   switch (action.type) {
     case ev.UPDATE_PLAYER: {

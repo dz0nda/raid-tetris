@@ -52,7 +52,7 @@ function GameChat(props) {
     return (
       <ListItem key={id}>
         <Grid container>
-          <Grid item container justify="space-between">
+          <Grid item container justifyContent="space-between">
             <Grid item>
               <Typography
                 variant="body2"
@@ -73,7 +73,6 @@ function GameChat(props) {
             <Typography
               variant="body2"
               color={user === 'server' ? 'textSecondary' : 'textPrimary'}
-              // className={classes.text({ user })}
               style={{ fontStyle: user === 'server' ? 'italic' : 'normal' }}
             >
               {text}

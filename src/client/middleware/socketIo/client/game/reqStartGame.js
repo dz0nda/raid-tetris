@@ -1,7 +1,6 @@
 import ev from '../../../../../shared/events';
 
 export const dispatch = (socket, store, action) => {
-  // dispatch an action with the store to the server
   const { name } = store.getState().player;
   const { room } = store.getState().game;
 

@@ -19,17 +19,18 @@ function LoginGamesMap(games, onClickRoom) {
 
   if (length === 0) {
     return (
-      <Grid container item justify="center">
+      <Grid container item justifyContent="center">
         No rooms available
       </Grid>
     );
   }
 
+  // eslint-disable-next-line react/destructuring-assignment
   return games.map((game) => (
     <ListItem value={game} key={game.room}>
       <ListItemText primary={`${game.room}`} secondary={`Owned by ${game.settings.owner}`} />
       <ListItemText
-        primary={settings.started ? 'Game started' : 'Game not started'}
+        primary={game.settings.started ? 'Game started' : 'Game not started'}
         secondary={`${Object.keys(game.players).length} players`}
       />
       <ListItemSecondaryAction>
@@ -45,7 +46,7 @@ function LoginRooms(props) {
   const { games, onClickRoom } = props;
 
   return (
-    <Grid container justify="center" alignItems="center" spacing={10}>
+    <Grid container justifyContent="center" alignItems="center" spacing={10}>
       <Grid item xs={12}>
         <Card>
           <CardHeader title="Available rooms" />
