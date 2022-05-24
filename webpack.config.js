@@ -24,14 +24,14 @@ module.exports = {
         exclude: /node_modules/,
         use: {
           loader: 'url-loader?limit=1024&name=images/[name].[ext]',
-        }
+        },
       },
       {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
         exclude: /node_modules/,
         use: {
           loader: 'url-loader?limit=1024&name=images/[name].[ext]',
-        }
+        },
       },
     ],
   },
@@ -46,7 +46,7 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin({
-      cleanAfterEveryBuildPatterns: [outputDirectory]
+      cleanAfterEveryBuildPatterns: [outputDirectory],
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
