@@ -73,9 +73,9 @@ const connect = (req, res) => {
 
 const disconnect = (req, res) => {
   const { socket } = req;
-  const { redTetris } = RedTetris.getSocket(socket.id);
 
-  if (redTetris) {
+  if (RedTetris.getSocket(socket.id)) {
+    const { redTetris } = RedTetris.getSocket(socket.id);
     const { room } = redTetris;
 
     if (room) {

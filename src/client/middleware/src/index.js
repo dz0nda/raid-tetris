@@ -1,5 +1,5 @@
-import getIOClient from './middleware/ioclient';
-import { initialStateEvents } from './state/defaultEvents';
+import io from 'socket.io-client';
+import { initialStateEvents } from './middleware/defaultEvents';
 import { defaultSocketEvents } from './client/defaultEvents';
 import serverEventHandler from './middleware/server';
 import clientEventHandler from './middleware/client';
@@ -102,7 +102,7 @@ export function socketio(
   SOCKETS[id] = initializedSocket;
   registerSocketEvents(id, clientEvents, serverEvents, stateEvents);
 
-  const IO = getIOClient();
+  const IO = io;
 
   return (store) => (next) => (action) => {
     const IS_CONNECT_ACTION = isConnectAction(action, id, SOCKET_INITIALIZED[id]);
