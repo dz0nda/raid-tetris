@@ -19,7 +19,7 @@ export default class Server {
 
   close() {
     this.server.close((err) => {
-      logger.info('server closed')
+      logger.info('server closed');
       // process.exit(err ? 1 : 0)
     });
     // this.app.close();

@@ -8,7 +8,7 @@
   "scripts": {
     "start": "webpack-dev-server --config ./webpack.dev.js",
     "build": "webpack --config ./webpack.prod.js",
-    "server:dev": "nodemon --exec babel-node ./src/serverbak/index.js | pino-pretty",
+    "server:dev": "nodemon --exec babel-node ./src/server/index.js | pino-pretty",
     "test:server": "jest tests/server/**/*.*.test.js --verbose --coverage --detectOpenHandles",
     "test:serverbak": "jest tests/serverbak/**/*.*.test.js --verbose --coverage --no-cache --detectOpenHandles --forceExit",
     "test:client": "jest test/client/**/*.*.test.js --verbose --coverage",

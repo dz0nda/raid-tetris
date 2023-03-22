@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import Io from '../server/Io';
 import { loginSchema, ownerSchema, chatSchema, moveSchema } from '../redtetris.validation';
 import ev from '../../shared/events';
@@ -5,6 +6,8 @@ import ev from '../../shared/events';
 import Game from './Game';
 
 const logger = require('pino')();
+
+class RedTetrisCore extends Io {}
 
 export default class RedTetris extends Io {
   constructor(host, port) {
@@ -206,7 +209,7 @@ export default class RedTetris extends Io {
     const { socket } = req;
     let status = 200;
 
-    console.log('LOGOUT')
+    console.log('LOGOUT');
 
     try {
       this.getGame(this.getSocketRoom(socket.id)).unsetPlayer(socket.id);
