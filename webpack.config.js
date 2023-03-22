@@ -1,56 +1,44 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-
-const outputDirectory = 'build';
+const path = require('path')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
-  entry: ['./src/client/index.js'],
-  output: {
-    path: path.join(__dirname, outputDirectory),
-    filename: 'bundle.js',
-  },
+  context: path.resolve(__dirname),
+  target: 'web',
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-        },
+        test: /\.(jsx?|tsx?)$/,
+        include: path.resolve('src'),
+        exclude: path.resolve('node_modules'),
+        loader: 'babel-loader'
       },
       {
         test: /\.(jpg|jpeg|gif|png)$/,
         exclude: /node_modules/,
         use: {
           loader: 'url-loader?limit=1024&name=images/[name].[ext]',
-        },
-      },
-      {
-        test: /\.(woff|woff2|eot|ttf|svg)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'url-loader?limit=1024&name=images/[name].[ext]',
-        },
-      },
-    ],
-  },
-  resolve: {
-    extensions: ['*', '.js', '.jsx'],
-  },
-  devServer: {
-    port: 8080,
-    open: true,
-    hot: true,
-    historyApiFallback: true,
+        }
+      }
+    ]
   },
   plugins: [
-    new CleanWebpackPlugin({
-      cleanAfterEveryBuildPatterns: [outputDirectory],
-    }),
     new HtmlWebpackPlugin({
-      template: './public/index.html',
-      favicon: './public/favicon.ico',
+      filename: 'index.html',
+      template: 'public/index.html'
     }),
+    new CopyWebpackPlugin({
+      patterns: [{ from: 'public/favicon.ico', to: './' }]
+    })
   ],
-};
+  resolve: {
+    modules: ['node_modules'],
+    extensions: ['*', '.js', '.jsx']
+  },
+  node: {
+    global: true,
+    __filename: true,
+    __dirname: true
+  }
+}

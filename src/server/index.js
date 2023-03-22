@@ -1,13 +1,5 @@
-import 'regenerator-runtime/runtime';
-import express from 'express';
+// import 'regenerator-runtime/runtime';
+// import Server from './server';
+import RedTetris from './app/RedTetris';
 
-import redTetris from './socket';
-
-const app = express();
-app.use(express.static('build'));
-
-const server = require('http').createServer(app);
-
-redTetris(server);
-
-export default server;
+new RedTetris('0.0.0.0', 3000).listen();

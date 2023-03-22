@@ -1,17 +1,20 @@
 import React from 'react';
-import ReactDom from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@emotion/react';
 import { ConnectedRouter } from 'connected-react-router';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { CssBaseline } from '@mui/material';
+
+// import '@fontsource/roboto/300.css'
+// import '@fontsource/roboto/400.css'
+// import '@fontsource/roboto/500.css'
+// import '@fontsource/roboto/700.css'
 
 import store, { history } from './store';
 import theme from './theme';
-import App from './containers/app';
+import App from './App';
 
-console.log('dzonda - 42 Lyon');
-
-ReactDom.render(
+createRoot(document.getElementById('tetris')).render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
       <ConnectedRouter history={history}>
@@ -20,5 +23,4 @@ ReactDom.render(
       </ConnectedRouter>
     </ThemeProvider>
   </Provider>,
-  document.getElementById('tetris'),
 );
