@@ -6,7 +6,7 @@ const io = require('socket.io-client');
 export const initSocket = (port) =>
   new Promise((resolve, reject) => {
     // create socket for communication
-    const socket = io(`localhost:${port}`, {
+    const socket = io(`http://0.0.0.0:${port}`, {
       'reconnection delay': 0,
       'reopen delay': 0,
       'force new connection': true,
@@ -18,9 +18,9 @@ export const initSocket = (port) =>
     });
 
     // if connection takes longer than 5 seconds throw error
-    setTimeout(() => {
-      reject(new Error('Failed to connect wihtin 5 seconds.'));
-    }, 10000);
+    // setTimeout(() => {
+    //   reject(new Error('Failed to connect wihtin 5 seconds.'));
+    // }, 10000);
   });
 
 // destroySocket returns a promise
@@ -29,7 +29,7 @@ export const initSocket = (port) =>
 export const destroySocket = (socket) =>
   new Promise((resolve) => {
     // check if socket connected
-    if (socket.connected) {
+    if (socket && socket.connected) {
       // disconnect socket
       socket.disconnect();
       resolve(true);
@@ -44,5 +44,10 @@ export const handleResponse = (socket, event) => {
     socket.on(event, (data) => {
       resolve(data);
     });
+
+    // if connection takes longer than 5 seconds throw error
+    // setTimeout(() => {
+    //   reject(new Error('Failed to connect wihtin 5 seconds.'));
+    // }, 10000);
   });
 };

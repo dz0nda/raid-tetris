@@ -1,6 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Card, CardHeader, CardContent, List, ListItem, ListItemText, ListItemSecondaryAction } from '@mui/material';
+import {
+  Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+} from '@mui/material';
 
 // import Grid from '@material-ui/core/Grid';
 // import Card from '@material-ui/core/Card';
@@ -27,13 +36,11 @@ function LoginRooms(props) {
           <CardContent>
             <Grid item xs={12} style={{ maxHeight: 350, overflow: 'auto' }}>
               <List style={{ maxHeight: '100%' }}>
-              {
-                !games.length ? (
+                {!games.length ? (
                   <Grid container item justifyContent="center">
-                          No rooms available
-                        </Grid>
-                ) :
-                (
+                    No rooms available
+                  </Grid>
+                ) : (
                   games.map((game) => (
                     <ListItem value={game} key={game.room}>
                       <ListItemText primary={`${game.room}`} secondary={`Owned by ${game.settings.owner}`} />
@@ -47,8 +54,8 @@ function LoginRooms(props) {
                         </RedIconButton> */}
                       </ListItemSecondaryAction>
                     </ListItem>
-                )))
-              }
+                  ))
+                )}
               </List>
             </Grid>
           </CardContent>

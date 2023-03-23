@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { createUseStyles } from 'react-jss'
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { createUseStyles } from 'react-jss';
 import {
   Container,
   Grid,
@@ -17,80 +17,77 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Typography
-} from '@mui/material'
-import SupervisorAccount from '@mui/icons-material/SupervisorAccount'
+  Typography,
+} from '@mui/material';
+import SupervisorAccount from '@mui/icons-material/SupervisorAccount';
 // import { connect } from 'react-redux';
 
 // import { playerStateProp, gameStateProp } from '../../reducers/reducers.types';
 // import actions from '../../actions';
-import {
-  TABLE_PLAYERS_COLUMNS,
-  TABLE_PLAYERS_RANK
-} from '../../constants/tables'
+import { TABLE_PLAYERS_COLUMNS, TABLE_PLAYERS_RANK } from '../../constants/tables';
 
 // import GameRoom from '../../components/Game/GameRoom';
 // import GameRank from '../../components/Game/GameRank';
 
-import Button from '../common/Button'
-import VList from '../common/VList'
-import { actions } from '../../store/reducers/game'
+import Button from '../common/Button';
+import VList from '../common/VList';
+import { actions } from '../../store/reducers/game';
 
-import BoxInfo from '../common/BoxInfo'
+import BoxInfo from '../common/BoxInfo';
 
 const useStyles = createUseStyles({
   grid: {
-    height: '100%'
+    height: '100%',
   },
   gridItemInfos: {
-    height: '33%'
+    height: '33%',
   },
   box: {
-    height: '100%'
+    height: '100%',
   },
   tab: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   paper: {
-    height: '55vh'
+    height: '55vh',
   },
   boxRanking: {
-    height: '100%'
+    height: '100%',
   },
   tabRanking: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   paperRanking: {
-    height: '33vh'
-  }
-})
+    height: '33vh',
+  },
+});
 
 const Transition = React.forwardRef((props, ref) => (
   // eslint-disable-next-line react/jsx-props-no-spreading
   <Slide direction="up" ref={ref} {...props} />
-))
+));
 
 function GameRoom(props) {
-  const { name, room, settings, players, reqStartGame, reqOwner } = props
-  const { owner, nbPlayers, nbLoosers } = settings
-  const [open, setOpen] = useState(false)
-  const playersList = Object.values(players)
-  const classes = useStyles()
+  const { name, room, settings, players, reqStartGame, reqOwner } = props;
+  const { owner, nbPlayers, nbLoosers } = settings;
+  const [open, setOpen] = useState(false);
+  const playersList = Object.values(players);
+  const classes = useStyles();
 
-  const handleSetOwner = (newOwner) => reqOwner({ newOwner })
+  const handleSetOwner = (newOwner) => reqOwner({ newOwner });
 
   useEffect(() => {
-    if (nbPlayers !== 0 && nbLoosers === nbPlayers) setOpen(true)
-    else setOpen(false)
-  }, [nbLoosers, nbPlayers])
+    if (nbPlayers !== 0 && nbLoosers === nbPlayers) setOpen(true);
+    else setOpen(false);
+  }, [nbLoosers, nbPlayers]);
 
   const handleOpenRank = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   const handleCloseRank = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   return (
     <>
@@ -102,25 +99,11 @@ function GameRoom(props) {
       >
         <Grid item sm={6} md={12}>
           <Box className={classes.box}>
-            <AppBar
-              position="static"
-              color="default"
-              elevation={0}
-              sx={{ borderRadius: 1 }}
-            >
-              <Grid
-                container
-                justifyContent="space-between"
-                alignItems="center"
-              >
+            <AppBar position="static" color="default" elevation={0} sx={{ borderRadius: 1 }}>
+              <Grid container justifyContent="space-between" alignItems="center">
                 <Grid item>
                   <Tabs value={0} indicatorColor="primary" textColor="primary">
-                    <Tab
-                      disabled
-                      className={classes.tabRanking}
-                      label="Players"
-                      style={{ color: 'red' }}
-                    />
+                    <Tab disabled className={classes.tabRanking} label="Players" style={{ color: 'red' }} />
                   </Tabs>
                 </Grid>
                 <Grid item>
@@ -143,13 +126,7 @@ function GameRoom(props) {
       </Grid>
 
       {/* Modal */}
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleCloseRank}
-        fullWidth
-      >
+      <Dialog open={open} TransitionComponent={Transition} keepMounted onClose={handleCloseRank} fullWidth>
         <DialogTitle>
           <Typography variant="h5" style={{ color: 'red', fontWeight: 'bold' }}>
             PLAYERS
@@ -171,7 +148,7 @@ function GameRoom(props) {
         </DialogActions>
       </Dialog>
     </>
-  )
+  );
 }
 
 {
@@ -217,13 +194,13 @@ const mapStateToProps = (state) => ({
   name: state.player.name,
   room: state.game.room,
   settings: state.game.settings,
-  players: state.game.players
-})
+  players: state.game.players,
+});
 
 const mapDispatchToProps = {
   reqStartGame: actions.reqStartGame,
-  reqOwner: actions.reqOwner
-}
+  reqOwner: actions.reqOwner,
+};
 
 // export default connect(mapStateToProps, mapDispatchToProps)(GameRoomContainer);
-export default connect(mapStateToProps, mapDispatchToProps)(GameRoom)
+export default connect(mapStateToProps, mapDispatchToProps)(GameRoom);

@@ -1,40 +1,35 @@
-import React, { useEffect } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { Route, Switch } from 'react-router-dom'
-import { SnackbarProvider } from 'notistack'
-import { Grid, Backdrop, CircularProgress } from '@mui/material'
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Route, Switch } from 'react-router-dom';
+import { SnackbarProvider } from 'notistack';
+import { Grid, Backdrop, CircularProgress } from '@mui/material';
 
-import params from '../shared/params'
-import useWindowDimensions from './hooks/useWindowDimensions'
-import Header from './pages/Header'
-import Footer from './pages/Footer'
-import Login from './pages/Login'
-import Game from './pages/Game'
-import Test from './components/login/test'
+import params from '../shared/params';
+import useWindowDimensions from './hooks/useWindowDimensions';
+import Header from './pages/Header';
+import Footer from './pages/Footer';
+import Login from './pages/Login';
+import Game from './pages/Game';
+import Test from './components/login/test';
 // import Game from './components/game/Game'
-import Snackbar from './components/common/Snackbar'
+import Snackbar from './components/common/Snackbar';
 
-import { actions } from './store/reducers'
+import { actions } from './store/reducers';
 
 function App(props) {
-  const { host, port } = params.server
-  const { connected, reqConnect, isLoading } = props
-  const { width, height } = useWindowDimensions()
+  const { host, port } = params.server;
+  const { connected, reqConnect, isLoading } = props;
+  const { width, height } = useWindowDimensions();
 
   useEffect(() => {
     if (!connected) {
-      reqConnect({ host, port })
+      reqConnect({ host, port });
     }
-  }, [connected])
+  }, [connected]);
 
   return (
-    <Grid
-      container
-      direction="column"
-      justifyContent="space-between"
-      style={{ height: '100vh' }}
-    >
+    <Grid container direction="column" justifyContent="space-between" style={{ height: '100vh' }}>
       <Grid item>
         <Header />
       </Grid>
@@ -58,7 +53,7 @@ function App(props) {
         <Footer />
       </Grid>
     </Grid>
-  )
+  );
 }
 
 // App.defaultProps = {
@@ -69,15 +64,15 @@ function App(props) {
 App.propTypes = {
   connected: PropTypes.bool.isRequired,
   reqConnect: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool.isRequired
-}
+  isLoading: PropTypes.bool.isRequired,
+};
 
 const mapStateToProps = (state) => ({
-  connected: state.app.connected
-})
+  connected: state.app.connected,
+});
 
 const mapDispatchToProps = {
-  reqConnect: actions.reqConnect
-}
+  reqConnect: actions.reqConnect,
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App);

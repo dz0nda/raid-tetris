@@ -1,18 +1,18 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { useSelector, useDispatch, connect } from 'react-redux'
-import { AppBar, Grid, IconButton, Typography } from '@mui/material'
-import HomeIcon from '@mui/icons-material/Home'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { useSelector, useDispatch, connect } from 'react-redux';
+import { AppBar, Grid, IconButton, Typography } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
 import { actions } from '../store/reducers';
 
 // import HeaderLogo from './HeaderLogo';
 // import HeaderHomeContainer from '../../containers/Header/HeaderHomeContainer';
 // import HeaderStateContainer from '../../containers/Header/HeaderStateContainer';
-import logo from '../assets/header.png'
+import logo from '../assets/header.png';
 
 function Header(props) {
   const { reqLogout } = props;
-  const infos = useSelector((state) => state.app.infos)
+  const infos = useSelector((state) => state.app.infos);
 
   return (
     <AppBar position="static" color="inherit">
@@ -47,16 +47,15 @@ function Header(props) {
         </Grid>
       </Grid>
     </AppBar>
-  )
+  );
 }
-
 
 Header.propTypes = {
   reqLogout: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
-  reqLogout: actions.reqLogout
-}
+  reqLogout: actions.reqLogout,
+};
 
-export default connect(null, mapDispatchToProps)(Header)
+export default connect(null, mapDispatchToProps)(Header);

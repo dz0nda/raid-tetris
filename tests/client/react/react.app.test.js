@@ -7,9 +7,9 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 
 import store, { history } from '../../../src/client/store';
-import Header from '../../../src/client/components/Header/Header';
-import Footer from '../../../src/client/components/Footer/Footer';
-import Login from '../../../src/client/components/Login/Login';
+import { Header } from '../../../src/client/pages/Header';
+import { Footer } from '../../../src/client/pages/Footer';
+import { Login } from '../../../src/client/pages/Login';
 
 configure({ adapter: new Adapter() });
 

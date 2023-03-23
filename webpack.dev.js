@@ -1,30 +1,30 @@
-const path = require('path')
-const webpack = require('webpack')
-const { merge } = require('webpack-merge')
-const Dotenv = require('dotenv-webpack')
+const path = require('path');
+const webpack = require('webpack');
+const { merge } = require('webpack-merge');
+const Dotenv = require('dotenv-webpack');
 
-const baseConfig = require('./webpack.config')
+const baseConfig = require('./webpack.config');
 
-const OUTPUT_PATH = path.resolve('dist')
-const CONFIG_ENV = 'development'
+const OUTPUT_PATH = path.resolve('dist');
+const CONFIG_ENV = 'development';
 
 module.exports = merge(baseConfig, {
   mode: CONFIG_ENV,
   entry: './src/client/index.js',
   output: {
     path: OUTPUT_PATH,
-    filename: '[name].bundle.js'
+    filename: '[name].bundle.js',
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new Dotenv({
       path: path.resolve('.env'),
-      ignoreStub: true
+      ignoreStub: true,
     }),
     new Dotenv({
       path: path.resolve(`.env.${CONFIG_ENV}`),
-      ignoreStub: true
-    })
+      ignoreStub: true,
+    }),
   ],
   devtool: 'inline-source-map',
   devServer: {
@@ -33,10 +33,10 @@ module.exports = merge(baseConfig, {
     open: true,
     // historyApiFallback: true
     historyApiFallback: {
-      rewrites: [{ from: /.*/, to: '/index.html' }]
-    }
+      rewrites: [{ from: /.*/, to: '/index.html' }],
+    },
   },
   optimization: {
-    moduleIds: 'named'
-  }
-})
+    moduleIds: 'named',
+  },
+});

@@ -84,9 +84,16 @@ export default class RedTetris extends Io {
   }
 
   isLogged(socket) {
+    if (!this.isConnected(socket.id)) {
+      return {
+        socket,
+        isLogged: false,
+      };
+    }
+
     return {
-      socket: this.isConnected(socket) ? this.getSocket(socket.id) : {},
-      isLogged: this.getSocketRoom(socket.id) === true,
+      socket: this.getSocket(socket.id),
+      isLogged: this.getSocketRoom(socket.id),
     };
   }
 
@@ -209,7 +216,7 @@ export default class RedTetris extends Io {
     const { socket } = req;
     let status = 200;
 
-    console.log('LOGOUT');
+    // console.log('LOGOUT');
 
     try {
       this.getGame(this.getSocketRoom(socket.id)).unsetPlayer(socket.id);

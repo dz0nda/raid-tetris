@@ -35,8 +35,8 @@ export default class Io extends Server {
     return this.sockets[id];
   }
 
-  isConnected(socket) {
-    return this.getSocket(socket.id) !== undefined;
+  isConnected(id) {
+    return this.getSocket(id) !== undefined;
   }
 
   emitToAll(event, data) {
@@ -73,18 +73,23 @@ export default class Io extends Server {
           let isLogged = false;
           // eslint-disable-next-line no-param-reassign
           ({ socket, isLogged } = auth ? auth(socket) : { socket, isLogged: true });
-          if (!socket) {
+          console.log(socket.redTetris, isLogged);
+          if (!socket || !isLogged) {
             this.emitToSocket(socket.id, event.res, {
               status: 500,
               message: 'Unauthorized',
             });
+
+            return;
           }
-          if (schema && schema.validate(data).error) {
-            this.emitToSocket(socket.id, event.res, {
-              status: 500,
-              message: 'Invalid arguments',
-            });
-          }
+          // if (schema && schema.validate(data).error) {
+          //   this.emitToSocket(socket.id, event.res, {
+          //     status: 500,
+          //     message: 'Invalid arguments',
+          //   });
+
+          //   return;
+          // }
 
           handler({ socket, data }, { io: this.io, callback });
         });

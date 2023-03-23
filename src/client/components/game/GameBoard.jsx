@@ -1,37 +1,37 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 // import { connect } from 'react-redux'
-import { Box, Grid, Card, CardContent, Divider } from '@mui/material'
-import { css } from '@emotion/react'
-import { createUseStyles } from 'react-jss'
+import { Box, Grid, Card, CardContent, Divider } from '@mui/material';
+import { css } from '@emotion/react';
+import { createUseStyles } from 'react-jss';
 
-import { keys } from '../../constants/keys'
-import useKey from '../../hooks/useKey'
-import useInterval from '../../hooks/useInterval'
+import { keys } from '../../constants/keys';
+import useKey from '../../hooks/useKey';
+import useInterval from '../../hooks/useInterval';
 // import { Box } from '@mui/material'
 // import { playerStateProp, settingsProp } from '../../reducers/reducers.types'
 // import actions from '../../actions'
 
 // import GameBoard from '../../components/Game/GameBoard';
 // import GameLoose from '../../components/Game/GameLoose'
-import { actions } from '../../store/reducers/player'
+import { actions } from '../../store/reducers/player';
 
-import Stage from '../common/Board'
+import Stage from '../common/Board';
 
 const useStyles = createUseStyles({
   root: {
     height: '100%',
-    width: '100%'
+    width: '100%',
   },
   stage: {
-    padding: '3%'
-  }
-})
+    padding: '3%',
+  },
+});
 
 function GameBoardComponent(props) {
-  const { stage, pieceOne, pieceTwo, score, lines, mallus } = props
-  const classes = useStyles()
+  const { stage, pieceOne, pieceTwo, score, lines, mallus } = props;
+  const classes = useStyles();
 
   // const renderItem = (field, value) => (
   //   <Grid item xs={12}>
@@ -42,12 +42,7 @@ function GameBoardComponent(props) {
 
   return (
     <Card elevation={0}>
-      <Grid
-        container
-        justifyContent="center"
-        alignItems="center"
-        className={classes.root}
-      >
+      <Grid container justifyContent="center" alignItems="center" className={classes.root}>
         <Grid item xs={8}>
           <Box className={classes.stage}>
             <Stage stage={stage} />
@@ -81,7 +76,7 @@ function GameBoardComponent(props) {
         </Grid>
       </Grid>
     </Card>
-  )
+  );
 }
 
 // GameBoardComponent.propTypes = {
@@ -94,31 +89,21 @@ function GameBoardComponent(props) {
 // }
 
 function GameBoard(props) {
-  const { settings, player, reqMove } = props
-  const { started, nbPlayers } = settings
-  const {
-    stage,
-    stagePiece,
-    score,
-    lines,
-    mallus,
-    rank,
-    dropTime,
-    loose,
-    win
-  } = player
-  const [open, setOpen] = React.useState(false)
+  const { settings, player, reqMove } = props;
+  const { started, nbPlayers } = settings;
+  const { stage, stagePiece, score, lines, mallus, rank, dropTime, loose, win } = player;
+  const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
-    setOpen(loose || win)
-  }, [loose, win])
+    setOpen(loose || win);
+  }, [loose, win]);
 
   const handleCloseLoose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
-  useInterval(() => reqMove({ keyCode: keys.KDOWN }), started, dropTime)
-  useKey((event) => reqMove({ keyCode: event.keyCode }), started, loose)
+  useInterval(() => reqMove({ keyCode: keys.KDOWN }), started, dropTime);
+  useKey((event) => reqMove({ keyCode: event.keyCode }), started, loose);
 
   return (
     <>
@@ -137,7 +122,7 @@ function GameBoard(props) {
         handleClose={handleCloseLoose}
       /> */}
     </>
-  )
+  );
 }
 
 // GameBoard.propTypes = {
@@ -148,12 +133,12 @@ function GameBoard(props) {
 
 const mapStateToProps = (state) => ({
   settings: state.game.settings,
-  player: state.player
-})
+  player: state.player,
+});
 
 const mapDispatchToProps = {
   reqStartGame: actions.reqStartGame,
-  reqMove: actions.reqMove
-}
+  reqMove: actions.reqMove,
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameBoard)
+export default connect(mapStateToProps, mapDispatchToProps)(GameBoard);

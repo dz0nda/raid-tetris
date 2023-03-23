@@ -1,15 +1,15 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { useSelector, connect } from 'react-redux'
-import { AppBar, Grid, IconButton, Typography } from '@mui/material'
-import HomeIcon from '@mui/icons-material/Home'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { useSelector, connect } from 'react-redux';
+import { AppBar, Grid, IconButton, Typography } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
 
-import { actions } from '../store/reducers'
-import logo from '../assets/header.png'
+import { actions } from '../store/reducers';
+import logo from '../assets/header.png';
 
-function Header(props) {
-  const { reqLogout } = props
-  const infos = useSelector((state) => state.app.infos)
+export function Header(props) {
+  const { reqLogout } = props;
+  const infos = useSelector((state) => state.app.infos);
 
   return (
     <AppBar position="static" color="inherit">
@@ -44,15 +44,15 @@ function Header(props) {
         </Grid>
       </Grid>
     </AppBar>
-  )
+  );
 }
 
 Header.propTypes = {
-  reqLogout: PropTypes.func.isRequired
-}
+  reqLogout: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = {
-  reqLogout: actions.reqLogout
-}
+  reqLogout: actions.reqLogout,
+};
 
-export default connect(null, mapDispatchToProps)(Header)
+export default connect(null, mapDispatchToProps)(Header);

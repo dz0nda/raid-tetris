@@ -4,7 +4,7 @@
 
 Set host in `params.js` to be accessible across network
 
-## Install 
+## Install
 
 ### Dev
 

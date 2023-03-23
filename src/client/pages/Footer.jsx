@@ -1,5 +1,5 @@
-import React from 'react'
-import { Grid, Typography, Link } from '@mui/material'
+import React from 'react';
+import { Grid, Typography, Link } from '@mui/material';
 
 export default function Footer() {
   return (
@@ -10,5 +10,5 @@ export default function Footer() {
         </Link>
       </Typography>
     </Grid>
-  )
+  );
 }

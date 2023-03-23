@@ -5,7 +5,7 @@ import EnzymeToJson from 'enzyme-to-json';
 import { Provider } from 'react-redux';
 import store from '../../../src/client/store';
 
-import Game from '../../../src/client/components/Game/Game';
+import Game from '../../../src/client/pages/Game';
 
 configure({ adapter: new Adapter() });
 

@@ -1,89 +1,74 @@
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-shadow */
-import React from 'react'
-import PropTypes from 'prop-types'
-import clsx from 'clsx'
-import { TableCell, Icon } from '@mui/material'
-import { AutoSizer, Column, Table } from 'react-virtualized'
-import { withStyles } from 'react-jss'
+import React from 'react';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import { TableCell, Icon } from '@mui/material';
+import { AutoSizer, Column, Table } from 'react-virtualized';
+import { withStyles } from 'react-jss';
 
-import PersonAddIcon from '@mui/icons-material/PersonAdd'
-import EmojiFlagsIcon from '@mui/icons-material/EmojiFlags'
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import EmojiFlagsIcon from '@mui/icons-material/EmojiFlags';
 
 // import IconButton from './IconButton'
-import IconButton from './IconButton'
+import IconButton from './IconButton';
 
-import Stage from './Board'
+import Stage from './Board';
 
 const styles = () => ({
   flexContainer: {
     display: 'flex',
     alignItems: 'center',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
   },
   table: {
     // temporary right-to-left patch, waiting for
     // https://github.com/bvaughn/react-virtualized/issues/454
     '& .ReactVirtualized__Table__headerRow': {
-      flip: false
-    }
+      flip: false,
+    },
   },
   tableRow: {
-    cursor: 'pointer'
+    cursor: 'pointer',
   },
   tableRowHover: {
     '&:hover': {
-      backgroundColor: 'rgba(0, 0, 0, 0.3)'
-    }
+      backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    },
   },
   tableCell: {
-    flex: 1
+    flex: 1,
   },
   tableCellHeader: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   noClick: {
-    cursor: 'initial'
+    cursor: 'initial',
   },
   icon: {
-    color: 'red'
-  }
-})
+    color: 'red',
+  },
+});
 
 function MuiVirtualizedTable(props) {
-  const {
-    classes,
-    owner,
-    handleSetOwner,
-    columns,
-    rowHeight,
-    headerHeight,
-    ...tableProps
-  } = props
+  const { classes, owner, handleSetOwner, columns, rowHeight, headerHeight, ...tableProps } = props;
 
   const getRowClassName = ({ index }) => {
-    const { classes } = props
+    const { classes } = props;
 
     return clsx(classes.tableRow, classes.flexContainer, {
-      [classes.tableRowHover]: index !== -1
-    })
-  }
+      [classes.tableRowHover]: index !== -1,
+    });
+  };
 
   const cellRenderer = ({ cellData, columnIndex }) => {
-    const { columns, classes, rowHeight } = props
-    const { dataKey } = columns[columnIndex]
+    const { columns, classes, rowHeight } = props;
+    const { dataKey } = columns[columnIndex];
 
-    let cell = cellData
+    let cell = cellData;
 
-    if (dataKey === 'stage')
-      cell = (
-        <Stage
-          style={{ padding: '2px' }}
-          stage={cellData}
-          type="stagePlayers"
-        />
-      )
+    if (dataKey === 'stage') cell = <Stage style={{ padding: '2px' }} stage={cellData} type="stagePlayers" />;
     if (dataKey === 'name') {
       cell = (
         <>
@@ -99,54 +84,40 @@ function MuiVirtualizedTable(props) {
             </IconButton>
           ) : null}
         </>
-      )
+      );
     }
     if (dataKey === 'rank') {
-      cell = `#${cellData}`
+      cell = `#${cellData}`;
     }
 
     return (
       <TableCell
         component="div"
-        className={clsx(
-          classes.tableCell,
-          classes.tableCellHeader,
-          classes.flexContainer,
-          classes.noClick
-        )}
+        className={clsx(classes.tableCell, classes.tableCellHeader, classes.flexContainer, classes.noClick)}
         variant="body"
         style={{ height: rowHeight }}
-        align={
-          (columnIndex != null && columns[columnIndex].numeric) || false
-            ? 'right'
-            : 'left'
-        }
+        align={(columnIndex != null && columns[columnIndex].numeric) || false ? 'right' : 'left'}
       >
         {cell}
       </TableCell>
-    )
-  }
+    );
+  };
 
   const headerRenderer = ({ label, columnIndex }) => {
-    const { headerHeight, columns, classes } = props
+    const { headerHeight, columns, classes } = props;
 
     return (
       <TableCell
         component="div"
-        className={clsx(
-          classes.tableCell,
-          classes.tableCellHeader,
-          classes.flexContainer,
-          classes.noClick
-        )}
+        className={clsx(classes.tableCell, classes.tableCellHeader, classes.flexContainer, classes.noClick)}
         variant="head"
         style={{ height: headerHeight }}
         align={columns[columnIndex].numeric || false ? 'right' : 'left'}
       >
         <span>{label}</span>
       </TableCell>
-    )
-  }
+    );
+  };
 
   return (
     <AutoSizer>
@@ -157,7 +128,7 @@ function MuiVirtualizedTable(props) {
           rowHeight={rowHeight}
           gridStyle={{
             direction: 'inherit',
-            outline: 'none'
+            outline: 'none',
           }}
           headerHeight={headerHeight}
           className={classes.table}
@@ -170,9 +141,10 @@ function MuiVirtualizedTable(props) {
               headerRenderer={(headerProps) =>
                 headerRenderer({
                   ...headerProps,
-                  columnIndex: index
+                  columnIndex: index,
                   // eslint-disable-next-line prettier/prettier
-                })}
+                })
+              }
               className={classes.flexContainer}
               cellRenderer={cellRenderer}
               dataKey={dataKey}
@@ -182,15 +154,15 @@ function MuiVirtualizedTable(props) {
         </Table>
       )}
     </AutoSizer>
-  )
+  );
 }
 
 MuiVirtualizedTable.defaultProps = {
   headerHeight: 48,
   rowHeight: 70,
   owner: '',
-  handleSetOwner: undefined
-}
+  handleSetOwner: undefined,
+};
 
 MuiVirtualizedTable.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -199,13 +171,13 @@ MuiVirtualizedTable.propTypes = {
       dataKey: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
       numeric: PropTypes.bool,
-      width: PropTypes.number.isRequired
-    })
+      width: PropTypes.number.isRequired,
+    }),
   ).isRequired,
   headerHeight: PropTypes.number,
   rowHeight: PropTypes.number,
   owner: PropTypes.string,
-  handleSetOwner: PropTypes.func
-}
+  handleSetOwner: PropTypes.func,
+};
 
-export default withStyles(styles)(MuiVirtualizedTable)
+export default withStyles(styles)(MuiVirtualizedTable);

@@ -1,32 +1,29 @@
-import 'regenerator-runtime/runtime';
 import params from '../../../src/shared/params';
-import server from '../../../src/server/index';
+import RedTetris from '../../../src/server/app/RedTetris';
 
 import { initSocket, destroySocket, handleResponse } from '../helpers/socket';
 
 const ev = require('../../../src/shared/events');
-const logger = require('../../../src/server/utils/logger');
 
 const { host, port } = params.server;
 
-// server(3000);
-
 describe('# Socket Tests - Game Events', () => {
+  const server = new RedTetris('0.0.0.0', 3002);
   let socket;
 
   beforeAll(async () => {
-    server.listen({ host, port: 3002 }, () => {
-      logger.info(`Listening on port ${port}!`);
-    });
+    server.listen();
 
     socket = await initSocket(3002);
+
     const payload = { name: 'name', room: 'room' };
     socket.emit(ev.req_LOGIN, payload);
   });
 
-  afterAll(() => {
+  afterAll((done) => {
     destroySocket(socket);
     server.close();
+    done();
   });
 
   describe('## Start Events', () => {
@@ -51,7 +48,7 @@ describe('# Socket Tests - Game Events', () => {
       const payload = {};
 
       socketMalicious.emit(ev.req_START_GAME, payload);
-      const data = await handleResponse(socketMalicious, ev.res_UPDATE_PLAYER);
+      const data = await handleResponse(socketMalicious, ev.res_START_GAME);
       expect(data.status).toBe(500);
     });
   });
@@ -70,7 +67,9 @@ describe('# Socket Tests - Game Events', () => {
       const payload = { newOwner: 'newName' };
 
       socketMalicious.emit(ev.req_UPDATE_GAME_OWNER, payload);
-      const data = await handleResponse(socketMalicious, ev.res_UPDATE_PLAYER);
+      const data = await handleResponse(socketMalicious, ev.res_UPDATE_GAME_OWNER);
+
+      console.log(data.message);
       expect(data.status).toBe(500);
     });
   });
@@ -93,7 +92,7 @@ describe('# Socket Tests - Game Events', () => {
       const payload = { text: 'text' };
 
       socketMalicious.emit(ev.req_UPDATE_GAME_CHAT, payload);
-      const data = await handleResponse(socketMalicious, ev.res_UPDATE_PLAYER);
+      const data = await handleResponse(socketMalicious, ev.res_UPDATE_GAME_CHAT);
       expect(data.status).toBe(500);
     });
   });

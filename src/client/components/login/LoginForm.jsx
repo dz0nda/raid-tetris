@@ -1,6 +1,6 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { Grid, TextField, ArrowForwardIcon } from '@mui/material'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Grid, TextField, ArrowForwardIcon } from '@mui/material';
 // import Grid from '@material-ui/core/Grid';
 // import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 // import TextField from '@material-ui/core/TextField';
@@ -8,7 +8,7 @@ import { Grid, TextField, ArrowForwardIcon } from '@mui/material'
 // import RedIconButton from '../Common/RedIconButton';
 
 function LoginForm(props) {
-  const { name, room, handleSubmit } = props
+  const { name, room, handleSubmit } = props;
 
   return (
     <Grid container justifyContent="center" alignItems="center" spacing={2}>
@@ -19,7 +19,7 @@ function LoginForm(props) {
           value={name.value}
           onChange={name.handle}
           onKeyPress={(ev) => {
-            if (ev.key === 'Enter') handleSubmit()
+            if (ev.key === 'Enter') handleSubmit();
           }}
         />
       </Grid>
@@ -30,7 +30,7 @@ function LoginForm(props) {
           value={room.value}
           onChange={room.handle}
           onKeyPress={(ev) => {
-            if (ev.key === 'Enter') handleSubmit()
+            if (ev.key === 'Enter') handleSubmit();
           }}
         />
       </Grid>
@@ -40,7 +40,7 @@ function LoginForm(props) {
         </RedIconButton> */}
       </Grid>
     </Grid>
-  )
+  );
 }
 
 // const FormPropTypes = PropTypes.shape({
@@ -54,4 +54,4 @@ function LoginForm(props) {
 //   handleSubmit: PropTypes.func.isRequired,
 // };
 
-export default LoginForm
+export default LoginForm;

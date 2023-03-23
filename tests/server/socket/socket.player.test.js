@@ -1,7 +1,5 @@
-import 'regenerator-runtime/runtime';
-
 import params from '../../../src/shared/params';
-import server from '../../../src/server/index';
+import RedTetris from '../../../src/server/app/RedTetris';
 
 import { initSocket, destroySocket, handleResponse } from '../helpers/socket';
 import { keys } from '../../../src/server/helpers/gameHelper';
@@ -9,28 +7,27 @@ import { keys } from '../../../src/server/helpers/gameHelper';
 const randomstring = require('randomstring');
 
 const ev = require('../../../src/shared/events');
-const logger = require('../../../src/server/utils/logger');
 
 const { host, port } = params.server;
 
 describe('# Socket Tests - Player Events', () => {
+  const server = new RedTetris('0.0.0.0', 3003);
   let socket;
 
   beforeAll(async () => {
-    server.listen({ host, port: 3003 }, () => {
-      logger.info(`Listening on port ${port}!`);
-    });
+    server.listen();
 
     socket = await initSocket(3003);
     const payload = { name: randomstring.generate(7), room: randomstring.generate(7) };
     socket.emit(ev.req_LOGIN, payload);
     socket.emit(ev.req_START_GAME, payload);
-    setTimeout(4);
+    setTimeout(() => {}, 4);
   });
 
-  afterAll(() => {
+  afterAll((done) => {
     destroySocket(socket);
     server.close();
+    done();
   });
 
   describe('## Player Events', () => {

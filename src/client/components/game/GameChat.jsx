@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { createUseStyles } from 'react-jss'
+import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { createUseStyles } from 'react-jss';
 
 // import { makeStyles } from '@material-ui/core/styles';
-import Telegram from '@mui/icons-material/Telegram'
+import Telegram from '@mui/icons-material/Telegram';
 // import { chatStatePropTypes } from '../../reducers/reducers.types';
 
 import {
@@ -16,62 +16,62 @@ import {
   InputBase,
   Typography,
   // IconButton,
-  Box
-} from '@mui/material'
+  Box,
+} from '@mui/material';
 
-import { actions } from '../../store/reducers/game'
-import { chatStatePropTypes } from '../../store/reducers/types'
+import { actions } from '../../store/reducers/game';
+import { chatStatePropTypes } from '../../store/reducers/types';
 
-import IconButton from '../common/IconButton'
+import IconButton from '../common/IconButton';
 // import RedIconButton from '../Common/RedIconButton'
 
 const useStyles = createUseStyles({
   grid: {
-    height: '100%'
+    height: '100%',
   },
   list: {
     height: '50vh',
-    overflow: 'auto'
+    overflow: 'auto',
   },
   user: () => ({
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   }),
   root: {
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
     width: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)'
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   chatBoxInput: {
     marginLeft: '10px',
-    flex: 1
-  }
-})
+    flex: 1,
+  },
+});
 
 function GameChat(props) {
-  const { chat, reqChat } = props
-  const [message, setMessage] = useState('')
-  const scrollRef = useRef(null)
-  const classes = useStyles()
+  const { chat, reqChat } = props;
+  const [message, setMessage] = useState('');
+  const scrollRef = useRef(null);
+  const classes = useStyles();
 
   const handleMessage = (e) => {
-    setMessage(e.target.value)
-  }
+    setMessage(e.target.value);
+  };
 
   const handleSubmit = () => {
-    if (!message) return
+    if (!message) return;
 
-    reqChat({ message })
+    reqChat({ message });
 
-    setMessage('')
-  }
+    setMessage('');
+  };
 
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behaviour: 'smooth' })
+      scrollRef.current.scrollIntoView({ behaviour: 'smooth' });
     }
-  }, [chat])
+  }, [chat]);
 
   const renderMessage = ({ id, user, date, text }) => {
     return (
@@ -79,11 +79,7 @@ function GameChat(props) {
         <Grid container>
           <Grid item container justifyContent="space-between">
             <Grid item>
-              <Typography
-                variant="body2"
-                color={user === 'server' ? 'textSecondary' : 'textPrimary'}
-                display="inline"
-              >
+              <Typography variant="body2" color={user === 'server' ? 'textSecondary' : 'textPrimary'} display="inline">
                 {user}
               </Typography>
             </Grid>
@@ -104,8 +100,8 @@ function GameChat(props) {
           </Grid>
         </Grid>
       </ListItem>
-    )
-  }
+    );
+  };
 
   const renderBox = () => {
     return (
@@ -118,7 +114,7 @@ function GameChat(props) {
           onChange={handleMessage}
           onKeyPress={(ev) => {
             if (ev.key === 'Enter') {
-              handleSubmit()
+              handleSubmit();
             }
           }}
         />
@@ -129,8 +125,8 @@ function GameChat(props) {
           <Telegram />
         </RedIconButton> */}
       </Paper>
-    )
-  }
+    );
+  };
 
   return (
     <Box style={{ height: '100%' }}>
@@ -157,21 +153,21 @@ function GameChat(props) {
         </Grid>
       </Grid>
     </Box>
-  )
+  );
 }
 
 GameChat.propTypes = {
   chat: chatStatePropTypes.isRequired,
-  reqChat: PropTypes.func.isRequired
-}
+  reqChat: PropTypes.func.isRequired,
+};
 
 // export default GameChat
 const mapStateToProps = (state) => ({
-  chat: state.game.chat
-})
+  chat: state.game.chat,
+});
 
 const mapDispatchToProps = {
-  reqChat: actions.reqChat
-}
+  reqChat: actions.reqChat,
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameChat)
+export default connect(mapStateToProps, mapDispatchToProps)(GameChat);

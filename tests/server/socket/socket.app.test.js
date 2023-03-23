@@ -1,30 +1,33 @@
-import 'regenerator-runtime/runtime';
+// import 'regenerator-runtime/runtime';
 import params from '../../../src/shared/params';
-import server from '../../../src/server/index';
+import RedTetris from '../../../src/server/app/RedTetris';
 
 import { initSocket, destroySocket, handleResponse } from '../helpers/socket';
 
 const randomstring = require('randomstring');
 
 const ev = require('../../../src/shared/events');
-const logger = require('../../../src/server/utils/logger');
 
 const { host, port } = params.server;
 
 describe('# Socket Tests - App Events', () => {
+  const server = new RedTetris('0.0.0.0', 3001);
   let socket;
 
   beforeEach(async () => {
-    server.listen({ host, port: 3001 }, () => {
-      logger.info(`Listening on port ${port}!`);
-    });
-
+    // server.listen({ host, port: 3001 }, () => {
+    //   console.log(`Listening on port ${port}!`);
+    // });
+    server.listen();
     socket = await initSocket(3001);
+    // done();
+    // console.log(socket)
   });
 
-  afterEach(() => {
+  afterEach((done) => {
     destroySocket(socket);
     server.close();
+    done();
   });
 
   describe('## Login Events', () => {
@@ -66,6 +69,8 @@ describe('# Socket Tests - App Events', () => {
 
       socket.emit(ev.req_LOGOUT, payload);
       data = await handleResponse(socket, ev.res_LOGOUT);
+
+      console.log(data);
       expect(data.status).toBe(200);
     });
 
@@ -94,7 +99,7 @@ describe('# Socket Tests - App Events', () => {
 
     it('should logout error', async () => {
       socket.emit(ev.req_LOGOUT, {});
-      const data = await await handleResponse(socket, ev.res_LOGOUT);
+      const data = await handleResponse(socket, ev.res_LOGOUT);
       expect(data.status).toBe(500);
     });
   });

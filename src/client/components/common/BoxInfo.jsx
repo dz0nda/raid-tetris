@@ -14,7 +14,7 @@ import { Box, Typography, Paper } from '@mui/material';
 
 function BoxInfo(props) {
   const { field, value, dark } = props;
-//   const classes = useStyles({ dark });
+  //   const classes = useStyles({ dark });
 
   return (
     <Box>
@@ -22,9 +22,7 @@ function BoxInfo(props) {
         {field}
       </Typography>
       <Paper variant="outlined">
-        <Typography align="center">
-          {value}
-        </Typography>
+        <Typography align="center">{value}</Typography>
       </Paper>
     </Box>
   );
