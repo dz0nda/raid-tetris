@@ -1,13 +1,10 @@
-import 'regenerator-runtime/runtime';
-
 import td from 'testdouble';
 
 import ev from '../../../src/shared/events';
 
-import actions from '../../../src/client/actions';
 import store from '../../../src/client/store';
 
-import { mockMiddleware, id, mockSocket } from '../helpers/socketHelper';
+import { mockMiddleware, id } from '../helpers/socketHelper';
 
 describe('# Socket Tests - State Events', () => {
   it('dispatches the CONNECT action', () => {

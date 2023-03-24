@@ -19,7 +19,8 @@ export const connect = {
       },
     });
 
-    if (router.location.pathname !== '/') {
+    if (router.location.pathname && router.location.pathname !== '/') {
+      console.log('pathname', router.location.pathname);
       const room = router.location.pathname.split('/')[1].split('[')[0].trim();
       const name = router.location.pathname.split('/')[1].split('[')[1].split(']')[0].trim();
 

@@ -1,5 +1,5 @@
 import ev from '../../../src/shared/events';
-import reducer, { gameState } from '../../../src/client/reducers/game';
+import reducer, { gameState } from '../../../src/client/store/reducers/game';
 // import { TETROMINOS } from '../../src/client/components/Game/tetrominos';
 
 describe('# Redux Tests - Game Reducer', () => {

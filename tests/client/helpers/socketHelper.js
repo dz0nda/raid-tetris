@@ -1,4 +1,4 @@
-const appModule = require('../../../src/client/middleware/socketIoMiddleware');
+const appModule = require('../../../src/client/store/middlewares/socketIo');
 
 export const socketModule = appModule.middleware;
 export const mockMiddleware = appModule.default;

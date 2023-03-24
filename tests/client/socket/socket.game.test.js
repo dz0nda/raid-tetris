@@ -1,11 +1,8 @@
-import 'regenerator-runtime/runtime';
-
 import td from 'testdouble';
 
 import ev from '../../../src/shared/events';
-import actions from '../../../src/client/actions';
+import { actions, gameState } from '../../../src/client/store/reducers/game';
 import store from '../../../src/client/store';
-import { gameState } from '../../../src/client/reducers/game';
 
 import { mockMiddleware, id, mockSocket } from '../helpers/socketHelper';
 

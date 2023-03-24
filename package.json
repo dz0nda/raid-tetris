@@ -10,7 +10,7 @@
     "build": "webpack --config ./webpack.prod.js",
     "server:dev": "nodemon --exec babel-node ./src/server/index.js | pino-pretty",
     "test:server": "jest tests/server/**/*.*.test.js --verbose --coverage --detectOpenHandles --forceExit",
-    "test:client": "jest test/client/**/*.*.test.js --verbose --coverage",
+    "test:client": "jest tests/client/**/*.*.test.js --verbose --coverage",
     "test": "jest --verbose --coverage --detectOpenHandles --forceExit",
     "lint": "eslint --fix src",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc.json"

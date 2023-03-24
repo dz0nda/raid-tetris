@@ -1,5 +1,5 @@
 import ev from '../../../src/shared/events';
-import reducer, { appState } from '../../../src/client/reducers/app';
+import reducer, { appState } from '../../../src/client/store/reducers/app';
 
 describe('# Redux Tests - App Reducer', () => {
   const initialState = appState;
