@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 
-import { actions } from '../store/reducers';
+import { actions } from '../store/reducers/app';
 
 function generate(element) {
   return [0, 1, 2].map((value) =>

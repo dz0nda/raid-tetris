@@ -11,11 +11,9 @@ import Header from './pages/Header';
 import Footer from './pages/Footer';
 import Login from './pages/Login';
 import Game from './pages/Game';
-import Test from './components/login/test';
-// import Game from './components/game/Game'
 import Snackbar from './components/common/Snackbar';
 
-import { actions } from './store/reducers';
+import { actions } from './store/reducers/app';
 
 function App(props) {
   const { host, port } = params.server;

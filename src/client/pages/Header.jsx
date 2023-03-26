@@ -4,7 +4,7 @@ import { useSelector, connect } from 'react-redux';
 import { AppBar, Grid, IconButton, Typography } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 
-import { actions } from '../store/reducers';
+import { actions } from '../store/reducers/app';
 import logo from '../assets/header.png';
 
 export function Header(props) {
