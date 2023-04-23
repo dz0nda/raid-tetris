@@ -1,21 +1,12 @@
 {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "useBuiltIns": "entry",
-          "corejs": "3",
-          "targets": {
-            "browsers": ["last 2 versions", "not ie <= 8"],
-            "node": "18.13.0"
-          }
-        }
-      ],
-      "@babel/preset-react",
-    ],
-    "plugins": [
-      "@babel/plugin-transform-runtime",
-      "@babel/plugin-proposal-class-properties"
+  "presets": [
+    "@babel/react",
+    "@babel/typescript",
+    [
+      "@babel/env",
+      {
+        "modules": false
+      }
     ]
-  }
-  
+  ]
+}
