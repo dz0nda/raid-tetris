@@ -1,10 +1,15 @@
-import express from 'express';
+import express, { Application } from 'express';
 
 const http = require('http');
 const logger = require('pino')();
 
 export default class Server {
-  constructor(host, port) {
+  host: string;
+  port: number;
+  app: Application;
+  server: any;
+
+  constructor(host: string, port: number) {
     this.host = host;
     this.port = port;
     this.app = express();
@@ -15,12 +20,14 @@ export default class Server {
     this.server.listen({ host: this.host, port: this.port }, () => {
       logger.info(`App running on http://${this.host}:${this.port}`);
     });
+
+    this.app.get;
   }
 
   close() {
-    this.server.close((err) => {
+    this.server.close((err: Error) => {
       logger.info('server closed');
-      // process.exit(err ? 1 : 0)
+      process.exit(err ? 1 : 0);
     });
     // this.app.close();
   }

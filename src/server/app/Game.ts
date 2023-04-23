@@ -1,9 +1,27 @@
 import { v4 as uuidv4 } from 'uuid';
-import Piece from './Piece';
+import { Piece } from './Piece';
 import Player from './Player';
 
 export default class Game {
-  constructor(room, owner) {
+  room: string;
+  settings: {
+    owner: string;
+    started: boolean;
+    status: string;
+    nbPlayers: number;
+    nbLoosers: number;
+    dropTime: number;
+    pieces: Piece[];
+  };
+  players: { [key: string]: Player };
+  chat: {
+    id: string;
+    user: string;
+    text: string;
+    date: string;
+  }[];
+
+  constructor(room: string, owner: string) {
     this.room = room;
     this.settings = {
       owner,
@@ -26,7 +44,7 @@ export default class Game {
 
   /* Settings */
 
-  setStarted(started) {
+  setStarted(started: boolean) {
     this.settings.started = started;
   }
 
@@ -34,7 +52,7 @@ export default class Game {
     return this.settings.started;
   }
 
-  setPiece(piece) {
+  setPiece(piece: Piece) {
     this.settings.pieces.push(piece);
   }
 
@@ -46,11 +64,15 @@ export default class Game {
     return this.settings.pieces;
   }
 
-  setDropTime(dropTime) {
+  getPiece(index: number) {
+    return this.settings.pieces[index] || null;
+  }
+
+  setDropTime(dropTime: number) {
     this.settings.dropTime = dropTime;
   }
 
-  setNbPlayers(nbPlayers) {
+  setNbPlayers(nbPlayers: number) {
     this.settings.nbPlayers = nbPlayers;
   }
 
@@ -58,7 +80,7 @@ export default class Game {
     return this.settings.nbPlayers;
   }
 
-  setNbLoosers(nbLoosers) {
+  setNbLoosers(nbLoosers: number) {
     this.settings.nbLoosers = nbLoosers;
   }
 
@@ -68,7 +90,7 @@ export default class Game {
 
   /* Players */
 
-  setPlayer(id, name) {
+  setPlayer(id: string, name: string) {
     if (this.getStarted() === true) {
       throw new Error('Game is started');
     }
@@ -84,7 +106,7 @@ export default class Game {
     this.setMessage('server', `${name} joined the room`);
   }
 
-  unsetPlayer(id) {
+  unsetPlayer(id: string) {
     // console.log('unsetPlayer', id);
     // console.log(this.players);
     if (!this.getPlayer(id)) {
@@ -106,7 +128,7 @@ export default class Game {
     return this.players;
   }
 
-  getPlayer(id) {
+  getPlayer(id: string) {
     return this.players[id];
   }
 
@@ -120,7 +142,7 @@ export default class Game {
 
   /* Owner */
 
-  setOwner(name) {
+  setOwner(name: string) {
     this.settings.owner = name;
     this.setMessage('server', `${this.settings.owner} is the new owner`);
   }
@@ -130,7 +152,7 @@ export default class Game {
     this.setOwner(players[Math.floor(Math.random() * players.length)].getName());
   }
 
-  setNewOwner(id, newOwner) {
+  setNewOwner(id: string, newOwner: string) {
     if (!this.isOwner(this.getPlayer(id).getName())) {
       throw new Error('Not owner');
     }
@@ -143,13 +165,13 @@ export default class Game {
     return this.settings.owner;
   }
 
-  isOwner(name) {
+  isOwner(name: string) {
     return this.settings.owner === name;
   }
 
   /* Chat */
 
-  setMessage(user, text) {
+  setMessage(user: string, text: string) {
     this.chat.push({
       id: uuidv4(),
       user,
@@ -164,7 +186,7 @@ export default class Game {
 
   /* Game */
 
-  initGameStart(id) {
+  initGameStart(id: string) {
     if (!this.isOwner(this.getPlayer(id).getName()) || this.getStarted() === true) {
       throw new Error("Can't start the game");
     }
@@ -191,7 +213,7 @@ export default class Game {
     });
   }
 
-  setMove(id, keyCode) {
+  setMove(id: string, keyCode: number) {
     let collided = false;
 
     this.getPlayer(id).setMove(keyCode);
@@ -209,11 +231,11 @@ export default class Game {
     return collided;
   }
 
-  updateCollision(id) {
+  updateCollision(id: string) {
     const lines = this.getPlayer(id).getLines();
 
     /* Check the nbPiece of player */
-    if (!this.getPieces[this.getPlayer(id).getNbPiece() + 3]) {
+    if (!this.getPiece(this.getPlayer(id).getNbPiece() + 3)) {
       this.setPiece(new Piece());
     }
 
@@ -228,7 +250,7 @@ export default class Game {
     }
   }
 
-  updateLoose(id) {
+  updateLoose(id: string) {
     this.getPlayer(id).setLoose(this.getNbPlayers() - this.getNbLoosers());
     this.setNbLoosers(this.getNbLoosers() + 1);
     if (this.getNbPlayers() === 1) {

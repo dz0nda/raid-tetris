@@ -1,11 +1,25 @@
-import socketIO from 'socket.io';
+import { Server as SocketServer, Socket } from 'socket.io';
 
 import Server from './Server';
 
+export interface Request {
+  socket: Socket & { redTetris?: any };
+  data: any;
+}
+
+export interface Response {
+  io: any;
+  callback: () => {};
+}
+
 export default class Io extends Server {
-  constructor(host, port) {
+  io: any;
+  sockets: { [key: string]: any };
+  defaultRoutes: { event: string; handler: any }[];
+
+  constructor(host: string, port: number) {
     super(host, port);
-    this.io = socketIO(this.server, {
+    this.io = new SocketServer(this.server, {
       pingInterval: 5000,
       pingTimeout: 15000,
     });
@@ -23,52 +37,52 @@ export default class Io extends Server {
     ];
   }
 
-  setSocket(socket) {
+  setSocket(socket: any) {
     this.sockets[socket.id] = socket;
   }
 
-  deleteSocket(id) {
+  deleteSocket(id: string) {
     delete this.sockets[id];
   }
 
-  getSocket(id) {
+  getSocket(id: string) {
     return this.sockets[id];
   }
 
-  isConnected(id) {
+  isConnected(id: string) {
     return this.getSocket(id) !== undefined;
   }
 
-  emitToAll(event, data) {
+  emitToAll(event: any, data: any) {
     this.io.emit(event, data);
   }
 
-  emitToSocket(id, event, data) {
+  emitToSocket(id: string, event: any, data: any) {
     this.getSocket(id).emit(event, data);
   }
 
-  emitToRoom(room, event, data) {
+  emitToRoom(room: string, event: any, data: any) {
     this.io.in(room).emit(event, data);
   }
 
-  emitToRoomExceptSender(id, room, event, data) {
+  emitToRoomExceptSender(id: string, room: string, event: any, data: any) {
     this.getSocket(id).to(room).emit(event, data);
   }
 
-  router(routes) {
-    this.io.on('connection', (socket) => {
-      this.connect({ socket }, { io: this.io });
+  router(routes: any[]) {
+    this.io.on('connection', (socket: any) => {
+      this.connect({ socket });
 
       this.defaultRoutes.forEach((route) => {
         const { event, handler } = route;
-        socket.on(event, (data, callback) => {
+        socket.on(event, (data: any, callback: any) => {
           handler({ socket, data }, { io: this.io, callback });
         });
       });
 
       routes.forEach((route) => {
-        const { event, handler, auth, schema } = route;
-        socket.on(event.req, (data, callback) => {
+        const { event, handler, auth } = route;
+        socket.on(event.req, (data: any, callback: any) => {
           // console.log(data);
           let isLogged = false;
           // eslint-disable-next-line no-param-reassign
@@ -97,11 +111,11 @@ export default class Io extends Server {
     });
   }
 
-  connect(req) {
+  connect(req: any) {
     this.setSocket(req.socket);
   }
 
-  disconnect(req) {
+  disconnect(req: any) {
     this.deleteSocket(req.socket.id);
   }
 }

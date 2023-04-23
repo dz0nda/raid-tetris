@@ -1,6 +1,8 @@
-class Piece {
+export class Piece {
+  form: any;
+
   constructor() {
-    const TETROMINOS = {
+    const TETROMINOS: any = {
       0: { shape: [[0]], color: '0, 0, 0' },
       I: {
         shape: [
@@ -64,13 +66,13 @@ class Piece {
     this.form = TETROMINOS[randTetromino];
   }
 
-  rotate(dir) {
+  rotate(dir: number) {
     // Make the rows to become cols (transpose)
-    const rotatedTetro = this.form.shape.map((_, index) => this.form.shape.map((col) => col[index]));
+    const rotatedTetro = this.form.shape.map((_: any, index: number) => this.form.shape.map((col: any) => col[index]));
 
     // Reverse each row to get a rotated matrix
     if (dir > 0) {
-      const rotated = rotatedTetro.map((row) => row.reverse());
+      const rotated = rotatedTetro.map((row: any) => row.reverse());
       this.form.shape = rotated;
     }
 
@@ -78,5 +80,3 @@ class Piece {
     this.form.shape = rotated;
   }
 }
-
-export default Piece;

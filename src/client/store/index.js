@@ -10,7 +10,7 @@ import app from './reducers/app';
 import game from './reducers/game';
 import player from './reducers/player';
 
-const rootReducer = (history) =>
+export const rootReducer = (history) =>
   combineReducers({
     router: connectRouter(history),
     app,

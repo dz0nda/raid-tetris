@@ -1,7 +1,25 @@
-import { calcScore, keys, createStage, createStagePiece, STAGE_WIDTH } from '../helpers/gameHelper';
+import { calcScore, keys, createStage, createStagePiece, STAGE_WIDTH, Stage } from '../helpers/gameHelper';
+import { Piece } from './Piece';
 
 export default class Player {
-  constructor(name) {
+  name: string;
+  score: number = 0;
+  lines: number = 0;
+  mallus: number = 0;
+  rank: number = 0;
+  stage: Stage = createStage();
+  stagePiece: [Stage, Stage] = [createStagePiece(), createStagePiece()];
+  piece: Piece | null = null;
+  position: { x: number; y: number } = { x: STAGE_WIDTH / 2 - 2, y: 0 };
+  positionDown: { x: number; y: number } = { x: STAGE_WIDTH / 2 - 2, y: 0 };
+  nbPiece: number = 0;
+  dropTime: number = 0;
+  collided: boolean = false;
+  level: number = 1;
+  loose: boolean = false;
+  win: boolean = false;
+
+  constructor(name: string) {
     this.name = name;
     this.initPlayer();
   }
@@ -19,6 +37,7 @@ export default class Player {
     this.nbPiece = 0;
     this.dropTime = 0;
     this.collided = false;
+    this.level = 1;
     this.loose = false;
     this.win = false;
   }
@@ -27,7 +46,7 @@ export default class Player {
     return this.name;
   }
 
-  setPiece(piece) {
+  setPiece(piece: Piece) {
     this.piece = piece;
   }
 
@@ -41,15 +60,15 @@ export default class Player {
 
   /* Stage */
 
-  setStage(stage) {
+  setStage(stage: Stage) {
     this.stage = stage;
   }
 
-  setStagePiece(index, piece) {
+  setStagePiece(index: number, piece: Piece) {
     this.stagePiece[index] = createStagePiece();
 
-    piece.form.shape.forEach((row, fy) => {
-      row.forEach((value, fx) => {
+    piece.form.shape.forEach((row: any, fy: any) => {
+      row.forEach((value: any, fx: any) => {
         if (value !== 0) {
           this.stagePiece[index][fy][fx] = [value, 'merged', 'blank'];
         }
@@ -65,13 +84,13 @@ export default class Player {
     return this.loose || this.win;
   }
 
-  setRank(nbLoosers, nbPlayers) {
+  setRank(nbLoosers: number, nbPlayers: number) {
     this.rank = nbPlayers - nbLoosers;
   }
 
   /* Game */
 
-  setStart({ pieces, dropTime }) {
+  setStart({ pieces, dropTime }: { pieces: Piece[]; dropTime: number }) {
     this.initPlayer();
     [this.piece] = pieces;
     this.setStagePiece(0, pieces[this.nbPiece + 1]);
@@ -80,7 +99,7 @@ export default class Player {
     this.setFlushUpdate();
   }
 
-  setMove(keyCode) {
+  setMove(keyCode: number) {
     if (this.loose === true || this.win === true) throw new Error("You can't play");
 
     if (keyCode === keys.KDOWN) this.dropTetro();
@@ -92,7 +111,7 @@ export default class Player {
     this.setFlushUpdate();
   }
 
-  setCollision(pieces) {
+  setCollision(pieces: Piece[]) {
     this.setFlushUpdate();
     this.setUpdateRows();
 
@@ -109,7 +128,7 @@ export default class Player {
     }
   }
 
-  setMallus(lines) {
+  setMallus(lines: number) {
     let i = lines;
 
     this.mallus += lines;
@@ -121,7 +140,7 @@ export default class Player {
     this.setFlushUpdate();
   }
 
-  setLoose(rank) {
+  setLoose(rank: number) {
     this.loose = false;
     this.dropTime = 0;
     this.rank = rank;
@@ -143,23 +162,23 @@ export default class Player {
   }
 
   /* keyleft or keyright */
-  moveTetro(dir) {
+  moveTetro(dir: number) {
     if (!this.checkCollision(dir, 0)) {
       this.position = { x: this.position.x + dir, y: this.position.y };
     }
   }
 
   /* keyup */
-  moveTetroUp(dir) {
+  moveTetroUp(dir: number = 1) {
     const pos = this.position.x;
     let offset = 1;
 
-    this.piece.rotate(dir);
+    this.piece?.rotate(dir);
     while (this.checkCollision(0, 0)) {
       this.position.x += offset;
       offset = -(offset + (offset > 0 ? 1 : -1));
-      if (offset > this.piece.form.shape[0].length) {
-        this.piece.rotate(-dir);
+      if (offset > this.piece?.form.shape[0].length) {
+        this.piece?.rotate(-dir);
         this.position.x = pos;
       }
     }
@@ -189,8 +208,8 @@ export default class Player {
     }
 
     // Update the stage
-    this.piece.form.shape.forEach((row, fy) => {
-      row.forEach((value, fx) => {
+    this.piece?.form.shape.forEach((row: any, fy: any) => {
+      row.forEach((value: any, fx: any) => {
         if (value !== 0) {
           this.stage[fy + this.positionDown.y][fx + this.positionDown.x] = [value, 'clear', 'shadow'];
           this.stage[fy + this.position.y][fx + this.position.x] = [
@@ -228,10 +247,10 @@ export default class Player {
     return { lines };
   }
 
-  checkCollision(moveX, moveY) {
-    for (let y = 0; y < this.piece.form.shape.length; y += 1) {
-      for (let x = 0; x < this.piece.form.shape[y].length; x += 1) {
-        if (this.piece.form.shape[y][x] !== 0) {
+  checkCollision(moveX: number, moveY: number) {
+    for (let y = 0; y < this.piece?.form.shape.length; y += 1) {
+      for (let x = 0; x < this.piece?.form.shape[y].length; x += 1) {
+        if (this.piece?.form.shape[y][x] !== 0) {
           if (
             !this.stage[y + this.position.y + moveY] ||
             !this.stage[y + this.position.y + moveY][x + this.position.x + moveX] ||
