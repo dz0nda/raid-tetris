@@ -21,7 +21,7 @@
     "@fontsource/roboto": "^4.5.8",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.6",
-    "@reduxjs/toolkit": "^1.9.2",
+    "@reduxjs/toolkit": "^1.9.5",
     "clsx": "^1.2.1",
     "connected-react-router": "^6.9.3",
     "enzyme": "^3.11.0",
