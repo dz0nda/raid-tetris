@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // import { connect } from 'react-redux'
@@ -15,9 +15,11 @@ import useInterval from '../../hooks/useInterval';
 
 // import GameBoard from '../../components/Game/GameBoard';
 // import GameLoose from '../../components/Game/GameLoose'
-import { actions } from '../../store/reducers/player';
+import { actions, reqMove, selectPlayer } from '../../store/reducers/player';
 
 import Stage from '../common/Board';
+import { useAppSelector, useAppDispatch } from '@client/store';
+import { selectRoomSettings } from '@client/store/reducers/game';
 
 const useStyles = createUseStyles({
   root: {
@@ -29,7 +31,7 @@ const useStyles = createUseStyles({
   },
 });
 
-function GameBoardComponent(props) {
+function GameBoardComponent(props: any) {
   const { stage, pieceOne, pieceTwo, score, lines, mallus } = props;
   const classes = useStyles();
 
@@ -88,10 +90,16 @@ function GameBoardComponent(props) {
 //   mallus: playerStateProp.mallus.isRequired
 // }
 
-function GameBoard(props) {
-  const { settings, player, reqMove } = props;
-  const { started, nbPlayers } = settings;
-  const { stage, stagePiece, score, lines, mallus, rank, dropTime, loose, win } = player;
+export const GameBoard: FC = () => {
+  // const { settings, player, reqMove } = props;
+  const player = useAppSelector(selectPlayer);
+  const settings = useAppSelector(selectRoomSettings);
+  const dispatch = useAppDispatch();
+
+  console.log(player);
+
+  const { started, nbPlayers, dropTime } = settings;
+  const { stage, stagePiece, score, lines, mallus, rank, loose, win } = player;
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -102,8 +110,8 @@ function GameBoard(props) {
     setOpen(false);
   };
 
-  useInterval(() => reqMove({ keyCode: keys.KDOWN }), started, dropTime);
-  useKey((event) => reqMove({ keyCode: event.keyCode }), started, loose);
+  useInterval(() => dispatch(reqMove({ keyCode: keys.KDOWN, started, dropTime })));
+  useKey((event: KeyboardEvent) => dispatch(reqMove({ keyCode: event.keyCode, started, loose })));
 
   return (
     <>
@@ -123,7 +131,7 @@ function GameBoard(props) {
       /> */}
     </>
   );
-}
+};
 
 // GameBoard.propTypes = {
 //   settings: PropTypes.shape(settingsProp).isRequired,
@@ -131,14 +139,14 @@ function GameBoard(props) {
 //   reqMove: PropTypes.func.isRequired,
 // };
 
-const mapStateToProps = (state) => ({
-  settings: state.game.settings,
-  player: state.player,
-});
+// const mapStateToProps = (state) => ({
+//   settings: state.game.settings,
+//   player: state.player,
+// });
 
-const mapDispatchToProps = {
-  reqStartGame: actions.reqStartGame,
-  reqMove: actions.reqMove,
-};
+// const mapDispatchToProps = {
+//   reqStartGame: actions.reqStartGame,
+//   reqMove: actions.reqMove,
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameBoard);
+// export default connect(mapStateToProps, mapDispatchToProps)(GameBoard);

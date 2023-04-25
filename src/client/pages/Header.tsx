@@ -1,22 +1,26 @@
-import React from 'react';
+import React, { FC } from 'react';
+import { Header as MantineHeader } from '@mantine/core';
+
 import PropTypes from 'prop-types';
 import { useSelector, connect } from 'react-redux';
 import { AppBar, Grid, IconButton, Typography } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 
-import { actions } from '../store/reducers/app';
+import { useAppDispatch, useAppSelector } from '../store';
+
+import { reqLogout, selectAppInfos } from '../store/reducers/app';
 import logo from '../assets/header.png';
 
-export function Header(props) {
-  const { reqLogout } = props;
-  const infos = useSelector((state) => state.app.infos);
+export const Header: FC = () => {
+  const dispatch = useAppDispatch();
+  const infos = useAppSelector(selectAppInfos);
 
   return (
-    <AppBar position="static" color="inherit">
+    <MantineHeader height={{ base: 50, md: 70 }} p="md">
       <Grid container alignItems="center" justifyContent="center">
         <Grid item xs={3} justifyContent="center">
           <Grid container justifyContent="center">
-            <IconButton onClick={reqLogout}>
+            <IconButton onClick={() => dispatch(reqLogout())}>
               <HomeIcon />
             </IconButton>
           </Grid>
@@ -43,16 +47,16 @@ export function Header(props) {
           </Grid>
         </Grid>
       </Grid>
-    </AppBar>
+    </MantineHeader>
   );
-}
-
-Header.propTypes = {
-  reqLogout: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = {
-  reqLogout: actions.reqLogout,
-};
+// Header.propTypes = {
+//   reqLogout: PropTypes.func.isRequired,
+// };
 
-export default connect(null, mapDispatchToProps)(Header);
+// const mapDispatchToProps = {
+//   reqLogout: actions.reqLogout,
+// };
+
+// export default connect(null, mapDispatchToProps)(Header);

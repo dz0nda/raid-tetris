@@ -1,4 +1,6 @@
-const crashMiddleware = (_store) => (next) => (action) => {
+import { Middleware } from '@reduxjs/toolkit';
+
+const crashMiddleware: Middleware = (_store) => (next) => (action) => {
   console.log('crashMiddleware');
   try {
     return next(action);

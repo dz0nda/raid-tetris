@@ -1,11 +1,13 @@
 import { push } from 'connected-react-router';
 
 import ev from '../../../shared/events';
+import { IServerEvent } from './event.interface';
 
-export const resInfos = {
+export const resInfos: IServerEvent = {
   action: ev.res_UPDATE_APP_INFOS,
 
-  dispatch: (action, data, dispatch) => {
+  dispatch: (_, data, dispatch) => {
+    console.log(data);
     const { status, payload } = data;
     const { nbPlayers, nbGames, games } = payload;
 
@@ -22,46 +24,48 @@ export const resInfos = {
   },
 };
 
-export const resLogin = {
+export const resLogin: IServerEvent = {
   action: ev.res_LOGIN,
 
-  dispatch: (action, data, dispatch) => {
-    const { status, payload } = data;
+  dispatch: (_, data, dispatch) => {
+    // const { status, payload } = data;
 
-    if (status === 200) {
-      dispatch({
-        type: ev.UPDATE_LOG,
-        payload: {
-          isLoading: false,
-          snackbar: {
-            message: 'login: Succed',
-            variant: 'success',
-          },
-        },
-      });
+    console.log('resLogin:', data);
 
-      dispatch(push(`/${payload.room}[${payload.name}]`));
-    } else {
-      dispatch({
-        type: ev.UPDATE_LOG,
-        payload: {
-          isLoading: false,
-          snackbar: {
-            message: `login: Error`,
-            variant: 'error',
-          },
-        },
-      });
+    // if (status === 200) {
+    //   // dispatch({
+    //   //   type: ev.UPDATE_LOG,
+    //   //   payload: {
+    //   //     isLoading: false,
+    //   //     snackbar: {
+    //   //       message: 'login: Succed',
+    //   //       variant: 'success',
+    //   //     },
+    //   //   },
+    //   // });
 
-      dispatch(push('/'));
-    }
+    //   dispatch(push(`/${payload.room}[${payload.name}]`));
+    // } else {
+    //   dispatch({
+    //     type: ev.UPDATE_LOG,
+    //     payload: {
+    //       isLoading: false,
+    //       snackbar: {
+    //         message: `login: Error`,
+    //         variant: 'error',
+    //       },
+    //     },
+    //   });
+
+    //   dispatch(push('/'));
+    // }
   },
 };
 
-export const resLogout = {
+export const resLogout: IServerEvent = {
   action: ev.res_LOGOUT,
 
-  dispatch: (action, data, dispatch) => {
+  dispatch: (_, data, dispatch) => {
     const { status } = data;
 
     if (status === 200) {
@@ -112,10 +116,10 @@ export const resLogout = {
   },
 };
 
-export const resStartGame = {
+export const resStartGame: IServerEvent = {
   action: ev.res_START_GAME,
 
-  dispatch: (action, data, dispatch) => {
+  dispatch: (_, data, dispatch) => {
     const { status, payload } = data;
 
     const { message } = payload;
@@ -134,7 +138,7 @@ export const resStartGame = {
     }
     if (status === 200) {
       // eslint-disable-next-line no-shadow
-      dispatch((dispatch, getState) => {
+      dispatch((dispatch: any, getState: any) => {
         const { id } = getState().app;
 
         dispatch({
@@ -148,15 +152,15 @@ export const resStartGame = {
   },
 };
 
-export const resUpdateGame = {
+export const resUpdateGame: IServerEvent = {
   action: ev.res_UPDATE_GAME,
 
-  dispatch: (action, data, dispatch) => {
+  dispatch: (_, data, dispatch) => {
     const { status, payload } = data;
 
     if (status === 200) {
       // eslint-disable-next-line no-shadow
-      dispatch((dispatch, getState) => {
+      dispatch((dispatch: any, getState: any) => {
         const { id } = getState().app;
 
         dispatch({
@@ -177,10 +181,10 @@ export const resUpdateGame = {
   },
 };
 
-export const resUpdateGameChat = {
+export const resUpdateGameChat: IServerEvent = {
   action: ev.res_UPDATE_GAME_CHAT,
 
-  dispatch: (action, data, dispatch) => {
+  dispatch: (_, data, dispatch) => {
     const { status, payload } = data;
 
     if (status === 200) {
@@ -194,10 +198,10 @@ export const resUpdateGameChat = {
   },
 };
 
-export const resUpdateGamePlayers = {
+export const resUpdateGamePlayers: IServerEvent = {
   action: ev.res_UPDATE_GAME_PLAYERS,
 
-  dispatch: (action, data, dispatch) => {
+  dispatch: (_, data, dispatch) => {
     const { status, payload } = data;
 
     if (status === 200) {
@@ -212,10 +216,10 @@ export const resUpdateGamePlayers = {
   },
 };
 
-export const resUpdateGameSettings = {
+export const resUpdateGameSettings: IServerEvent = {
   action: ev.res_UPDATE_GAME_SETTINGS,
 
-  dispatch: (action, data, dispatch) => {
+  dispatch: (_, data, dispatch) => {
     const { payload } = data;
 
     dispatch({
@@ -225,10 +229,10 @@ export const resUpdateGameSettings = {
   },
 };
 
-export const resUpdatePlayer = {
+export const resUpdatePlayer: IServerEvent = {
   action: ev.res_UPDATE_PLAYER,
 
-  dispatch: (action, data, dispatch) => {
+  dispatch: (_, data, dispatch) => {
     const { status, message, payload } = data;
 
     if (status === 200) {

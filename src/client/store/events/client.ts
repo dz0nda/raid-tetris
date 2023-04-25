@@ -1,42 +1,49 @@
 import ev from '../../../shared/events';
+import { IClientEvent } from './event.interface';
+import { notifications } from '@mantine/notifications';
 
-export const dispatch = (socket, store, action) => {
-  socket.emit(action.type, {});
-};
+// export const dispatch = (socket, store, action) => {
+//   socket.emit(action.type, {});
+// };
 
-export const reqInfos = {
+export const reqInfos: IClientEvent = {
   action: ev.req_UPDATE_APP_INFOS,
 
-  dispatch: (socket, store, action) => {
+  dispatch: (socket, _, action) => {
     socket.emit(action.type, {});
   },
 };
 
-export const reqLogin = {
-  action: ev.req_LOGIN,
+export const reqLogin: IClientEvent = {
+  action: 'app/reqLogin',
 
   dispatch: (socket, store, action) => {
     const { name, room } = action.payload;
     console.log('log');
-    store.dispatch({
-      type: ev.UPDATE_LOG,
-      payload: {
-        isLoading: true,
-        snackbar: {
-          message: 'login: Trying to login...',
-          variant: 'info',
-        },
-      },
-    });
+    // notifications.show({
+    //   title: 'Default notification',
+    //   message: 'Hey there, your code is awesome! 🤥',
+    //   loading: true,
+    // });
+    // store.dispatch({
+    //   type: ev.UPDATE_LOG,
+    //   payload: {
+    //     isLoading: true,
+    //     snackbar: {
+    //       message: 'login: Trying to login...',
+    //       variant: 'info',
+    //     },
+    //   },
+    // });
 
-    socket.emit(action.type, {
+    socket.emit(ev.req_LOGIN, {
       name,
       room,
     });
   },
 };
 
-export const reqLogout = {
+export const reqLogout: IClientEvent = {
   action: ev.req_LOGOUT,
 
   dispatch: (socket, store, action) => {
@@ -51,7 +58,7 @@ export const reqLogout = {
   },
 };
 
-export const reqStartGame = {
+export const reqStartGame: IClientEvent = {
   action: ev.req_START_GAME,
 
   dispatch: (socket, store, action) => {
@@ -67,7 +74,7 @@ export const reqStartGame = {
   },
 };
 
-export const reqUpdateGameChat = {
+export const reqUpdateGameChat: IClientEvent = {
   action: ev.req_UPDATE_GAME_CHAT,
 
   dispatch: (socket, store, action) => {
@@ -86,7 +93,7 @@ export const reqUpdateGameChat = {
   },
 };
 
-export const reqUpdateGameOwner = {
+export const reqUpdateGameOwner: IClientEvent = {
   action: ev.req_UPDATE_GAME_OWNER,
 
   dispatch: (socket, store, action) => {
@@ -103,7 +110,7 @@ export const reqUpdateGameOwner = {
   },
 };
 
-export const reqUpdatePlayer = {
+export const reqUpdatePlayer: IClientEvent = {
   action: ev.req_UPDATE_PLAYER,
 
   dispatch: (socket, store, action) => {

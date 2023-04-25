@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createUseStyles } from 'react-jss';
@@ -31,9 +31,11 @@ import { TABLE_PLAYERS_COLUMNS, TABLE_PLAYERS_RANK } from '../../constants/table
 
 import Button from '../common/Button';
 import VList from '../common/VList';
-import { actions } from '../../store/reducers/game';
+// import { actions } from '../../store/reducers/game';
 
 import BoxInfo from '../common/BoxInfo';
+import { useAppSelector, useAppDispatch } from '../../store';
+import { reqOwner, selectRoomPlayers, selectRoomSettings } from '../../store/reducers/game';
 
 const useStyles = createUseStyles({
   grid: {
@@ -67,14 +69,18 @@ const Transition = React.forwardRef((props, ref) => (
   <Slide direction="up" ref={ref} {...props} />
 ));
 
-function GameRoom(props) {
-  const { name, room, settings, players, reqStartGame, reqOwner } = props;
+export const GameRoom: FC = (props) => {
+  // const { name, room, settings, players, reqStartGame, reqOwner } = props;
+
+  const settings = useAppSelector(selectRoomSettings);
+  const players = useAppSelector(selectRoomPlayers);
+  const dispatch = useAppDispatch();
   const { owner, nbPlayers, nbLoosers } = settings;
   const [open, setOpen] = useState(false);
   const playersList = Object.values(players);
   const classes = useStyles();
 
-  const handleSetOwner = (newOwner) => reqOwner({ newOwner });
+  const handleSetOwner = (newOwner: string) => dispatch(reqOwner({ newOwner }));
 
   useEffect(() => {
     if (nbPlayers !== 0 && nbLoosers === nbPlayers) setOpen(true);
@@ -117,7 +123,7 @@ function GameRoom(props) {
               <VList
                 owner={owner}
                 rowCount={playersList.length}
-                rowGetter={({ index }) => playersList[index]}
+                rowGetter={({ index }: { index: number }) => playersList[index]}
                 columns={TABLE_PLAYERS_COLUMNS}
               />
             </Paper>
@@ -149,7 +155,7 @@ function GameRoom(props) {
       </Dialog>
     </>
   );
-}
+};
 
 {
   /* <GameRank
@@ -190,17 +196,17 @@ function GameRoom(props) {
 //   }
 // }
 
-const mapStateToProps = (state) => ({
-  name: state.player.name,
-  room: state.game.room,
-  settings: state.game.settings,
-  players: state.game.players,
-});
+// const mapStateToProps = (state) => ({
+//   name: state.player.name,
+//   room: state.game.room,
+//   settings: state.game.settings,
+//   players: state.game.players,
+// });
 
-const mapDispatchToProps = {
-  reqStartGame: actions.reqStartGame,
-  reqOwner: actions.reqOwner,
-};
+// const mapDispatchToProps = {
+//   reqStartGame: actions.reqStartGame,
+//   reqOwner: actions.reqOwner,
+// };
 
-// export default connect(mapStateToProps, mapDispatchToProps)(GameRoomContainer);
-export default connect(mapStateToProps, mapDispatchToProps)(GameRoom);
+// // export default connect(mapStateToProps, mapDispatchToProps)(GameRoomContainer);
+// export default connect(mapStateToProps, mapDispatchToProps)(GameRoom);

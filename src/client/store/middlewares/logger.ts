@@ -1,4 +1,6 @@
-const loggerMiddleware = (store) => {
+import { Middleware } from '@reduxjs/toolkit';
+
+export const logger: Middleware = (store) => {
   return (next) => {
     return (action) => {
       console.log('dispatching', action);
@@ -8,5 +10,3 @@ const loggerMiddleware = (store) => {
     };
   };
 };
-
-export default loggerMiddleware;

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { FC, FormEvent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from '@mui/material/Button';
@@ -8,27 +8,32 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 
-import { actions } from '../store/reducers/app';
+import { useAppDispatch, useAppSelector } from '../store';
+import { reqLogin, selectAppInfos } from '../store/reducers/app';
 
-function generate(element) {
-  return [0, 1, 2].map((value) =>
-    React.cloneElement(element, {
-      key: value,
-    }),
-  );
-}
+// import { actions } from '../store/reducers/app';
 
-export function Login(props) {
-  const { reqLogin } = props;
+// function generate(element) {
+//   return [0, 1, 2].map((value) =>
+//     React.cloneElement(element, {
+//       key: value,
+//     }),
+//   );
+// }
 
-  const handleSubmit = (event) => {
+export const Login: FC = () => {
+  const dispatch = useAppDispatch();
+
+  // const { reqLogin } = props;
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       username: data.get('username'),
       room: data.get('room'),
     });
-    reqLogin({ name: data.get('username'), room: data.get('room') });
+    dispatch(reqLogin({ name: data.get('username'), room: data.get('room') }));
   };
 
   return (
@@ -84,21 +89,21 @@ export function Login(props) {
     </Container>
     // </ThemeProvider>
   );
-}
-
-Login.propTypes = {
-  games: PropTypes.object.isRequired,
-  reqLogin: PropTypes.func.isRequired,
-  reqPush: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  games: state.app.infos.games,
-});
+// Login.propTypes = {
+//   games: PropTypes.object.isRequired,
+//   reqLogin: PropTypes.func.isRequired,
+//   reqPush: PropTypes.func.isRequired,
+// };
 
-const mapDispatchToProps = {
-  reqLogin: actions.reqLogin,
-  // reqPush: push,
-};
+// const mapStateToProps = (state) => ({
+//   games: state.app.infos.games,
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+// const mapDispatchToProps = {
+//   reqLogin: actions.reqLogin,
+//   // reqPush: push,
+// };
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Login);

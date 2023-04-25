@@ -1,4 +1,6 @@
-export const defaultSocketEvents = [
+import { IEvent } from '@client/store/events/event.interface';
+
+export const defaultSocketEvents: IEvent[] = [
   {
     action: 'NOOP',
     dispatch: (socket, store, action) => {

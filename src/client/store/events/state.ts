@@ -1,51 +1,53 @@
-/* eslint-disable no-unused-vars */
 import ev from '../../../shared/events';
 
-export const connect = {
+import { reqLogin, updateConnection, updateInfos } from '../reducers/app';
+import { IStateEvent } from './event.interface';
+
+export const connect: IStateEvent = {
   action: ev.CONNECT,
 
-  dispatch: (socket, store, _next, _action) => () => {
+  dispatch: (socket, store, next, action) => () => {
+    console.log('Socket is connecting.');
     const { router } = store.getState();
 
-    store.dispatch({
-      type: ev.UPDATE_CONNECTION,
-      payload: {
+    store.dispatch(
+      updateConnection({
         id: socket.id,
         connected: true,
         snackbar: {
           message: 'socket: Connected',
           variant: 'success',
         },
-      },
-    });
+      }),
+    );
 
     if (router.location.pathname && router.location.pathname !== '/') {
-      console.log('pathname', router.location.pathname);
-      const room = router.location.pathname.split('/')[1].split('[')[0].trim();
-      const name = router.location.pathname.split('/')[1].split('[')[1].split(']')[0].trim();
-
-      if (room && name) {
-        store.dispatch({
-          type: ev.req_LOGIN,
-          payload: {
-            name,
-            room,
-          },
-        });
-      }
+      // console.log('pathname', router.location.pathname);
+      // const room = router.location.pathname.split('/')[1].split('[')[0].trim();
+      // const name = router.location.pathname.split('/')[1].split('[')[1].split(']')[0].trim();
+      // if (room && name) {
+      //   store.dispatch(
+      //     reqLogin({
+      //       name,
+      //       room,
+      //     }),
+      //   );
+      // }
     } else {
-      store.dispatch({
-        type: ev.req_UPDATE_APP_INFOS,
-        payload: {},
-      });
+      // store.dispatch({
+      //   type: ev.req_UPDATE_APP_INFOS,
+      //   payload: {},
+      // });
     }
+
+    return next(action);
   },
 };
 
-export const connectError = {
+export const connectError: IStateEvent = {
   action: ev.CONNECT_ERROR,
 
-  dispatch: (socket, store, _next, _action) => () => {
+  dispatch: (socket, store) => () => {
     console.error('socket: Connection error');
 
     store.dispatch({
@@ -62,10 +64,10 @@ export const connectError = {
   },
 };
 
-export const connectTimeout = {
+export const connectTimeout: IStateEvent = {
   action: ev.CONNECT_TIMEOUT,
 
-  dispatch: (socket, store, _next, _action) => () => {
+  dispatch: (socket, store) => () => {
     console.error('socket: Connection timeout');
 
     store.dispatch({
@@ -82,10 +84,10 @@ export const connectTimeout = {
   },
 };
 
-export const disconect = {
+export const disconnect: IStateEvent = {
   action: ev.DISCONNECT,
 
-  dispatch: (_socket, store, _next, _action) => () => {
+  dispatch: (_, store) => () => {
     console.error('socket: Disconnected');
 
     store.dispatch({
@@ -102,10 +104,10 @@ export const disconect = {
   },
 };
 
-export const reconnect = {
+export const reconnect: IStateEvent = {
   action: ev.RECONNECT,
 
-  dispatch: (_socket, store, _next, _action) => () => {
+  dispatch: (_, store) => () => {
     store.dispatch({
       type: ev.UPDATE_CONNECTION,
       payload: {
@@ -120,10 +122,10 @@ export const reconnect = {
   },
 };
 
-export const reconnectAttempt = {
+export const reconnectAttempt: IStateEvent = {
   action: ev.RECONNECT_ATTEMPT,
 
-  dispatch: (_socket, store, _next, _action) => (attemptNumber) => {
+  dispatch: (_, store) => (attemptNumber: number) => {
     store.dispatch({
       type: ev.UPDATE_CONNECTION,
       payload: {
@@ -138,10 +140,10 @@ export const reconnectAttempt = {
   },
 };
 
-export const reconnectError = {
+export const reconnectError: IStateEvent = {
   action: ev.RECONNECT_ERROR,
 
-  dispatch: (_socket, store, _next, _action) => (_attemptNumber) => {
+  dispatch: (_, store) => () => {
     console.error('socket: Reconnection error');
 
     store.dispatch({
@@ -158,10 +160,10 @@ export const reconnectError = {
   },
 };
 
-export const reconnectFailed = {
+export const reconnectFailed: IStateEvent = {
   action: ev.RECONNECT_FAILED,
 
-  dispatch: (_socket, store, _next, _action) => (_attemptNumber) => {
+  dispatch: (_, store) => () => {
     console.error('socket: Reconnection failed');
 
     store.dispatch({
@@ -178,10 +180,10 @@ export const reconnectFailed = {
   },
 };
 
-export const reconnecting = {
+export const reconnecting: IStateEvent = {
   action: ev.RECONNECTING,
 
-  dispatch: (_socket, store, _next, _action) => (_attemptNumber) => {
+  dispatch: (_, store) => () => {
     store.dispatch({
       type: ev.UPDATE_CONNECTION,
       payload: {
@@ -200,7 +202,7 @@ export default [
   connect,
   connectError,
   connectTimeout,
-  disconect,
+  disconnect,
   reconnect,
   reconnectAttempt,
   reconnectError,

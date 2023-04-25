@@ -1,14 +1,14 @@
-import React from 'react';
-import { Grid, Typography, Link } from '@mui/material';
+import React, { FC } from 'react';
+import { Footer as MantineFooter, Center, Anchor } from '@mantine/core';
 
-export default function Footer() {
+export const Footer: FC = () => {
   return (
-    <Grid container justifyContent="center">
-      <Typography variant="caption" color="textSecondary">
-        <Link color="inherit" href="https://github.com/dz0nda">
+    <MantineFooter height={60} p="md">
+      <Center>
+        <Anchor href="https://github.com/dz0nda" target="_blank" c="dimmed">
           dzonda
-        </Link>
-      </Typography>
-    </Grid>
+        </Anchor>
+      </Center>
+    </MantineFooter>
   );
-}
+};
