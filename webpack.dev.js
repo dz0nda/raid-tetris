@@ -10,7 +10,7 @@ const CONFIG_ENV = 'development';
 
 module.exports = merge(baseConfig, {
   mode: CONFIG_ENV,
-  entry: './src/client/index.js',
+  entry: './src/client/index.tsx',
   output: {
     path: OUTPUT_PATH,
     filename: '[name].bundle.js',

@@ -9,7 +9,13 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(jsx?|tsx?)$/,
+        test: /\.(ts|tsx)$/,
+        include: path.resolve('src'),
+        exclude: path.resolve('node_modules'),
+        loader: 'ts-loader',
+      },
+      {
+        test: /\.(js|jsx)$/,
         include: path.resolve('src'),
         exclude: path.resolve('node_modules'),
         loader: 'babel-loader',
@@ -34,7 +40,7 @@ module.exports = {
   ],
   resolve: {
     modules: ['node_modules'],
-    extensions: ['*', '.js', '.jsx'],
+    extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
   },
   node: {
     global: true,
