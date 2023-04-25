@@ -1,9 +1,6 @@
 import React, { FC } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 // import { connect } from 'react-redux'
-import { Box, Grid, Card, CardContent, Divider } from '@mui/material';
-import { css } from '@emotion/react';
+import { Box, Card, CardContent, Divider, Grid } from '@mui/material';
 import { createUseStyles } from 'react-jss';
 
 import { keys } from '../../constants/keys';
@@ -15,10 +12,10 @@ import useInterval from '../../hooks/useInterval';
 
 // import GameBoard from '../../components/Game/GameBoard';
 // import GameLoose from '../../components/Game/GameLoose'
-import { actions, reqMove, selectPlayer } from '../../store/reducers/player';
+import { reqMove, selectPlayer } from '../../store/reducers/player';
 
 import Stage from '../common/Board';
-import { useAppSelector, useAppDispatch } from '@client/store';
+import { useAppDispatch, useAppSelector } from '@client/store';
 import { selectRoomSettings } from '@client/store/reducers/game';
 
 const useStyles = createUseStyles({

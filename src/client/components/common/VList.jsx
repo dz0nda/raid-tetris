@@ -4,7 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { TableCell, Icon } from '@mui/material';
+import { Icon, TableCell } from '@mui/material';
 import { AutoSizer, Column, Table } from 'react-virtualized';
 import { withStyles } from 'react-jss';
 

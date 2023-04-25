@@ -2,7 +2,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Paper } from '@mui/material';
-import styled from '@emotion/styled';
 import { createUseStyles } from 'react-jss';
 
 // import { makeStyles } from '@material-ui/core/styles'

@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { Socket } from 'socket.io';
 import Io, { Request } from '../server/Io';
-import { loginSchema, ownerSchema, chatSchema, moveSchema } from '../redtetris.validation';
+import { chatSchema, loginSchema, moveSchema, ownerSchema } from '../redtetris.validation';
 import ev from '../../shared/events';
 
 import Game from './Game';

@@ -1,4 +1,4 @@
-import { Server as SocketServer, Socket } from 'socket.io';
+import { Socket, Server as SocketServer } from 'socket.io';
 
 import Server from './Server';
 

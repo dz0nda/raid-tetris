@@ -1,23 +1,23 @@
-import { calcScore, keys, createStage, createStagePiece, STAGE_WIDTH, Stage } from '../helpers/gameHelper';
+import { STAGE_WIDTH, Stage, calcScore, createStage, createStagePiece, keys } from '../helpers/gameHelper';
 import { Piece } from './Piece';
 
 export default class Player {
   name: string;
-  score: number = 0;
-  lines: number = 0;
-  mallus: number = 0;
-  rank: number = 0;
+  score = 0;
+  lines = 0;
+  mallus = 0;
+  rank = 0;
   stage: Stage = createStage();
   stagePiece: [Stage, Stage] = [createStagePiece(), createStagePiece()];
   piece: Piece | null = null;
   position: { x: number; y: number } = { x: STAGE_WIDTH / 2 - 2, y: 0 };
   positionDown: { x: number; y: number } = { x: STAGE_WIDTH / 2 - 2, y: 0 };
-  nbPiece: number = 0;
-  dropTime: number = 0;
-  collided: boolean = false;
-  level: number = 1;
-  loose: boolean = false;
-  win: boolean = false;
+  nbPiece = 0;
+  dropTime = 0;
+  collided = false;
+  level = 1;
+  loose = false;
+  win = false;
 
   constructor(name: string) {
     this.name = name;
@@ -169,7 +169,7 @@ export default class Player {
   }
 
   /* keyup */
-  moveTetroUp(dir: number = 1) {
+  moveTetroUp(dir = 1) {
     const pos = this.position.x;
     let offset = 1;
 

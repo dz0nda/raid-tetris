@@ -1,9 +1,6 @@
-import React, { useState, useEffect, FC } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React, { FC, useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import {
-  Container,
   Grid,
   AppBar,
   Box,
@@ -33,8 +30,7 @@ import Button from '../common/Button';
 import VList from '../common/VList';
 // import { actions } from '../../store/reducers/game';
 
-import BoxInfo from '../common/BoxInfo';
-import { useAppSelector, useAppDispatch } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../store';
 import { reqOwner, selectRoomPlayers, selectRoomSettings } from '../../store/reducers/game';
 
 const useStyles = createUseStyles({

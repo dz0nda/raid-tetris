@@ -1,9 +1,8 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import { StaticRouter, matchPath } from 'react-router-dom';
-import { rootReducer, middleware } from '@client/store';
+import { applyMiddleware, createStore } from 'redux';
+import { middleware, rootReducer } from '@client/store';
 
 import App from '@client/App';
 import Game from '@client/pages/Game';
@@ -25,7 +24,7 @@ const ssr = async (req: Request) => {
 
   const store = createStore(rootReducer, applyMiddleware(...middleware));
   // const context = { initialProps };
-  let content = renderToString(
+  const content = renderToString(
     <Provider store={store}>
       <App />
     </Provider>,

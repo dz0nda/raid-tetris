@@ -1,15 +1,5 @@
-import React, { FC, useState } from 'react';
-import {
-  Aside,
-  SegmentedControl,
-  Text,
-  createStyles,
-  getStylesRef,
-  Group,
-  Notification,
-  Tabs,
-  rem,
-} from '@mantine/core';
+import React, { FC } from 'react';
+import { Aside, Group, Tabs, Text, createStyles, getStylesRef, rem } from '@mantine/core';
 // import {
 //   IconShoppingCart,
 //   IconLicense,
@@ -28,7 +18,7 @@ import {
 //   IconLogout,
 //   IconSwitchHorizontal,
 // } from '@tabler/icons-react';
-import { IconPhoto, IconMessageCircle, IconSettings } from '@tabler/icons-react';
+import { IconMessageCircle, IconPhoto, IconSettings } from '@tabler/icons-react';
 import { CustomTabs } from '../common/CustomTabs';
 // import GameChat from './GameChat';
 import { RoomInfo } from './RoomInfo';

@@ -1,14 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
-  Grid,
   Card,
-  CardHeader,
   CardContent,
+  CardHeader,
+  Grid,
   List,
   ListItem,
-  ListItemText,
   ListItemSecondaryAction,
+  ListItemText,
 } from '@mui/material';
 
 // import Grid from '@material-ui/core/Grid';

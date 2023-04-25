@@ -1,6 +1,5 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Tabs as MantineTabs, TabsProps, rem } from '@mantine/core';
-import { IconPhoto, IconMessageCircle, IconSettings } from '@tabler/icons-react';
 
 export const CustomTabs = (props: TabsProps): JSX.Element => {
   return (

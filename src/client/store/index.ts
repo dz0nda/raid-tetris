@@ -1,7 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import thunk from 'redux-thunk';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { legacy_createStore as createStore, applyMiddleware, combineReducers } from 'redux';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createHashHistory } from 'history';
 

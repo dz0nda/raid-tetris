@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Footer as MantineFooter, Center, Anchor } from '@mantine/core';
+import { Anchor, Center, Footer as MantineFooter } from '@mantine/core';
 
 export const Footer: FC = () => {
   return (

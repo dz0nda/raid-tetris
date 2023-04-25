@@ -1,28 +1,18 @@
-import React, { FC, useState, useEffect } from 'react';
-import { AppShell, Navbar, Aside, Text, MediaQuery, Burger, useMantineTheme } from '@mantine/core';
+import React, { FC, useEffect, useState } from 'react';
+import { AppShell, useMantineTheme } from '@mantine/core';
 // import { useSelector, useDispatch } from 'react-redux'
-import PropTypes from 'prop-types';
 // import { connect } from 'react-redux';
-import { Route, Switch } from 'react-router-dom';
-import { SnackbarProvider } from 'notistack';
-import { Grid, Backdrop, CircularProgress } from '@mui/material';
-import { ConnectedRouter } from 'connected-react-router';
 import { Notifications } from '@mantine/notifications';
 
 import params from '../shared/params';
 import useWindowDimensions from './hooks/useWindowDimensions';
 import { Header } from './pages/Header';
 import { Footer } from './pages/Footer';
-import { Login } from './pages/Login';
-import { Game } from './pages/Game';
-import Snackbar from './components/common/Snackbar';
 
 // import { actions } from './store/reducers/app';
 import { reqConnect } from './store/reducers/app';
 import { selectAppConnected, selectAppLoading } from './store/reducers/app';
 import { useAppDispatch, useAppSelector } from './store';
-import { Provider } from 'react-redux';
-import { store, history } from './store';
 
 import { Router } from './Router';
 // interface AppProps {

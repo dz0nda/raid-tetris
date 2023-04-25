@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 // import { makeStyles } from '@material-ui/core/styles';
-import { Box, Typography, Paper } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 
 // const useStyles = makeStyles({
 //   paper: (props) => ({

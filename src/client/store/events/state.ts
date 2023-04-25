@@ -1,6 +1,6 @@
 import ev from '../../../shared/events';
 
-import { reqLogin, updateConnection, updateInfos } from '../reducers/app';
+import { updateConnection } from '../reducers/app';
 import { IStateEvent } from './event.interface';
 
 export const connect: IStateEvent = {

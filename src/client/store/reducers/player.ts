@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import ev from '../../../shared/events';
 import { RootState } from '..';
 
 export interface PlayerState {

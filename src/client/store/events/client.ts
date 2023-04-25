@@ -1,6 +1,5 @@
 import ev from '../../../shared/events';
 import { IClientEvent } from './event.interface';
-import { notifications } from '@mantine/notifications';
 
 // export const dispatch = (socket, store, action) => {
 //   socket.emit(action.type, {});

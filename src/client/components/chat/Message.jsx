@@ -1,23 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { createUseStyles } from 'react-jss';
+import React from 'react';
 
 // import { makeStyles } from '@material-ui/core/styles';
-import Telegram from '@mui/icons-material/Telegram';
 // import { chatStatePropTypes } from '../../reducers/reducers.types';
 
-import {
-  Grid,
-  CardContent,
-  List,
-  Paper,
-  ListItem,
-  InputBase,
-  Typography,
-  // IconButton,
-  Box,
-} from '@mui/material';
+import { Grid, ListItem, Typography } from '@mui/material';
 
 import { messagePropTypes } from '../../store/reducers/types';
 

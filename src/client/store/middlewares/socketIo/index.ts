@@ -1,11 +1,11 @@
-import { io, Socket } from 'socket.io-client';
+import { Socket, io } from 'socket.io-client';
 import { push } from 'connected-react-router';
 // import serverEventHandler from './middleware/server';
-import { IEvent, IClientEvent, IServerEvent, IStateEvent } from '@client/store/events/event.interface';
+import { IClientEvent, IEvent, IServerEvent, IStateEvent } from '@client/store/events/event.interface';
 import { updateConnection, updateInfos } from '../../../store/reducers/app';
 
 import ev from '../../../../shared/events';
-import { gameState, updateGame, updateGameChat, updateGameSettings } from '../../../store/reducers/game';
+import { updateGameChat, updateGameSettings } from '../../../store/reducers/game';
 import { updatePlayer } from '../../../store/reducers/player';
 // import { resLogin } from '@client/store/events/server';
 

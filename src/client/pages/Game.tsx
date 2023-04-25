@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Container, Card, Group, Aside, Text, Center } from '@mantine/core';
+import { Card, Container } from '@mantine/core';
 
 // import GameRoom from '../components/game/GameRoom';
 import { GameBoard } from '../components/game/GameBoard';

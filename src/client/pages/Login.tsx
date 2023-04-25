@@ -1,6 +1,4 @@
 import React, { FC, FormEvent } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -8,8 +6,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 
-import { useAppDispatch, useAppSelector } from '../store';
-import { reqLogin, selectAppInfos } from '../store/reducers/app';
+import { useAppDispatch } from '../store';
+import { reqLogin } from '../store/reducers/app';
 
 // import { actions } from '../store/reducers/app';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch, connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { AppBar, Grid, IconButton, Typography } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import { actions } from '../store/reducers/app';

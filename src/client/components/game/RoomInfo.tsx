@@ -1,22 +1,14 @@
-import React, { useState, useEffect, FC } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { createUseStyles } from 'react-jss';
-import { Container, Grid, AppBar, Box, Tabs, Tab, Paper, Typography } from '@mui/material';
+import React, { FC } from 'react';
 // import { connect } from 'react-redux';
-import { createStyles, Card, Button, Image, Text, Group, RingProgress, Center, rem } from '@mantine/core';
+import { Card, Center, Group, Text, createStyles, rem } from '@mantine/core';
 
-import { playerStateProp, gameStateProp } from '../../store/reducers/types';
 // import actions from '../../actions';
-import { TABLE_PLAYERS_COLUMNS } from '../../constants/tables';
 
 // import GameRoom from '../../components/Game/GameRoom';
 // import GameRank from '../../components/Game/GameRank';
 
-import VList from '../common/VList';
 // import {  } from '../../store/reducers/game';
 
-import BoxInfo from '../common/BoxInfo';
 // import Button from '../common/Button';
 
 const useStyles = createStyles((theme) => ({

@@ -1,9 +1,7 @@
 import React, { FC } from 'react';
 import { Header as MantineHeader } from '@mantine/core';
 
-import PropTypes from 'prop-types';
-import { useSelector, connect } from 'react-redux';
-import { AppBar, Grid, IconButton, Typography } from '@mui/material';
+import { Grid, IconButton, Typography } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 
 import { useAppDispatch, useAppSelector } from '../store';

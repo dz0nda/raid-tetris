@@ -12,7 +12,7 @@ export default function template(title: string, preloadedState = {}, content = '
                 <script src="assets/client.js"></script>
                 `;
   }
-  let page = `<!DOCTYPE html>
+  const page = `<!DOCTYPE html>
               <html lang="en">
               <head>
                 <meta charset="utf-8">
