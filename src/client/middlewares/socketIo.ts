@@ -1,6 +1,5 @@
 import * as socketMiddleware from './socketIo/index';
-import * as EVENTS from '../events';
-import params from '../../../shared/params';
+import params from '@/shared/params';
 
 // export const { client } = EVENTS;
 // export const { server } = EVENTS;

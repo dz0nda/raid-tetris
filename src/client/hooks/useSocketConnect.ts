@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/client//store';
-import { selectSocketConnected, reqConnect } from '@/client/store/reducers/socket';
+import { reqConnect, selectSocketConnected } from '@/client/store/reducers/socket';
 
-export const useSocketConnect = (delay: number = 10000) => {
+export const useSocketConnect = (delay = 10000) => {
   const dispatch = useAppDispatch();
   const connected = useAppSelector(selectSocketConnected);
   let lastCall = 0;

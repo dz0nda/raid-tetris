@@ -1,7 +1,7 @@
 import React from 'react';
 
 // import { makeStyles } from '@material-ui/core/styles';
-// import { chatStatePropTypes } from '../../reducers/reducers.types';
+// import { chatStatePropTypes } from '@/client/store/reducers/reducers.types';
 
 import { Grid, ListItem, Typography } from '@mui/material';
 

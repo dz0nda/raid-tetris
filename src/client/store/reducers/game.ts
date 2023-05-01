@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { RootState } from '..';
-
 const gameStatus = {
   STOPPED: 'STOPPED',
   WILL_START: 'WILL_START',

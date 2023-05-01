@@ -1,26 +1,19 @@
-import React, { FC, useState, forwardRef } from 'react';
-import { useToggle, upperFirst, useDisclosure } from '@mantine/hooks';
+import React, { FC, forwardRef, useState } from 'react';
+import { useToggle } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import {
-  TextInput,
-  PasswordInput,
-  Text,
-  Paper,
-  Group,
-  PaperProps,
-  Button,
-  Divider,
-  Checkbox,
-  Anchor,
-  Stack,
-  Modal,
-  useMantineTheme,
-  Select,
   Avatar,
-  Switch,
-  rem,
-  createStyles,
   Box,
+  Button,
+  Group,
+  Paper,
+  Stack,
+  Switch,
+  Text,
+  TextInput,
+  createStyles,
+  rem,
+  useMantineTheme,
 } from '@mantine/core';
 // import { GoogleButton, TwitterButton } from '../SocialButtons/SocialButtons';
 import { IconCheck, IconX } from '@tabler/icons-react';

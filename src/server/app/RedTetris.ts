@@ -5,7 +5,7 @@ import ev from '../../shared/events';
 // import Io, { Request } from '@/server/server/Io';
 import { chatSchema, loginSchema, moveSchema, ownerSchema } from '@/server/redtetris.validation';
 
-import { SocketServer, Request, Route } from '@/server/server/SocketServer';
+import { Request, Route, SocketServer } from '@/server/server/SocketServer';
 import Game from '@/server/app/Game';
 import { Rooms } from '@/server/app/room/Rooms';
 import { Chats } from '@/server/app/chat/Chats';

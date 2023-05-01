@@ -1,9 +1,6 @@
-import { v4 as uuidv4 } from 'uuid';
-
-import { STAGE_WIDTH, Stage, calcScore, createStage, createStagePiece, keys } from '@/server/helpers/gameHelper';
+import { STAGE_WIDTH, Stage, calcScore, createStage } from '@/server/helpers/gameHelper';
 
 import { Piece } from './Piece';
-import Player from './Player';
 
 export interface IPosition {
   x: number;

@@ -1,9 +1,8 @@
 import React, { FC } from 'react';
 import { useState } from 'react';
-import { createStyles, Table, ScrollArea, rem } from '@mantine/core';
+import { ScrollArea, Table, createStyles, rem } from '@mantine/core';
 import { useAppSelector } from '@/client/store';
 import { selectRoomPlayers } from '@/client/store/reducers/app';
-import { PlayerState } from '@/client/store/reducers/player';
 
 const useStyles = createStyles((theme) => ({
   header: {

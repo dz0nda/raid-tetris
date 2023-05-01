@@ -1,23 +1,17 @@
-import React, { useEffect, useRef, useState, ChangeEvent, FC } from 'react';
-import { Tabs, ScrollArea, Table, List, Container, Group, Text, Box, Stack, Alert, Loader } from '@mantine/core';
-import { createUseStyles } from 'react-jss';
-import { IconCornerUpLeft, IconDotsVertical, IconTrash } from '@tabler/icons-react';
+import React, { ChangeEvent, FC, useRef, useState } from 'react';
+import { Alert, Group, Loader, ScrollArea, Stack, Tabs, Text } from '@mantine/core';
 
 // import { makeStyles } from '@material-ui/core/styles';
-// import { chatStatePropTypes } from '../../reducers/reducers.types';
+// import { chatStatePropTypes } from '@/client/store/reducers/reducers.types';
 
 import {
-  Grid,
-  CardContent,
   // List,
   Paper,
-  ListItem,
   InputBase,
   // Typography,
   // IconButton,
   // Box,
 } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '@/client/store';
 // import { reqChat, selectRoomChat } from '@/client/store/reducers/game';
 
 import ChatBox from './ChatBox';
@@ -33,7 +27,7 @@ interface IMessage {
 
 const Message: FC<IMessage> = ({ id, user, date, text }) => {
   const loading = false;
-  let color = 'teal';
+  const color = 'teal';
 
   return (
     <>

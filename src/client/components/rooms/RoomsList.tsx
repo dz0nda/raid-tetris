@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { createStyles, Table, ScrollArea, UnstyledButton, Group, Text, Center, TextInput, rem } from '@mantine/core';
+import { ScrollArea, Table, Text, createStyles, rem } from '@mantine/core';
 import { keys } from '@mantine/utils';
-import { IconSelector, IconChevronDown, IconChevronUp, IconSearch } from '@tabler/icons-react';
 import { Room } from '@/server/app/room/Room';
 
 const useStyles = createStyles((theme) => ({

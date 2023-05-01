@@ -1,7 +1,7 @@
 import { Middleware } from '@reduxjs/toolkit';
 import { notifications } from '@mantine/notifications';
 
-import ev from '../../../shared/events';
+import ev from '@/shared/events';
 
 export const notificationsMiddleware: Middleware = (store) => (next) => (action) => {
   console.log('notificationsMiddleware');

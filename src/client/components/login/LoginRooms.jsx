@@ -20,7 +20,7 @@ import {
 // import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 // import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 
-// import { appStateProp } from '../../reducers/reducers.types';
+// import { appStateProp } from '@/client/store/reducers/reducers.types';
 
 // import RedIconButton from '../Common/RedIconButton';
 

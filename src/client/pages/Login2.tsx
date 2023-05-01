@@ -1,32 +1,12 @@
-import React, { forwardRef } from 'react';
-import { useToggle, upperFirst, useDisclosure } from '@mantine/hooks';
+import React from 'react';
+import { useDisclosure, useToggle } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
-import {
-  TextInput,
-  PasswordInput,
-  Text,
-  Paper,
-  Group,
-  PaperProps,
-  Button,
-  Divider,
-  Checkbox,
-  Anchor,
-  Stack,
-  Modal,
-  useMantineTheme,
-  Select,
-  Avatar,
-  rem,
-  ActionIcon,
-  Box,
-} from '@mantine/core';
+import { ActionIcon, Group, Modal, Text, rem, useMantineTheme } from '@mantine/core';
 // import { GoogleButton, TwitterButton } from '../SocialButtons/SocialButtons';
 import { IconArrowLeft } from '@tabler/icons-react';
 
 import { AuthForm, AuthFormValues } from '@/client/components/auth/AuthForm';
 import { AuthRoom, AuthRoomFormValues } from '@/client/components/auth/AuthRoom';
-import { Rooms } from '@/client/components/rooms/Rooms';
 import { useAppDispatch } from '../store';
 import { reqLogin } from '../store/reducers/app';
 

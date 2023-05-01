@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Aside, Group, Tabs, Text, createStyles, getStylesRef, rem, Button, Tooltip } from '@mantine/core';
+import { Aside, Button, Group, Tabs, Text, Tooltip, createStyles, getStylesRef, rem } from '@mantine/core';
 // import {
 //   IconShoppingCart,
 //   IconLicense,
@@ -22,9 +22,8 @@ import { IconMessageCircle, IconPhoto, IconSettings } from '@tabler/icons-react'
 import { CustomTabs } from '../common/CustomTabs';
 // import GameChat from './GameChat';
 import { RoomInfo } from './RoomInfo';
-import { GameRoom } from './GameRoom';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { selectPlayer, selectRoomOwner, reqStartGame } from '@/client/store/reducers/app';
+import { reqStartGame, selectPlayer, selectRoomOwner } from '@/client/store/reducers/app';
 import { Info } from '../common/Info';
 
 import { playersData } from '@/client/helpers/data';

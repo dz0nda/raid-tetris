@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState, ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
 // import { makeStyles } from '@material-ui/core/styles';
-// import { chatStatePropTypes } from '../../reducers/reducers.types';
+// import { chatStatePropTypes } from '@/client/store/reducers/reducers.types';
 
 import {
   Grid,

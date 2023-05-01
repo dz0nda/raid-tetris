@@ -1,7 +1,7 @@
 import { Middleware } from '@reduxjs/toolkit';
 
-import { events } from '../../../shared/events';
-import { reqLogin } from '../reducers/app';
+import { events } from '@/shared/events';
+import { reqLogin } from '@/client/store/reducers/app';
 
 export const routerMiddleware: Middleware = (store) => (next) => (action) => {
   console.log('routerMiddleware');

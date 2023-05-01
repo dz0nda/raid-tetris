@@ -13,7 +13,7 @@ import {
 } from '@/client/store/reducers/app';
 // import { updatePlayer } from '@/client/store/reducers/player';
 
-import ev from '../../../../shared/events';
+import ev from '../@/shared/events';
 // import { resLogin } from '@/client/store/events/server';
 
 export enum ESocketEvent {

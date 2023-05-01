@@ -1,24 +1,17 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
-import { AppShell, useMantineTheme, LoadingOverlay } from '@mantine/core';
-import { Notifications } from '@mantine/notifications';
+import { useMantineTheme } from '@mantine/core';
 // import { useDisclosure } from '@mantine/hooks';
 
 // import useWindowDimensions from './hooks/useWindowDimensions';
-import { useAppDispatch, useAppSelector } from '@/client/store';
-import { reqConnect, selectSocketConnected } from '@/client/store/reducers/socket';
 
 import params from '../shared/params';
-import { Header } from './pages/Header';
-import { Footer } from './pages/Footer';
 
 // import { Login } from './pages/Login';
 import { Login } from './pages/Login2';
 import { Game } from './pages/Game';
 import { history } from './store';
-import { GameAside } from './components/game/GameAside';
-import { useSocketConnect } from './hooks/useSocketConnect';
 
 export const Router: FC = () => {
   const { host, port } = params.server;

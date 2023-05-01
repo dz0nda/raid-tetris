@@ -7,7 +7,7 @@ import { keys } from '../../constants/keys';
 import useKey from '../../hooks/useKey';
 import useInterval from '../../hooks/useInterval';
 // import { Box } from '@mui/material'
-// import { playerStateProp, settingsProp } from '../../reducers/reducers.types'
+// import { playerStateProp, settingsProp } from '@/client/store/reducers/reducers.types'
 // import actions from '../../actions'
 
 // import GameBoard from '../../components/Game/GameBoard';

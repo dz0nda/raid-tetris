@@ -1,5 +1,4 @@
-import { STAGE_WIDTH, Stage, calcScore, createStage, createStagePiece, keys } from '../helpers/gameHelper';
-import { Piece } from './Piece';
+import { keys } from '../helpers/gameHelper';
 import Game from './Game2';
 
 export default class Player {

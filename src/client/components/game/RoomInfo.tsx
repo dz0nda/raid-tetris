@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 // import { connect } from 'react-redux';
-import { Card, Center, Group, Text, createStyles, Stack, Switch, rem } from '@mantine/core';
+import { Card, Group, Switch, Text, createStyles, rem } from '@mantine/core';
 
 // import actions from '../../actions';
 

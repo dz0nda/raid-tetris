@@ -1,7 +1,5 @@
-import { v4 as uuidv4 } from 'uuid';
 import { Piece } from '../Piece';
 import Player from '../Player';
-import Game from '../Game';
 
 export class Room {
   room: string;

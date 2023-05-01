@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import {
   Grid,
@@ -18,9 +18,9 @@ import {
 import SupervisorAccount from '@mui/icons-material/SupervisorAccount';
 // import { connect } from 'react-redux';
 
-// import { playerStateProp, gameStateProp } from '../../reducers/reducers.types';
+// import { playerStateProp, gameStateProp } from '@/client/store/reducers/reducers.types';
 // import actions from '../../actions';
-import { TABLE_PLAYERS_COLUMNS, TABLE_PLAYERS_RANK } from '../../constants/tables';
+import { TABLE_PLAYERS_RANK } from '../../constants/tables';
 
 // import GameRoom from '../../components/Game/GameRoom';
 // import GameRank from '../../components/Game/GameRank';
@@ -30,7 +30,7 @@ import VList from '../common/VList';
 // import { actions } from '@/client/store/reducers/app';
 
 import { useAppDispatch, useAppSelector } from '../../store';
-import { reqOwner, selectRoomPlayers, selectRoom } from '@/client/store/reducers/app';
+import { reqOwner, selectRoom, selectRoomPlayers } from '@/client/store/reducers/app';
 
 const useStyles = createUseStyles({
   grid: {
