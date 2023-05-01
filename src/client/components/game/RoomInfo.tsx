@@ -1,33 +1,33 @@
 import React, { FC } from 'react';
 // import { connect } from 'react-redux';
-import { Card, Center, Group, Text, createStyles, rem } from '@mantine/core';
+import { Card, Center, Group, Text, createStyles, Stack, Switch, rem } from '@mantine/core';
 
 // import actions from '../../actions';
 
 // import GameRoom from '../../components/Game/GameRoom';
 // import GameRank from '../../components/Game/GameRank';
 
-// import {  } from '../../store/reducers/game';
+// import {  } from '@/client/store/reducers/app';
 
 // import Button from '../common/Button';
 
-const useStyles = createStyles((theme) => ({
-  card: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-  },
+// const useStyles = createStyles((theme) => ({
+//   card: {
+//     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+//   },
 
-  footer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: `${theme.spacing.sm} ${theme.spacing.lg}`,
-    borderTop: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2]}`,
-  },
+//   footer: {
+//     display: 'flex',
+//     justifyContent: 'space-between',
+//     padding: `${theme.spacing.sm} ${theme.spacing.lg}`,
+//     borderTop: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2]}`,
+//   },
 
-  title: {
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-    lineHeight: 1,
-  },
-}));
+//   title: {
+//     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+//     lineHeight: 1,
+//   },
+// }));
 
 interface CardWithStatsProps {
   image: string;
@@ -54,11 +54,36 @@ const stats = [
   },
 ];
 
+const useStyles = createStyles((theme) => ({
+  body: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+
+  track: {
+    width: rem(40),
+    height: rem(6),
+    overflow: 'visible',
+  },
+
+  thumb: {
+    width: rem(20),
+    height: rem(20),
+    left: rem(-2),
+    transition: 'background-color 100ms ease, left 100ms ease',
+
+    'input:checked + * > &': {
+      backgroundColor: theme.fn.primaryColor(),
+    },
+  },
+}));
+
 export const RoomInfo: FC = (props) => {
   // const { name, room, settings, reqStartGame } = props;
   // const { owner, started } = settings;
 
   // const handleStart = () => reqStartGame({ name, room });
+  const { classes } = useStyles();
 
   const items = stats.map((stat) => (
     <div key={stat.title}>
@@ -78,11 +103,21 @@ export const RoomInfo: FC = (props) => {
         <Group></Group>
       </Card.Section>
       <Card.Section>
-        <Center>
-          {/* <Button radius="xl" style={{ flex: 1 }} onClick={handleStart} disabled={started || !(name === owner)}>
+        {/* <Center> */}
+        {/* <Button radius="xl" style={{ flex: 1 }} onClick={handleStart} disabled={started || !(name === owner)}>
             Start Game
           </Button> */}
-        </Center>
+        <Switch.Group
+          defaultValue={['react']}
+          label="Select your favorite framework/library"
+          description="This is anonymous"
+        >
+          <Group mt="xs">
+            <Switch value="levels" label="Levels" />
+            <Switch value="mallus" label="Mallus" />
+          </Group>
+        </Switch.Group>
+        {/* </Center> */}
       </Card.Section>
     </Card>
   );

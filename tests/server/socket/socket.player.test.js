@@ -1,7 +1,7 @@
 import params from '../../../src/shared/params';
 import RedTetris from '../../../src/server/app/RedTetris';
 
-import { initSocket, destroySocket, handleResponse } from '../helpers/socket';
+import { destroySocket, handleResponse, initSocket } from '../helpers/socket';
 import { keys } from '../../../src/server/helpers/gameHelper';
 
 const randomstring = require('randomstring');
@@ -19,8 +19,8 @@ describe('# Socket Tests - Player Events', () => {
 
     socket = await initSocket(3003);
     const payload = { name: randomstring.generate(7), room: randomstring.generate(7) };
-    socket.emit(ev.req_LOGIN, payload);
-    socket.emit(ev.req_START_GAME, payload);
+    socket.emit(ev.REQUEST_LOGIN, payload);
+    socket.emit(ev.REQUEST_START_GAME, payload);
     setTimeout(() => {}, 4);
   });
 
@@ -37,33 +37,33 @@ describe('# Socket Tests - Player Events', () => {
         room: 'room',
         keyCode: keys.KLEFT,
       };
-      socket.emit(ev.req_UPDATE_PLAYER, payload);
-      let data = await handleResponse(socket, ev.res_UPDATE_PLAYER);
+      socket.emit(ev.REQUEST_UPDATE_PLAYER, payload);
+      let data = await handleResponse(socket, ev.RESPONSE_UPDATE_PLAYER);
       expect(data.status).toBe(200);
 
       payload.keyCode = keys.KRIGHT;
-      socket.emit(ev.req_UPDATE_PLAYER, payload);
-      data = await handleResponse(socket, ev.res_UPDATE_PLAYER);
+      socket.emit(ev.REQUEST_UPDATE_PLAYER, payload);
+      data = await handleResponse(socket, ev.RESPONSE_UPDATE_PLAYER);
       expect(data.status).toBe(200);
 
       payload.keyCode = keys.KUP;
-      socket.emit(ev.req_UPDATE_PLAYER, payload);
-      data = await handleResponse(socket, ev.res_UPDATE_PLAYER);
+      socket.emit(ev.REQUEST_UPDATE_PLAYER, payload);
+      data = await handleResponse(socket, ev.RESPONSE_UPDATE_PLAYER);
       expect(data.status).toBe(200);
 
       payload.keyCode = keys.KDOWN;
-      socket.emit(ev.req_UPDATE_PLAYER, payload);
-      data = await handleResponse(socket, ev.res_UPDATE_PLAYER);
+      socket.emit(ev.REQUEST_UPDATE_PLAYER, payload);
+      data = await handleResponse(socket, ev.RESPONSE_UPDATE_PLAYER);
       expect(data.status).toBe(200);
 
       payload.keyCode = keys.KSPACE;
-      socket.emit(ev.req_UPDATE_PLAYER, payload);
-      data = await handleResponse(socket, ev.res_UPDATE_GAME_PLAYERS);
+      socket.emit(ev.REQUEST_UPDATE_PLAYER, payload);
+      data = await handleResponse(socket, ev.RESPONSE_UPDATE_GAME_PLAYERS);
       expect(data.status).toBe(200);
 
       payload.keyCode = keys.KSPACE;
-      socket.emit(ev.req_UPDATE_PLAYER, payload);
-      data = await handleResponse(socket, ev.res_UPDATE_GAME_PLAYERS);
+      socket.emit(ev.REQUEST_UPDATE_PLAYER, payload);
+      data = await handleResponse(socket, ev.RESPONSE_UPDATE_GAME_PLAYERS);
       expect(data.status).toBe(200);
     });
 
@@ -75,10 +75,10 @@ describe('# Socket Tests - Player Events', () => {
       };
 
       for (let i = 0; i < 15; i += 1) {
-        socket.emit(ev.req_UPDATE_PLAYER, payload);
+        socket.emit(ev.REQUEST_UPDATE_PLAYER, payload);
       }
 
-      const data = await handleResponse(socket, ev.res_START_GAME);
+      const data = await handleResponse(socket, ev.RESPONSE_START_GAME);
       expect(data.status).toBe(100);
     });
   });

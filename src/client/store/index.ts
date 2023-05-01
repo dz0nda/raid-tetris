@@ -1,25 +1,28 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers } from 'redux';
+import { History } from 'history';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { connectRouter, routerMiddleware } from 'connected-react-router';
+import { connectRouter, routerMiddleware as connectedRouterMiddleware } from 'connected-react-router';
 import { createHashHistory } from 'history';
 
 // import rootReducer from '../reducers'
-import { logger } from './middlewares/logger';
-import { notificationsMiddleware } from './middlewares/notifications';
-import socketIoMiddleware from './middlewares/socketIo';
+import { logger } from '@/client/middlewares/logger';
+import { notificationsMiddleware } from '@/client/middlewares/notifications';
+import { routerMiddleware } from '@/client/middlewares/router';
+import socketIoMiddleware from '@/client/middlewares/socketIo';
+import { socketReducer } from './reducers/socket';
 import { appReducer } from './reducers/app';
-import { gameReducer } from './reducers/game';
-import { playerReducer } from './reducers/player';
 
-// export const rootReducer = (history) =>
-//   combineReducers({
-//     router: connectRouter(history),
-//     appReducer,
-//     gameReducer,
-//     playerReducer,
-//   });
+export const history = createHashHistory();
 
-export const history = typeof window !== 'undefined' ? createHashHistory() : {};
+export const rootReducer = (history: History) =>
+  combineReducers({
+    router: connectRouter(history),
+    socket: socketReducer,
+    app: appReducer,
+    // game: gameReducer,
+    // player: playerReducer,
+  });
 
 // export const middleware = [routerMiddleware(history), thunk, loggerMiddleware, socketIoMiddleware];
 
@@ -29,16 +32,15 @@ export const history = typeof window !== 'undefined' ? createHashHistory() : {};
 
 export const store = configureStore({
   // Automatically calls `combineReducers`
-  reducer: {
-    router: connectRouter(history),
-    app: appReducer,
-    game: gameReducer,
-    player: playerReducer,
-  },
+  reducer: rootReducer(history),
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware()
-      .concat(logger)
-      .concat([routerMiddleware(history), socketIoMiddleware, notificationsMiddleware]),
+    getDefaultMiddleware().concat([
+      connectedRouterMiddleware(history),
+      socketIoMiddleware,
+      notificationsMiddleware,
+      logger,
+      routerMiddleware,
+    ]),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -7,6 +7,7 @@ export interface PlayerState {
   lines: number;
   mallus: number;
   rank: number;
+  level: number;
   stage: any[];
   stagePiece: any[];
   piece: any;
@@ -22,6 +23,7 @@ export const playerState: PlayerState = {
   lines: 0,
   mallus: 0,
   rank: 0,
+  level: 0,
   stage: Array.from(Array(20), () => new Array(10).fill([0, 'clear'])),
   stagePiece: [
     Array.from(Array(4), () => new Array(4).fill([0, 'clear'])),
@@ -38,7 +40,7 @@ export const playerSlice = createSlice({
   name: 'player',
   initialState: playerState,
   reducers: {
-    reqMove(state, action) {},
+    reqMove(_state, _action) {},
     updatePlayer(state, action) {
       state.name = action.payload.player.name;
       state.score = action.payload.player.score;
@@ -76,7 +78,7 @@ export const { reqMove, updatePlayer } = playerSlice.actions;
 
 export const playerReducer = playerSlice.reducer;
 
-export const selectPlayer = (state: RootState) => state.player;
+// export const selectPlayer = (state: RootState) => state.player;
 
 // export const updatePlayer = (payload) => (dispatch, getState) => {
 //   const { id } = getState().app;
@@ -90,7 +92,7 @@ export const selectPlayer = (state: RootState) => state.player;
 // };
 
 // export const reqMove = (payload) => ({
-//   type: ev.req_UPDATE_PLAYER,
+//   type: ev.REQUEST_UPDATE_PLAYER,
 //   payload: {
 //     keyCode: payload.keyCode,
 //   },

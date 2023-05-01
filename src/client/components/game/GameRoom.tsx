@@ -8,7 +8,6 @@ import {
   Tabs,
   Tab,
   Paper,
-  Slide,
   IconButton,
   Dialog,
   DialogTitle,
@@ -28,10 +27,10 @@ import { TABLE_PLAYERS_COLUMNS, TABLE_PLAYERS_RANK } from '../../constants/table
 
 import Button from '../common/Button';
 import VList from '../common/VList';
-// import { actions } from '../../store/reducers/game';
+// import { actions } from '@/client/store/reducers/app';
 
 import { useAppDispatch, useAppSelector } from '../../store';
-import { reqOwner, selectRoomPlayers, selectRoomSettings } from '../../store/reducers/game';
+import { reqOwner, selectRoomPlayers, selectRoom } from '@/client/store/reducers/app';
 
 const useStyles = createUseStyles({
   grid: {
@@ -60,28 +59,23 @@ const useStyles = createUseStyles({
   },
 });
 
-const Transition = React.forwardRef((props, ref) => (
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  <Slide direction="up" ref={ref} {...props} />
-));
-
-export const GameRoom: FC = (props) => {
+export const GameRoom: FC = () => {
   // const { name, room, settings, players, reqStartGame, reqOwner } = props;
 
-  const settings = useAppSelector(selectRoomSettings);
+  const room = useAppSelector(selectRoom);
   const players = useAppSelector(selectRoomPlayers);
   const dispatch = useAppDispatch();
-  const { owner, nbPlayers, nbLoosers } = settings;
+  // const { owner, nbPlayers, nbLoosers } = settings;
   const [open, setOpen] = useState(false);
-  const playersList = Object.values(players);
+  const playersList = Object.values(players as any);
   const classes = useStyles();
 
   const handleSetOwner = (newOwner: string) => dispatch(reqOwner({ newOwner }));
 
-  useEffect(() => {
-    if (nbPlayers !== 0 && nbLoosers === nbPlayers) setOpen(true);
-    else setOpen(false);
-  }, [nbLoosers, nbPlayers]);
+  // useEffect(() => {
+  //   if (nbPlayers !== 0 && nbLoosers === nbPlayers) setOpen(true);
+  //   else setOpen(false);
+  // }, [nbLoosers, nbPlayers]);
 
   const handleOpenRank = () => {
     setOpen(true);
@@ -116,19 +110,19 @@ export const GameRoom: FC = (props) => {
               </Grid>
             </AppBar>
             <Paper sx={{ height: '55vh' }} elevation={0}>
-              <VList
+              {/* <VList
                 owner={owner}
                 rowCount={playersList.length}
                 rowGetter={({ index }: { index: number }) => playersList[index]}
                 columns={TABLE_PLAYERS_COLUMNS}
-              />
+              /> */}
             </Paper>
           </Box>
         </Grid>
       </Grid>
 
       {/* Modal */}
-      <Dialog open={open} TransitionComponent={Transition} keepMounted onClose={handleCloseRank} fullWidth>
+      <Dialog open={open} keepMounted onClose={handleCloseRank} fullWidth>
         <DialogTitle>
           <Typography variant="h5" style={{ color: 'red', fontWeight: 'bold' }}>
             PLAYERS
@@ -137,9 +131,9 @@ export const GameRoom: FC = (props) => {
         <DialogContent>
           <Paper className={classes.paper} elevation={0}>
             <VList
-              owner={owner}
+              owner={room.settings.owner}
               rowCount={playersList.length}
-              rowGetter={({ index }) => playersList[index]}
+              rowGetter={({ index }: { index: number }) => playersList[index]}
               columns={TABLE_PLAYERS_RANK}
               handleSetOwner={handleSetOwner}
             />

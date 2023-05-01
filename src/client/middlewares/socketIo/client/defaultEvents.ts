@@ -1,4 +1,4 @@
-import { IEvent } from '@client/store/events/event.interface';
+import { IEvent } from '@/client/store/events/event.interface';
 
 export const defaultSocketEvents: IEvent[] = [
   {

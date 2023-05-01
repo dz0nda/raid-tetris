@@ -1,10 +1,10 @@
 import ev from '../../../shared/events';
 
-import { updateConnection } from '../reducers/app';
+import { updateConnection } from '@/client/store/reducers/socket';
 import { IStateEvent } from './event.interface';
 
 export const connect: IStateEvent = {
-  action: ev.CONNECT,
+  action: ev.SOCKET_CONNECTED,
 
   dispatch: (socket, store, next, action) => () => {
     console.log('Socket is connecting.');
@@ -45,7 +45,7 @@ export const connect: IStateEvent = {
 };
 
 export const connectError: IStateEvent = {
-  action: ev.CONNECT_ERROR,
+  action: ev.SOCKET_CONNECTION_ERROR,
 
   dispatch: (socket, store) => () => {
     console.error('socket: Connection error');
@@ -65,7 +65,7 @@ export const connectError: IStateEvent = {
 };
 
 export const connectTimeout: IStateEvent = {
-  action: ev.CONNECT_TIMEOUT,
+  action: ev.SOCKET_CONNECTION_TIMEOUT,
 
   dispatch: (socket, store) => () => {
     console.error('socket: Connection timeout');
@@ -85,7 +85,7 @@ export const connectTimeout: IStateEvent = {
 };
 
 export const disconnect: IStateEvent = {
-  action: ev.DISCONNECT,
+  action: ev.SOCKET_DISCONNECTED,
 
   dispatch: (_, store) => () => {
     console.error('socket: Disconnected');
@@ -105,7 +105,7 @@ export const disconnect: IStateEvent = {
 };
 
 export const reconnect: IStateEvent = {
-  action: ev.RECONNECT,
+  action: ev.SOCKET_RECONNECTED,
 
   dispatch: (_, store) => () => {
     store.dispatch({
@@ -123,7 +123,7 @@ export const reconnect: IStateEvent = {
 };
 
 export const reconnectAttempt: IStateEvent = {
-  action: ev.RECONNECT_ATTEMPT,
+  action: ev.SOCKET_RECONNECTION_ATTEMPT,
 
   dispatch: (_, store) => (attemptNumber: number) => {
     store.dispatch({
@@ -141,7 +141,7 @@ export const reconnectAttempt: IStateEvent = {
 };
 
 export const reconnectError: IStateEvent = {
-  action: ev.RECONNECT_ERROR,
+  action: ev.SOCKET_RECONNECTION_ERROR,
 
   dispatch: (_, store) => () => {
     console.error('socket: Reconnection error');
@@ -161,7 +161,7 @@ export const reconnectError: IStateEvent = {
 };
 
 export const reconnectFailed: IStateEvent = {
-  action: ev.RECONNECT_FAILED,
+  action: ev.SOCKET_RECONNECTION_FAILED,
 
   dispatch: (_, store) => () => {
     console.error('socket: Reconnection failed');
@@ -181,7 +181,7 @@ export const reconnectFailed: IStateEvent = {
 };
 
 export const reconnecting: IStateEvent = {
-  action: ev.RECONNECTING,
+  action: ev.SOCKET_RECONNECTING,
 
   dispatch: (_, store) => () => {
     store.dispatch({

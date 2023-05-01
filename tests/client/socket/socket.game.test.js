@@ -8,7 +8,7 @@ import { mockMiddleware, id, mockSocket } from '../helpers/socketHelper';
 
 describe('# Socket Tests - Game Events', () => {
   describe('## Client Events', () => {
-    it('should execute req_UPDATE_GAME_OWNER', () => {
+    it('should execute REQUEST_UPDATE_GAME_OWNER', () => {
       const payload = {
         newOwner: 'newOwner',
       };
@@ -19,10 +19,10 @@ describe('# Socket Tests - Game Events', () => {
       };
 
       mockMiddleware(store)(() => true)(actions.reqOwner(payload));
-      expect(mockSocket.emit).toHaveBeenCalledWith(ev.req_UPDATE_GAME_OWNER, payloadExpected);
+      expect(mockSocket.emit).toHaveBeenCalledWith(ev.REQUEST_UPDATE_GAME_OWNER, payloadExpected);
     });
 
-    it('should execute req_UPDATE_GAME_CHAT', () => {
+    it('should execute REQUEST_UPDATE_GAME_CHAT', () => {
       const payload = {
         message: 'text',
       };
@@ -33,17 +33,17 @@ describe('# Socket Tests - Game Events', () => {
       };
 
       mockMiddleware(store)(() => true)(actions.reqChat(payload));
-      expect(mockSocket.emit).toHaveBeenCalledWith(ev.req_UPDATE_GAME_CHAT, payloadExpected);
+      expect(mockSocket.emit).toHaveBeenCalledWith(ev.REQUEST_UPDATE_GAME_CHAT, payloadExpected);
     });
 
-    it('should execute req_START_GAME', () => {
+    it('should execute REQUEST_START_GAME', () => {
       const payloadExpected = {
         name: '',
         room: '',
       };
 
       mockMiddleware(store)(() => true)(actions.reqStartGame({}));
-      expect(mockSocket.emit).toHaveBeenCalledWith(ev.req_START_GAME, payloadExpected);
+      expect(mockSocket.emit).toHaveBeenCalledWith(ev.REQUEST_START_GAME, payloadExpected);
     });
   });
 
@@ -52,7 +52,7 @@ describe('# Socket Tests - Game Events', () => {
       td.replace(store, 'dispatch', jest.fn());
     });
 
-    it('should execute res_UPDATE_GAME', () => {
+    it('should execute RESPONSE_UPDATE_GAME', () => {
       const data = {
         status: 200,
         payload: {
@@ -63,7 +63,7 @@ describe('# Socket Tests - Game Events', () => {
       mockMiddleware(store)(() => true)({
         type: `${id}_*`,
         payload: {
-          type: ev.res_UPDATE_GAME,
+          type: ev.RESPONSE_UPDATE_GAME,
           data,
         },
       });
@@ -71,7 +71,7 @@ describe('# Socket Tests - Game Events', () => {
       expect(store.dispatch).toHaveBeenCalled();
     });
 
-    it('should execute res_UPDATE_GAME_CHAT', () => {
+    it('should execute RESPONSE_UPDATE_GAME_CHAT', () => {
       const data = {
         status: 200,
         payload: {
@@ -82,7 +82,7 @@ describe('# Socket Tests - Game Events', () => {
       mockMiddleware(store)(() => true)({
         type: `${id}_*`,
         payload: {
-          type: ev.res_UPDATE_GAME_CHAT,
+          type: ev.RESPONSE_UPDATE_GAME_CHAT,
           data,
         },
       });

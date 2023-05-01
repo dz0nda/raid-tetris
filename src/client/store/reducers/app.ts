@@ -1,71 +1,114 @@
 import { createSlice } from '@reduxjs/toolkit';
+// import { Game } from '../../types';
 
 import { RootState } from '..';
+import { Room } from '@/server/app/room/Room';
 
 export interface AppState {
-  id: string | null;
-  connected: boolean;
-  isLoading: boolean;
-  infos: {
-    nbPlayers: number;
-    nbGames: number;
-    games: any[];
-  };
-  snackbar: {
-    message: string;
-    variant: string;
-  };
+  username: string;
+  room: string;
+  rooms: { [key: string]: Room };
+  chats: { [key: string]: any };
 }
 
 export const appState: AppState = {
-  id: null,
-  connected: false,
-  isLoading: true,
-  infos: {
-    nbPlayers: 0,
-    nbGames: 0,
-    games: [],
-  },
-  snackbar: {
-    message: 'socket: Connection...',
-    variant: 'info',
-  },
+  username: '',
+  room: '',
+  rooms: {},
+  chats: {},
 };
 
 const appSlice = createSlice({
   name: 'app',
   initialState: appState,
   reducers: {
-    reqConnect(state, action) {},
-    reqLogin(state, action) {},
-    reqLogout() {},
-    updateConnection(state, action) {
-      state.id = action.payload.id;
-      state.connected = action.payload.connected;
-      state.isLoading = !action.payload.connected;
+    reqLogin(_state, _action) {},
+    resLogin(state, action) {
+      state.username = action.payload.username;
+      state.room = action.payload.room;
     },
 
-    updateLog(state, action) {
-      state.isLoading = action.payload.isLoading;
-      state.snackbar.message = action.payload.snackbar.message;
-      state.snackbar.variant = action.payload.snackbar.variant;
+    reqLogout(_state, _action) {},
+
+    reqStartGame(_state, _action) {},
+
+    reqOwner(_state, _action) {},
+
+    reqChat(_state, _action) {},
+    resChat(state, action) {
+      state.chats = action.payload.chats;
     },
 
-    updateInfos(state, action) {
-      state.infos.nbPlayers = action.payload.nbPlayers;
-      state.infos.nbGames = action.payload.nbGames;
-      state.infos.games = action.payload.games;
+    reqMove(_state, _action) {},
+    resMove(state, action) {
+      state.rooms[state.room].players[action.payload.id] = action.payload.player;
     },
+
+    updateGame(state, action) {
+      state.rooms[state.room] = action.payload.game;
+    },
+
+    updateGameSettings(state, action) {
+      state.rooms[state.room].settings = action.payload.settings;
+    },
+
+    updateGamePlayers(state, action) {
+      state.rooms[state.room].players = action.payload.players;
+    },
+
+    updateGameChat(state, action) {
+      state.chats[state.room] = action.payload.chat;
+    },
+
+    updatePlayer(state, action) {
+      state.rooms[state.room].players[action.payload.id] = action.payload.player;
+    },
+    // resLzogout()
   },
 });
 
-export const { reqConnect, reqLogin, reqLogout, updateConnection, updateLog, updateInfos } = appSlice.actions;
+// const countRoomsAndPlayers = (rooms: Record<string, { players: Record<string, any> }>): { number; number } =>
+//   Object.values(rooms).reduce(
+//     ({ roomsAcc, playersAcc }, { players: roomPlayers }) => {
+//       return { roomAcc: roomsAcc + 1, playersAcc: playersAcc + Object.values(roomPlayers).length };
+//     },
+//     { roomsAcc: 0, playersAcc: 0 },
+//   );
+
+export const {
+  reqLogin,
+  resLogin,
+  reqLogout,
+  reqStartGame,
+  reqOwner,
+  reqChat,
+  resChat,
+  reqMove,
+  resMove,
+  updateGame,
+  updateGameChat,
+  updateGamePlayers,
+  updateGameSettings,
+  updatePlayer,
+} = appSlice.actions;
 
 export const appReducer = appSlice.reducer;
 
-export const selectAppConnected = (state: RootState) => state.app.connected;
-export const selectAppLoading = (state: RootState) => state.app.isLoading;
-export const selectAppInfos = (state: RootState) => state.app.infos;
+export const selectRooms = (state: RootState) => state.app.rooms;
+export const selectRoom = (state: RootState) => state.app.rooms[state.app.room];
+export const selectRoomOwner = (state: RootState) => state.app.rooms[state.app.room]?.settings.owner;
+export const selectAppChats = (state: RootState) => state.app.chats;
+
+export const selectAppInfos = (state: RootState): { roomsAcc: number; playersAcc: number } =>
+  Object.values(state.app.rooms).reduce(
+    ({ roomsAcc, playersAcc }, { players: roomPlayers }): { roomsAcc: number; playersAcc: number } => {
+      return { roomsAcc: roomsAcc + 1, playersAcc: playersAcc + Object.values(roomPlayers).length };
+    },
+    { roomsAcc: 0, playersAcc: 0 },
+  );
+
+export const selectRoomPlayers = (state: RootState) => state.app.rooms[state.app.room]?.players || {};
+export const selectPlayer = (state: RootState) => state.app.rooms[state.app.room]?.players[state.socket.id] || {};
 
 // // eslint-disable-next-line default-param-last
 // const appReducer = (state = appState, action) => {
@@ -132,7 +175,7 @@ export const selectAppInfos = (state: RootState) => state.app.infos;
 // });
 
 // export const reqLogin = (payload) => ({
-//   type: ev.req_LOGIN,
+//   type: ev.REQUEST_LOGIN,
 //   payload: {
 //     name: payload.name,
 //     room: payload.room,
@@ -140,7 +183,7 @@ export const selectAppInfos = (state: RootState) => state.app.infos;
 // });
 
 // export const reqLogout = () => ({
-//   type: ev.req_LOGOUT,
+//   type: ev.REQUEST_LOGOUT,
 // });
 
 // export const actions = { reqConnect, reqLogin, reqLogout };

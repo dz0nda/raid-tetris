@@ -17,7 +17,7 @@ describe('# Socket Tests - Game Events', () => {
     socket = await initSocket(3002);
 
     const payload = { name: 'name', room: 'room' };
-    socket.emit(ev.req_LOGIN, payload);
+    socket.emit(ev.REQUEST_LOGIN, payload);
   });
 
   afterAll((done) => {
@@ -30,16 +30,16 @@ describe('# Socket Tests - Game Events', () => {
     it('should start timer success', async () => {
       const payload = {};
 
-      socket.emit(ev.req_START_GAME, payload);
-      const data = await handleResponse(socket, ev.res_START_GAME);
+      socket.emit(ev.REQUEST_START_GAME, payload);
+      const data = await handleResponse(socket, ev.RESPONSE_START_GAME);
       expect(data.status).toBe(100);
     });
 
     it('should start success', async () => {
       const payload = {};
 
-      socket.emit(ev.req_START_GAME, payload);
-      const data = await handleResponse(socket, ev.res_UPDATE_GAME_SETTINGS);
+      socket.emit(ev.REQUEST_START_GAME, payload);
+      const data = await handleResponse(socket, ev.RESPONSE_UPDATE_GAME_SETTINGS);
       expect(data.status).toBe(200);
     });
 
@@ -47,8 +47,8 @@ describe('# Socket Tests - Game Events', () => {
       const socketMalicious = await initSocket(3002);
       const payload = {};
 
-      socketMalicious.emit(ev.req_START_GAME, payload);
-      const data = await handleResponse(socketMalicious, ev.res_START_GAME);
+      socketMalicious.emit(ev.REQUEST_START_GAME, payload);
+      const data = await handleResponse(socketMalicious, ev.RESPONSE_START_GAME);
       expect(data.status).toBe(500);
     });
   });
@@ -57,8 +57,8 @@ describe('# Socket Tests - Game Events', () => {
     it('should owner success', async () => {
       const payload = { newOwner: 'newName' };
 
-      socket.emit(ev.req_UPDATE_GAME_OWNER, payload);
-      const data = await handleResponse(socket, ev.res_UPDATE_GAME);
+      socket.emit(ev.REQUEST_UPDATE_GAME_OWNER, payload);
+      const data = await handleResponse(socket, ev.RESPONSE_UPDATE_GAME);
       expect(data.status).toBe(200);
     });
 
@@ -66,8 +66,8 @@ describe('# Socket Tests - Game Events', () => {
       const socketMalicious = await initSocket(3002);
       const payload = { newOwner: 'newName' };
 
-      socketMalicious.emit(ev.req_UPDATE_GAME_OWNER, payload);
-      const data = await handleResponse(socketMalicious, ev.res_UPDATE_GAME_OWNER);
+      socketMalicious.emit(ev.REQUEST_UPDATE_GAME_OWNER, payload);
+      const data = await handleResponse(socketMalicious, ev.RESPONSE_UPDATE_GAME_OWNER);
 
       console.log(data.message);
       expect(data.status).toBe(500);
@@ -80,9 +80,9 @@ describe('# Socket Tests - Game Events', () => {
         text: 'text',
       };
 
-      socket.emit(ev.req_UPDATE_GAME_CHAT, payload);
+      socket.emit(ev.REQUEST_UPDATE_GAME_CHAT, payload);
 
-      const data = await handleResponse(socket, ev.res_UPDATE_GAME_CHAT);
+      const data = await handleResponse(socket, ev.RESPONSE_UPDATE_GAME_CHAT);
 
       expect(data.status).toBe(200);
     });
@@ -91,8 +91,8 @@ describe('# Socket Tests - Game Events', () => {
       const socketMalicious = await initSocket(3002);
       const payload = { text: 'text' };
 
-      socketMalicious.emit(ev.req_UPDATE_GAME_CHAT, payload);
-      const data = await handleResponse(socketMalicious, ev.res_UPDATE_GAME_CHAT);
+      socketMalicious.emit(ev.REQUEST_UPDATE_GAME_CHAT, payload);
+      const data = await handleResponse(socketMalicious, ev.RESPONSE_UPDATE_GAME_CHAT);
       expect(data.status).toBe(500);
     });
   });

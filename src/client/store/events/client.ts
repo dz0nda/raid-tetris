@@ -35,7 +35,7 @@ export const reqLogin: IClientEvent = {
     //   },
     // });
 
-    socket.emit(ev.req_LOGIN, {
+    socket.emit(ev.REQUEST_LOGIN, {
       name,
       room,
     });
@@ -43,7 +43,7 @@ export const reqLogin: IClientEvent = {
 };
 
 export const reqLogout: IClientEvent = {
-  action: ev.req_LOGOUT,
+  action: ev.REQUEST_LOGOUT,
 
   dispatch: (socket, store, action) => {
     const state = store.getState();
@@ -58,7 +58,7 @@ export const reqLogout: IClientEvent = {
 };
 
 export const reqStartGame: IClientEvent = {
-  action: ev.req_START_GAME,
+  action: ev.REQUEST_START_GAME,
 
   dispatch: (socket, store, action) => {
     const { name } = store.getState().player;
@@ -74,7 +74,7 @@ export const reqStartGame: IClientEvent = {
 };
 
 export const reqUpdateGameChat: IClientEvent = {
-  action: ev.req_UPDATE_GAME_CHAT,
+  action: ev.REQUEST_UPDATE_GAME_CHAT,
 
   dispatch: (socket, store, action) => {
     const { room } = store.getState().game;
@@ -93,7 +93,7 @@ export const reqUpdateGameChat: IClientEvent = {
 };
 
 export const reqUpdateGameOwner: IClientEvent = {
-  action: ev.req_UPDATE_GAME_OWNER,
+  action: ev.REQUEST_UPDATE_GAME_OWNER,
 
   dispatch: (socket, store, action) => {
     const { name } = store.getState().player;
@@ -110,7 +110,7 @@ export const reqUpdateGameOwner: IClientEvent = {
 };
 
 export const reqUpdatePlayer: IClientEvent = {
-  action: ev.req_UPDATE_PLAYER,
+  action: ev.REQUEST_UPDATE_PLAYER,
 
   dispatch: (socket, store, action) => {
     const { room } = store.getState().game;

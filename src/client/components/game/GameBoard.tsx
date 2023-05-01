@@ -12,11 +12,11 @@ import useInterval from '../../hooks/useInterval';
 
 // import GameBoard from '../../components/Game/GameBoard';
 // import GameLoose from '../../components/Game/GameLoose'
-import { reqMove, selectPlayer } from '../../store/reducers/player';
+import { reqMove, selectPlayer, selectRoom } from '@/client/store/reducers/app';
 
 import Stage from '../common/Board';
-import { useAppDispatch, useAppSelector } from '@client/store';
-import { selectRoomSettings } from '@client/store/reducers/game';
+import { useAppDispatch, useAppSelector } from '@/client/store';
+// import { selectRoomSettings } from '@/client/store/reducers/game';
 
 const useStyles = createUseStyles({
   root: {
@@ -90,12 +90,12 @@ function GameBoardComponent(props: any) {
 export const GameBoard: FC = () => {
   // const { settings, player, reqMove } = props;
   const player = useAppSelector(selectPlayer);
-  const settings = useAppSelector(selectRoomSettings);
+  const room = useAppSelector(selectRoom);
   const dispatch = useAppDispatch();
 
   console.log(player);
 
-  const { started, nbPlayers, dropTime } = settings;
+  const { started, nbPlayers, dropTime } = room.settings;
   const { stage, stagePiece, score, lines, mallus, rank, loose, win } = player;
   const [open, setOpen] = React.useState(false);
 

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Aside, Group, Tabs, Text, createStyles, getStylesRef, rem } from '@mantine/core';
+import { Aside, Group, Tabs, Text, createStyles, getStylesRef, rem, Button, Tooltip } from '@mantine/core';
 // import {
 //   IconShoppingCart,
 //   IconLicense,
@@ -23,9 +23,14 @@ import { CustomTabs } from '../common/CustomTabs';
 // import GameChat from './GameChat';
 import { RoomInfo } from './RoomInfo';
 import { GameRoom } from './GameRoom';
-import { useAppSelector } from '../../store';
-import { selectPlayer } from '../../store/reducers/player';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { selectPlayer, selectRoomOwner, reqStartGame } from '@/client/store/reducers/app';
 import { Info } from '../common/Info';
+
+import { playersData } from '@/client/helpers/data';
+
+import { Chat } from '@/client/components/chat/Chat';
+import { GamePlayers } from './Players';
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -121,18 +126,40 @@ export const GameAside: FC = () => {
   // const [section, setSection] = useState<'account' | 'general'>('account');
   // const [active, setActive] = useState('Billing');
   const player = useAppSelector(selectPlayer);
+  const owner = useAppSelector(selectRoomOwner);
+  const dispatch = useAppDispatch();
 
   return (
-    <Aside height={840} width={{ sm: 300, md: 500 }} p="md" className={classes.navbar}>
+    <Aside width={{ sm: 300, md: 500 }} p="md" className={classes.navbar}>
       <Aside.Section>
-        <Text weight={500} size="sm" className={classes.title} color="dimmed" mb="xs">
-          {player?.name || 'Player'}
-        </Text>
+        <Group>
+          <Text weight={500} size="sm" className={classes.title} color="dimmed" mb="xs">
+            {player?.name || 'Player'}
+          </Text>
+          <Tooltip label="Tooltip" disabled={owner === player?.name} withArrow>
+            <Button disabled={owner !== player?.name} onClick={() => dispatch(reqStartGame({}))}>
+              Start
+            </Button>
+          </Tooltip>
+        </Group>
       </Aside.Section>
 
       <Aside.Section className={classes.footer}>
-        <Group>
-          {stats.map((stat) => (
+        <Group grow>
+          {[
+            {
+              title: 'Score',
+              value: `${player?.score}`,
+            },
+            {
+              title: 'Level',
+              value: `${player?.level}`,
+            },
+            {
+              title: 'Rank',
+              value: `${player?.rank}`,
+            },
+          ].map((stat) => (
             <Info {...stat} />
           ))}
         </Group>
@@ -175,9 +202,12 @@ export const GameAside: FC = () => {
             <RoomInfo />
           </Tabs.Panel>
           <Tabs.Panel value="players">
-            <GameRoom />
+            {/* <GameRoom /> */}
+            <GamePlayers data={playersData} />
           </Tabs.Panel>
-          <Tabs.Panel value="messages">{/* <GameChat /> */}</Tabs.Panel>
+          <Tabs.Panel value="messages">
+            <Chat />
+          </Tabs.Panel>
         </CustomTabs>
       </Aside.Section>
     </Aside>

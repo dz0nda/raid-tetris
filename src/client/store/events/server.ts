@@ -25,7 +25,7 @@ export const resInfos: IServerEvent = {
 };
 
 export const resLogin: IServerEvent = {
-  action: ev.res_LOGIN,
+  action: ev.RESPONSE_LOGIN,
 
   dispatch: (_, data, dispatch) => {
     // const { status, payload } = data;
@@ -63,7 +63,7 @@ export const resLogin: IServerEvent = {
 };
 
 export const resLogout: IServerEvent = {
-  action: ev.res_LOGOUT,
+  action: ev.RESPONSE_LOGOUT,
 
   dispatch: (_, data, dispatch) => {
     const { status } = data;
@@ -117,7 +117,7 @@ export const resLogout: IServerEvent = {
 };
 
 export const resStartGame: IServerEvent = {
-  action: ev.res_START_GAME,
+  action: ev.RESPONSE_START_GAME,
 
   dispatch: (_, data, dispatch) => {
     const { status, payload } = data;
@@ -153,7 +153,7 @@ export const resStartGame: IServerEvent = {
 };
 
 export const resUpdateGame: IServerEvent = {
-  action: ev.res_UPDATE_GAME,
+  action: ev.RESPONSE_UPDATE_GAME,
 
   dispatch: (_, data, dispatch) => {
     const { status, payload } = data;
@@ -182,7 +182,7 @@ export const resUpdateGame: IServerEvent = {
 };
 
 export const resUpdateGameChat: IServerEvent = {
-  action: ev.res_UPDATE_GAME_CHAT,
+  action: ev.RESPONSE_UPDATE_GAME_CHAT,
 
   dispatch: (_, data, dispatch) => {
     const { status, payload } = data;
@@ -199,7 +199,7 @@ export const resUpdateGameChat: IServerEvent = {
 };
 
 export const resUpdateGamePlayers: IServerEvent = {
-  action: ev.res_UPDATE_GAME_PLAYERS,
+  action: ev.RESPONSE_UPDATE_GAME_PLAYERS,
 
   dispatch: (_, data, dispatch) => {
     const { status, payload } = data;
@@ -217,7 +217,7 @@ export const resUpdateGamePlayers: IServerEvent = {
 };
 
 export const resUpdateGameSettings: IServerEvent = {
-  action: ev.res_UPDATE_GAME_SETTINGS,
+  action: ev.RESPONSE_UPDATE_GAME_SETTINGS,
 
   dispatch: (_, data, dispatch) => {
     const { payload } = data;
@@ -230,7 +230,7 @@ export const resUpdateGameSettings: IServerEvent = {
 };
 
 export const resUpdatePlayer: IServerEvent = {
-  action: ev.res_UPDATE_PLAYER,
+  action: ev.RESPONSE_UPDATE_PLAYER,
 
   dispatch: (_, data, dispatch) => {
     const { status, message, payload } = data;

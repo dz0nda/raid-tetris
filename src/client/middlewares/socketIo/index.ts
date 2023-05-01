@@ -1,38 +1,50 @@
 import { Socket, io } from 'socket.io-client';
 import { push } from 'connected-react-router';
 // import serverEventHandler from './middleware/server';
-import { IClientEvent, IEvent, IServerEvent, IStateEvent } from '@client/store/events/event.interface';
-import { updateConnection, updateInfos } from '../../../store/reducers/app';
+import { IClientEvent, IEvent, IServerEvent, IStateEvent } from '@/client/store/events/event.interface';
+
+import { updateConnection } from '@/client/store/reducers/socket';
+import {
+  updateGame,
+  updateGameChat,
+  updateGamePlayers,
+  updateGameSettings,
+  updatePlayer,
+} from '@/client/store/reducers/app';
+// import { updatePlayer } from '@/client/store/reducers/player';
 
 import ev from '../../../../shared/events';
-import { updateGameChat, updateGameSettings } from '../../../store/reducers/game';
-import { updatePlayer } from '../../../store/reducers/player';
-// import { resLogin } from '@client/store/events/server';
+// import { resLogin } from '@/client/store/events/server';
 
 export enum ESocketEvent {
-  CONNECT = 'connect',
-  CONNECT_ERROR = 'connect_error',
-  CONNECT_TIMEOUT = 'connect_timeout',
-  RECONNECT = 'reconnect',
-  RECONNECT_ATTEMPT = 'reconnect_attempt',
-  RECONNECTING = 'reconnecting',
-  RECONNECT_ERROR = 'reconnect_error',
-  RECONNECT_FAILED = 'reconnect_failed',
-  DISCONNECT = 'disconnect',
+  SOCKET_CONNECTED = 'connect',
+  SOCKET_CONNECTION_ERROR = 'connect_error',
+  SOCKET_CONNECTION_TIMEOUT = 'connect_timeout',
+  SOCKET_RECONNECTED = 'reconnect',
+  SOCKET_RECONNECTION_ATTEMPT = 'reconnect_attempt',
+  SOCKET_RECONNECTING = 'reconnecting',
+  SOCKET_RECONNECTION_ERROR = 'reconnect_error',
+  SOCKET_RECONNECTION_FAILED = 'reconnect_failed',
+  SOCKET_DISCONNECTED = 'disconnect',
 }
 
 export enum EServerEvent {
   res_UPDATE_APP_INFOS = '@INFOS',
-  res_LOGIN = '@LOGIN',
-  res_LOGOUT = '@LOGOUT',
-  res_UPDATE_GAME = '@UPDATE_GAME',
-  res_UPDATE_GAME_OWNER = '@UPDATE_GAME_OWNER',
-  res_UPDATE_GAME_PLAYERS = '@UPDATE_GAME_PLAYERS',
-  res_UPDATE_GAME_SETTINGS = '@UPDATE_GAME_SETTINGS',
-  res_UPDATE_GAME_CHAT = '@UPDATE_GAME_CHAT',
-  res_START_GAME = '@START_GAME',
-  res_UPDATE_PLAYER = '@UPDATE_PLAYER',
+  RESPONSE_LOGIN = '@LOGIN',
+  RESPONSE_LOGOUT = '@LOGOUT',
+  RESPONSE_UPDATE_GAME = '@UPDATE_GAME',
+  RESPONSE_UPDATE_GAME_OWNER = '@UPDATE_GAME_OWNER',
+  RESPONSE_UPDATE_GAME_PLAYERS = '@UPDATE_GAME_PLAYERS',
+  RESPONSE_UPDATE_GAME_SETTINGS = '@UPDATE_GAME_SETTINGS',
+  RESPONSE_UPDATE_GAME_CHAT = '@UPDATE_GAME_CHAT',
+  RESPONSE_START_GAME = '@START_GAME',
+  RESPONSE_UPDATE_PLAYER = '@UPDATE_PLAYER',
 }
+
+// export enum EClientEvent {
+//   REQUEST_LOGIN = ev.REQUEST_LOGIN,
+//   REQUEST_LOGOUT = ev.REQUEST_LOGOUT,
+// }
 
 export const defaultSocketEvents: IEvent[] = [
   {
@@ -72,12 +84,12 @@ export const defaultSocketEvents: IEvent[] = [
 
 export const initialStateEvents: IStateEvent[] = [
   {
-    action: ESocketEvent.CONNECT,
+    action: ESocketEvent.SOCKET_CONNECTED,
     dispatch: (socket, store, _next, _action) => (_socket: Socket) =>
       store.dispatch(updateConnection({ id: socket.id, connected: true, isLoading: false })),
   },
   {
-    action: ESocketEvent.DISCONNECT,
+    action: ESocketEvent.SOCKET_DISCONNECTED,
     dispatch: (socket, store, _next, _action) => (_socket: Socket) =>
       store.dispatch(updateConnection({ id: socket.id, connected: false, isLoading: true })),
   },
@@ -86,42 +98,54 @@ export const initialStateEvents: IStateEvent[] = [
 export const initialServerEvents: IServerEvent[] = [
   {
     action: ev.res_UPDATE_APP_INFOS,
-    dispatch: (_, data, dispatch) => dispatch(updateInfos(data.payload)),
+    dispatch: (_, data, dispatch) => {}, //dispatch(updateInfos(data.payload)),
   },
   {
-    action: ev.res_LOGIN,
+    action: ev.RESPONSE_LOGIN,
     dispatch: (_, data, dispatch) => {
       console.log('resLogin3423', data);
-      dispatch(push(`/${data.payload.room}[${data.payload.name}]`));
+      dispatch(push(`${data.payload.room}[${data.payload.name}]`));
     },
   },
   {
-    action: ev.res_LOGOUT,
-    dispatch: (_, data, dispatch) => dispatch(push(`/${data.payload.room}[${data.payload.name}]`)),
+    action: ev.RESPONSE_LOGOUT,
+    dispatch: (_, data, dispatch) => dispatch(push('/')),
   },
   {
-    action: ev.res_START_GAME,
-    dispatch: (_, data, dispatch) => dispatch(push(`/${data.payload.room}[${data.payload.name}]`)),
+    action: ev.RESPONSE_START_GAME,
+    dispatch: (_, data, dispatch) => dispatch(updateGamePlayers(data)),
   },
   {
-    action: ev.res_UPDATE_GAME,
-    dispatch: (_, data, dispatch) => dispatch(push(`/${data.payload.room}[${data.payload.name}]`)),
+    action: ev.RESPONSE_UPDATE_GAME,
+    dispatch: (_, data, dispatch) => dispatch(updateGame(data.payload)),
   },
   {
-    action: ev.res_UPDATE_GAME_CHAT,
+    action: ev.RESPONSE_UPDATE_GAME_CHAT,
     dispatch: (_, data, dispatch) => dispatch(updateGameChat(data.payload)),
   },
   {
-    action: ev.res_UPDATE_GAME_PLAYERS,
+    action: ev.RESPONSE_UPDATE_GAME_PLAYERS,
     dispatch: (_, data, dispatch) => dispatch(push(`/${data.payload.room}[${data.payload.name}]`)),
   },
   {
-    action: ev.res_UPDATE_GAME_SETTINGS,
+    action: ev.RESPONSE_UPDATE_GAME_SETTINGS,
     dispatch: (_, data, dispatch) => dispatch(updateGameSettings(data.payload)),
   },
   {
-    action: ev.res_UPDATE_PLAYER,
+    action: ev.RESPONSE_UPDATE_PLAYER,
     dispatch: (_, data, dispatch) => dispatch(updatePlayer(data.payload)),
+  },
+];
+
+export const initialClientEvents: IClientEvent[] = [
+  {
+    action: ev.REQUEST_LOGIN,
+    dispatch: (socket, store, action) => socket.emit(ev.REQUEST_LOGIN, action.payload),
+  },
+
+  {
+    action: ev.REQUEST_START_GAME,
+    dispatch: (socket, store, action) => socket.emit(ev.REQUEST_START_GAME, action.payload),
   },
 ];
 
@@ -220,183 +244,75 @@ export const getSocketEvents = (id: string, key: EVENTS_ENUM) => EVENTS[id][key]
 
 export function socketio(
   initializedSocket = null,
-  clientEvents = defaultSocketEvents,
+  clientEvents = initialClientEvents,
   serverEvents = initialServerEvents,
   stateEvents = initialStateEvents,
   id = DEFAULT_SOCKET_ID,
 ) {
   SOCKET_INITIALIZED[id] = false;
   SOCKETS[id] = initializedSocket;
+
+  const host = process.env.REACT_APP_SOCKET_HOST || '0.0.0.0';
+  const port = process.env.REACT_APP_SOCKET_PORT || '3000';
+  const namespace = process.env.REACT_APP_SOCKET_NAMESPACE || '';
+
   registerSocketEvents(id, clientEvents, serverEvents, stateEvents);
 
   return (store: any) => (next: any) => (action: any) => {
     const { payload } = action;
 
-    if (action.type === `app/reqConnect` && !SOCKET_INITIALIZED[id]) {
+    if (action.type === `socket/reqConnect` && !SOCKET_INITIALIZED[id]) {
       if (getSocket(id) === null) {
-        SOCKETS[id] = io(`http://${payload.host}:${payload.port}/${payload.namespace || ''}`, {
+        SOCKETS[id] = io(`http://${host}:${port}/${namespace || ''}`, {
           transports: ['websocket'],
         });
-        const socket = getSocket(id);
-
-        // registerServerEvents(id, getSocketEvents(id, SERVER_EVENT_KEY), store.dispatch);
-        /** Register events **/
-        if (socket) {
-          getSocketEvents(id, STATE_EVENT_KEY).forEach((stateEvent) => {
-            const { action, dispatch } = stateEvent as IStateEvent;
-
-            // const eventAction = evt.dispatch;
-            socket.on(action, dispatch(socket, store, next, action));
-            // {
-            // switch (action as ESocketEvent) {
-            //   case ESocketEvent.CONNECT:
-            //     console.log('In: Socket is connected.');
-            //     store.dispatch(updateConnection({ id: socket.id, connected: true, isLoading: false }));
-            //     break;
-            //   case ESocketEvent.DISCONNECT:
-            //     console.log('Socket is disconnected.');
-            //     store.dispatch(updateConnection({ id: socket.id, connected: false, isLoading: true }));
-            //     break;
-            //   default:
-            //     break;
-            // }
-            //     dispatch(socket, store, next, action);
-            //   });
-          });
-
-          getSocketEvents(id, SERVER_EVENT_KEY).forEach((serverEvent) => {
-            const { action, dispatch } = serverEvent as IServerEvent;
-
-            socket.on(action, (data: any) => {
-              console.log('acctionnn', action);
-              dispatch(action, data, store.dispatch);
-            });
-            // {
-            //   console.log(serverEvent, data);
-            //   const { status, payload } = data;
-
-            //   if (status === 500) {
-            //     store.dispatch({ type: 'app/error', payload });
-            //   } else {
-            //     switch (event as EServerEvent) {
-            //       case EServerEvent.res_UPDATE_APP_INFOS:
-            //         store.dispatch(updateInfos(payload));
-            //         break;
-            //       case EServerEvent.res_LOGIN:
-            //         console.log('res_LOGIN', data);
-            //         store.dispatch(push(`/${payload.room}[${payload.name}]`));
-            //         break;
-            //       case EServerEvent.res_LOGOUT:
-            //         store.dispatch(updateGame(gameState));
-            //         store.dispatch(push('/'));
-            //         break;
-            //       case EServerEvent.res_START_GAME:
-            //         if (status === 100) {
-            //         } else {
-            //           store.dispatch(updateGame(gameState));
-            //           store.dispatch(push('/'));
-            //         }
-            //         break;
-            //       case EServerEvent.res_UPDATE_PLAYER:
-            //         store.dispatch(updatePlayer(payload.player));
-            //         store.dispatch(push('/'));
-            //         break;
-            //       default:
-            //         break;
-            //     }
-            //   }
-            //   // dispatch(action, data, store.dispatch);
-            // });
-          });
-        }
-
-        // registerStateEvents(id, getSocketEvents(id, STATE_EVENT_KEY), {
-        //   store,
-        //   next,
-        //   action,
-        // });
-
-        //
-        // Socket has been initialized, but is disconnected
-        //
-      } else {
-        const socket = getSocket(id);
-        if (socket) {
-          socket.connect();
-        }
       }
 
-      //
-      // Toggle status from disconnected, to connected ( false -> true )
-      //
+      const socket = getSocket(id);
+
+      getSocketEvents(id, STATE_EVENT_KEY).map((stateEvent) => {
+        const { action, dispatch } = stateEvent as IStateEvent;
+
+        console.log('got state event: ', action, dispatch);
+
+        socket?.on(action, dispatch(socket, store, next, action));
+      });
+
+      getSocketEvents(id, SERVER_EVENT_KEY).forEach((serverEvent) => {
+        const { action, dispatch } = serverEvent as IServerEvent;
+
+        socket?.on(action, (data: any) => dispatch(action, data, store.dispatch));
+      });
+      // } else {
+      //   const socket = getSocket(id);
+      //   if (socket) {
+      //     socket.connect();
+      //   }
+      // }
+
       toggleInitStatus(id);
     }
 
     const socket = getSocket(id);
 
+    console.log('socketio type: ', socket, getInitStatus(id));
     if (socket != null && getInitStatus(id) === true) {
-      console.log('socketio type: ', action.type);
-      switch (action.type) {
-        //
-        // Server Events
-        //
-        // case `${id}_${SERVER_EVENT}`:
-        //   serverEventHandler(getSocketEvents(id, SERVER_EVENT_KEY) as IServerEvent[], store.dispatch)(
-        //     action.payload.type,
-        //     action.payload.data,
-        //   );
-        //   // getSocketEvents(id, SERVER_EVENT_KEY).some((evt) => {
-        //   //   const event = evt as IServerEvent;
+      getSocketEvents(id, CLIENT_EVENT_KEY).some((evt) => {
+        const event = evt as IClientEvent;
 
-        //   //   if (event.action === action.payload.type) {
-        //   //     event.dispatch(action.payload.type, action.payload.data, store.dispatch);
-        //   //   }
-        //   // });
-        //   break;
+        if (action.type === event.action) {
+          // clientEventHandler(event, socket, store, action);
+          if (event.dispatch) {
+            console.log('socketio middleware: ', action.type, action.payload);
+            event.dispatch(socket, store, action);
+          } else {
+            socket.emit(action.type, action.payload);
+          }
 
-        //
-        // State Events
-        // //
-        // case `${id}_${STATE_EVENT_KEY}`:
-        //   getSocketEvents(id, STATE_EVENT_KEY).some((evt) => {
-        //     const event = evt as IStateEvent;
-
-        //     if (event.action.toString() === action.payload.type) {
-        //       event.dispatch(socket, store, next, action)();
-        //       return true;
-        //     }
-        //     return false;
-        //   });
-        //   break;
-
-        // //
-        // // socketID_DISCONNECT ( disconnect event )
-        // //
-        // case `${id}_DISCONNECT`:
-        //   socket.disconnect();
-        //   toggleInitStatus(id);
-        //   break;
-
-        //
-        // Client Events
-        //
-        default:
-          getSocketEvents(id, CLIENT_EVENT_KEY).some((evt) => {
-            const event = evt as IClientEvent;
-
-            if (action.type === event.action) {
-              // clientEventHandler(event, socket, store, action);
-              if (event.dispatch) {
-                event.dispatch(socket, store, action);
-              } else {
-                socket.emit(action.type, action.payload);
-              }
-
-              return true;
-            }
-            return false;
-          });
-      }
+          return true;
+        }
+        return false;
+      });
     }
 
     return next(action);

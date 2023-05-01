@@ -9,6 +9,8 @@ import Divider from '@mui/material/Divider';
 import { useAppDispatch } from '../store';
 import { reqLogin } from '../store/reducers/app';
 
+import { InputWithButton } from './Test';
+
 // import { actions } from '../store/reducers/app';
 
 // function generate(element) {
@@ -58,6 +60,7 @@ export const Login: FC = () => {
         </Box>
       </Box>
       <Divider />
+      <InputWithButton />
       {/* <Box
         sx={{
           marginTop: 4,

@@ -3,7 +3,7 @@ import express, { Application } from 'express';
 const http = require('http');
 const logger = require('pino')();
 
-export default class Server {
+export class HttpServer {
   host: string;
   port: number;
   app: Application;
@@ -16,15 +16,15 @@ export default class Server {
     this.server = http.createServer(this.app);
   }
 
-  listen() {
+  public listen() {
     this.server.listen({ host: this.host, port: this.port }, () => {
       logger.info(`App running on http://${this.host}:${this.port}`);
     });
 
-    this.app.get;
+    // this.app.get;
   }
 
-  close() {
+  public close() {
     this.server.close((err: Error) => {
       logger.info('server closed');
       process.exit(err ? 1 : 0);

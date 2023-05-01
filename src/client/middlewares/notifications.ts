@@ -10,22 +10,22 @@ export const notificationsMiddleware: Middleware = (store) => (next) => (action)
   const isConnected = store.getState().app.isConnected;
 
   switch (action.type) {
-    case 'app/reqConnect':
+    case 'socket/reqConnect':
       // if (!isConnected) {
-      // notifications.show({
-      //   id: 'load-socket',
-      //   title: 'SOCKET',
-      //   message: 'Trying to login...',
-      //   loading: true,
-      //   autoClose: true,
-      //   withCloseButton: false,
-      // });
+      notifications.show({
+        // id: 'load-socket',
+        title: 'SOCKET',
+        message: 'Trying to login...',
+        loading: true,
+        autoClose: 1000,
+        withCloseButton: false,
+      });
       // }
       break;
 
-    case 'app/updateConnection':
+    case 'socket/updateConnection':
       notifications.show({
-        id: 'load-socke',
+        // id: 'load-socket',
         title: 'SOCKET',
         message: 'Connected',
         color: 'teal',
@@ -43,7 +43,7 @@ export const notificationsMiddleware: Middleware = (store) => (next) => (action)
       });
       break;
 
-    case ev.res_LOGIN:
+    case ev.RESPONSE_LOGIN:
       console.log('here we go again!');
 
       if (action.payload.status !== 200) {
@@ -72,5 +72,5 @@ export const notificationsMiddleware: Middleware = (store) => (next) => (action)
       break;
   }
 
-  // next(action);
+  next(action);
 };

@@ -1,15 +1,13 @@
-const io = require('socket.io-client');
+import { Socket, io } from 'socket.io-client';
 
 // initSocket returns a promise
 // success: resolve a new socket object
 // fail: reject a error
-export const initSocket = (port) =>
+export const initSocket = (port: number): Promise<Socket> =>
   new Promise((resolve, reject) => {
     // create socket for communication
     const socket = io(`http://0.0.0.0:${port}`, {
-      'reconnection delay': 0,
-      'reopen delay': 0,
-      'force new connection': true,
+      transports: ['websocket'],
     });
 
     // define event handler for sucessfull connection
@@ -26,7 +24,7 @@ export const initSocket = (port) =>
 // destroySocket returns a promise
 // success: resolve true
 // fail: resolve false
-export const destroySocket = (socket) =>
+export const destroySocket = (socket: Socket): Promise<boolean> =>
   new Promise((resolve) => {
     // check if socket connected
     if (socket && socket.connected) {
@@ -39,7 +37,7 @@ export const destroySocket = (socket) =>
     }
   });
 
-export const handleResponse = (socket, event) => {
+export const handleResponse = (socket: Socket, event: string): Promise<any> => {
   return new Promise((resolve) => {
     socket.on(event, (data) => {
       resolve(data);

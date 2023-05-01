@@ -1,9 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Piece } from './Piece';
-import Player from './Player';
+import { Piece } from '../Piece';
+import Player from '../Player';
+import Game from '../Game';
 
-export default class Game {
+export class Room {
   room: string;
+  password: string;
   settings: {
     owner: string;
     started: boolean;
@@ -14,15 +16,10 @@ export default class Game {
     pieces: Piece[];
   };
   players: { [key: string]: Player };
-  chat: {
-    id: string;
-    user: string;
-    text: string;
-    date: string;
-  }[];
 
-  constructor(room: string, owner: string) {
+  constructor(room: string, owner: string, password = '') {
     this.room = room;
+    this.password = password;
     this.settings = {
       owner,
       started: false,
@@ -33,7 +30,6 @@ export default class Game {
       pieces: [],
     };
     this.players = {};
-    this.chat = [];
   }
 
   /* Room */
@@ -103,7 +99,7 @@ export default class Game {
 
     this.getPlayers()[id] = new Player(name);
     this.setNbPlayers(this.getNbPlayers() + 1);
-    this.setMessage('server', `${name} joined the room`);
+    // this.setMessage('server', `${name} joined the room`);
   }
 
   unsetPlayer(id: string) {
@@ -115,7 +111,7 @@ export default class Game {
 
     const name = this.getPlayer(id).getName();
 
-    this.setMessage('server', `${this.getPlayer(id).name} leaved the room`);
+    // this.setMessage('server', `${this.getPlayer(id).name} leaved the room`);
     delete this.getPlayers()[id];
     this.setNbPlayers(this.getNbPlayers() - 1);
 
@@ -144,7 +140,7 @@ export default class Game {
 
   setOwner(name: string) {
     this.settings.owner = name;
-    this.setMessage('server', `${this.settings.owner} is the new owner`);
+    // this.setMessage('server', `${this.settings.owner} is the new owner`);
   }
 
   setRandomOwner() {
@@ -171,18 +167,18 @@ export default class Game {
 
   /* Chat */
 
-  setMessage(user: string, text: string) {
-    this.chat.push({
-      id: uuidv4(),
-      user,
-      text,
-      date: `${new Date().getHours()}h : ${new Date().getMinutes() < 10 ? '0' : ''}${new Date().getMinutes()}`,
-    });
-  }
+  // setMessage(user: string, text: string) {
+  //   this.chat.push({
+  //     id: uuidv4(),
+  //     user,
+  //     text,
+  //     date: `${new Date().getHours()}h : ${new Date().getMinutes() < 10 ? '0' : ''}${new Date().getMinutes()}`,
+  //   });
+  // }
 
-  getMessages() {
-    return this.chat;
-  }
+  // getMessages() {
+  //   return this.chat;
+  // }
 
   /* Game */
 

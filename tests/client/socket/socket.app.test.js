@@ -56,11 +56,11 @@ describe('# Socket Tests - App Events', () => {
       });
     });
 
-    it('should handle res_LOGIN', () => {
+    it('should handle RESPONSE_LOGIN', () => {
       mockMiddleware(store)(() => true)({
         type: `${id}_*`,
         payload: {
-          type: ev.res_LOGIN,
+          type: ev.RESPONSE_LOGIN,
           data: {
             status: 200,
             payload: {
@@ -76,7 +76,7 @@ describe('# Socket Tests - App Events', () => {
       mockMiddleware(store)(() => true)({
         type: `${id}_*`,
         payload: {
-          type: ev.res_LOGIN,
+          type: ev.RESPONSE_LOGIN,
           data: {
             status: 500,
             payload: {},
@@ -87,11 +87,11 @@ describe('# Socket Tests - App Events', () => {
       expect(store.dispatch).toHaveBeenCalled();
     });
 
-    it('should handle res_LOGOUT', () => {
+    it('should handle RESPONSE_LOGOUT', () => {
       mockMiddleware(store)(() => true)({
         type: `${id}_*`,
         payload: {
-          type: ev.res_LOGOUT,
+          type: ev.RESPONSE_LOGOUT,
           data: {
             status: 200,
             payload: {},
@@ -104,7 +104,7 @@ describe('# Socket Tests - App Events', () => {
       mockMiddleware(store)(() => true)({
         type: `${id}_*`,
         payload: {
-          type: ev.res_LOGOUT,
+          type: ev.RESPONSE_LOGOUT,
           data: {
             status: 500,
             payload: {

@@ -1,10 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React, { useEffect, useRef, useState, ChangeEvent } from 'react';
 import { createUseStyles } from 'react-jss';
 
 // import { makeStyles } from '@material-ui/core/styles';
-import Telegram from '@mui/icons-material/Telegram';
 // import { chatStatePropTypes } from '../../reducers/reducers.types';
 
 import {
@@ -18,11 +15,11 @@ import {
   // IconButton,
   Box,
 } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '@/client/store';
+import { reqChat, selectAppChats } from '@/client/store/reducers/app';
 
-import { actions } from '../../store/reducers/game';
-import { chatStatePropTypes } from '../../store/reducers/types';
+// import { actions } from '@/client/store/reducers/app';
 
-import IconButton from '../common/IconButton';
 // import RedIconButton from '../Common/RedIconButton'
 
 const useStyles = createUseStyles({
@@ -49,31 +46,34 @@ const useStyles = createUseStyles({
   },
 });
 
-function GameChat(props) {
-  const { chat, reqChat } = props;
+function GameChat() {
+  const chat = useAppSelector(selectAppChats);
+  const dispatch = useAppDispatch();
+  // const { chat, reqChat } = props;
+
   const [message, setMessage] = useState('');
   const scrollRef = useRef(null);
   const classes = useStyles();
 
-  const handleMessage = (e) => {
+  const handleMessage = (e: ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   };
 
   const handleSubmit = () => {
     if (!message) return;
 
-    reqChat({ message });
+    dispatch(reqChat({ message }));
 
     setMessage('');
   };
 
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behaviour: 'smooth' });
-    }
+    // if (scrollRef.current) {
+    //   scrollRef.current.scrollIntoView({ behaviour: 'smooth' });
+    // }
   }, [chat]);
 
-  const renderMessage = ({ id, user, date, text }) => {
+  const renderMessage = ({ id, user, date, text }: { id: string; user: string; date: string; text: string }) => {
     return (
       <ListItem key={id}>
         <Grid container>
@@ -118,9 +118,9 @@ function GameChat(props) {
             }
           }}
         />
-        <IconButton className="chatBoxButton" onClick={handleSubmit}>
+        {/* <IconButton className="chatBoxButton" onClick={handleSubmit}>
           <Telegram />
-        </IconButton>
+        </IconButton> */}
         {/* <RedIconButton className="chatBoxButton" onClick={handleSubmit}>
           <Telegram />
         </RedIconButton> */}
@@ -136,7 +136,7 @@ function GameChat(props) {
             <Grid container alignItems="center">
               <Grid xs>
                 <List className={classes.list}>
-                  {chat.map((entryMessage) => renderMessage(entryMessage))}
+                  {/* {chat.map((entryMessage) => renderMessage(entryMessage))} */}
                   <div ref={scrollRef} />
                 </List>
                 <CardContent>
@@ -156,18 +156,18 @@ function GameChat(props) {
   );
 }
 
-GameChat.propTypes = {
-  chat: chatStatePropTypes.isRequired,
-  reqChat: PropTypes.func.isRequired,
-};
+// GameChat.propTypes = {
+//   chat: chatStatePropTypes.isRequired,
+//   reqChat: PropTypes.func.isRequired,
+// };
 
-// export default GameChat
-const mapStateToProps = (state) => ({
-  chat: state.game.chat,
-});
+// // export default GameChat
+// const mapStateToProps = (state) => ({
+//   chat: state.game.chat,
+// });
 
-const mapDispatchToProps = {
-  reqChat: actions.reqChat,
-};
+// const mapDispatchToProps = {
+//   reqChat: actions.reqChat,
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameChat);
+// export default connect(mapStateToProps, mapDispatchToProps)(GameChat);

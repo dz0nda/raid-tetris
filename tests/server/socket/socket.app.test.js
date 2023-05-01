@@ -1,4 +1,6 @@
 // import 'regenerator-runtime/runtime';
+import { Socket, io } from 'socket.io-client';
+
 import params from '../../../src/shared/params';
 import RedTetris from '../../../src/server/app/RedTetris';
 
@@ -12,7 +14,6 @@ const { host, port } = params.server;
 
 describe('# Socket Tests - App Events', () => {
   const server = new RedTetris('0.0.0.0', 3001);
-  let socket;
 
   beforeEach(async () => {
     // server.listen({ host, port: 3001 }, () => {
@@ -37,8 +38,8 @@ describe('# Socket Tests - App Events', () => {
         room: randomstring.generate(7),
       };
 
-      socket.emit(ev.req_LOGIN, payload);
-      const data = await handleResponse(socket, ev.res_LOGIN);
+      socket.emit(ev.REQUEST_LOGIN, payload);
+      const data = await handleResponse(socket, ev.RESPONSE_LOGIN);
       expect(data.status).toBe(200);
     });
 
@@ -48,9 +49,9 @@ describe('# Socket Tests - App Events', () => {
         room: '',
       };
 
-      socket.emit(ev.req_LOGIN, payload);
+      socket.emit(ev.REQUEST_LOGIN, payload);
 
-      const data = await handleResponse(socket, ev.res_LOGIN);
+      const data = await handleResponse(socket, ev.RESPONSE_LOGIN);
 
       expect(data.status).toBe(500);
     });
@@ -63,12 +64,12 @@ describe('# Socket Tests - App Events', () => {
         room: randomstring.generate(7),
       };
 
-      socket.emit(ev.req_LOGIN, payload);
-      let data = await handleResponse(socket, ev.res_LOGIN);
+      socket.emit(ev.REQUEST_LOGIN, payload);
+      let data = await handleResponse(socket, ev.RESPONSE_LOGIN);
       expect(data.status).toBe(200);
 
-      socket.emit(ev.req_LOGOUT, payload);
-      data = await handleResponse(socket, ev.res_LOGOUT);
+      socket.emit(ev.REQUEST_LOGOUT, payload);
+      data = await handleResponse(socket, ev.RESPONSE_LOGOUT);
 
       console.log(data);
       expect(data.status).toBe(200);
@@ -78,28 +79,28 @@ describe('# Socket Tests - App Events', () => {
       const room = randomstring.generate(7);
       const socketNew = await initSocket(3001);
 
-      socket.emit(ev.req_LOGIN, {
+      socket.emit(ev.REQUEST_LOGIN, {
         name: randomstring.generate(7),
         room,
       });
-      let data = await handleResponse(socket, ev.res_LOGIN);
+      let data = await handleResponse(socket, ev.RESPONSE_LOGIN);
       expect(data.status).toBe(200);
 
-      socketNew.emit(ev.req_LOGIN, {
+      socketNew.emit(ev.REQUEST_LOGIN, {
         name: randomstring.generate(7),
         room,
       });
-      data = await handleResponse(socketNew, ev.res_LOGIN);
+      data = await handleResponse(socketNew, ev.RESPONSE_LOGIN);
       expect(data.status).toBe(200);
 
-      socket.emit(ev.req_LOGOUT, {});
-      data = await handleResponse(socket, ev.res_LOGOUT);
+      socket.emit(ev.REQUEST_LOGOUT, {});
+      data = await handleResponse(socket, ev.RESPONSE_LOGOUT);
       expect(data.status).toBe(200);
     });
 
     it('should logout error', async () => {
-      socket.emit(ev.req_LOGOUT, {});
-      const data = await handleResponse(socket, ev.res_LOGOUT);
+      socket.emit(ev.REQUEST_LOGOUT, {});
+      const data = await handleResponse(socket, ev.RESPONSE_LOGOUT);
       expect(data.status).toBe(500);
     });
   });

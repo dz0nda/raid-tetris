@@ -43,14 +43,14 @@ export const gameSlice = createSlice({
   name: 'game',
   initialState: gameState,
   reducers: {
-    reqStartGame(state, action) {},
-    reqOwner(state, action) {},
-    reqChat(state, action) {},
+    reqStartGame(_state, _action) {},
+    reqOwner(_state, _action) {},
+    reqChat(_state, _action) {},
     updateGame(state, action) {
-      state.room = action.payload.room;
-      state.settings = action.payload.settings;
-      state.players = action.payload.players;
-      state.chat = action.payload.chat;
+      state.room = action.payload.game.room;
+      state.settings = action.payload.game.settings;
+      state.players = action.payload.game.players;
+      state.chat = action.payload.game.chat;
     },
     updateGameSettings(state, action) {
       state.settings = action.payload.settings;
@@ -69,12 +69,12 @@ export const { reqStartGame, reqOwner, reqChat, updateGame, updateGameSettings, 
 
 export const gameReducer = gameSlice.reducer;
 
-export const selectRoomName = (state: RootState) => state.game.room;
-export const selectRoomSettings = (state: RootState) => state.game.settings;
-export const selectRoomPlayers = (state: RootState) => state.game.players;
-export const selectRoomChat = (state: RootState) => state.game.chat;
+// export const selectRoomName = (state: RootState) => state.game.room;
+// export const selectRoomSettings = (state: RootState) => state.game.settings;
+// export const selectRoomPlayers = (state: RootState) => Object.values(state.game.players);
+// export const selectRoomChat = (state: RootState) => state.game.chat;
 
-// eslint-disable-next-line default-param-last
+// // eslint-disable-next-line default-param-last
 // const gameReducer = (state = gameState, action) => {
 //   switch (action.type) {
 //     case ev.UPDATE_GAME: {
@@ -117,21 +117,21 @@ export const selectRoomChat = (state: RootState) => state.game.chat;
 // };
 
 // export const reqOwner = (payload) => ({
-//   type: ev.req_UPDATE_GAME_OWNER,
+//   type: ev.REQUEST_UPDATE_GAME_OWNER,
 //   payload: {
 //     newOwner: payload.newOwner,
 //   },
 // });
 
 // export const reqChat = (payload) => ({
-//   type: ev.req_UPDATE_GAME_CHAT,
+//   type: ev.REQUEST_UPDATE_GAME_CHAT,
 //   payload: {
 //     message: payload.message,
 //   },
 // });
 
 // export const reqStartGame = () => ({
-//   type: ev.req_START_GAME,
+//   type: ev.REQUEST_START_GAME,
 //   payload: {},
 // });
 

@@ -1,6 +1,6 @@
-import { Socket, Server as SocketServer } from 'socket.io';
+import { Socket, Server as SocketIoServer } from 'socket.io';
 
-import Server from './Server';
+import { HttpServer } from '@/server/server/HttpServer';
 
 export interface Request {
   socket: Socket & { redTetris?: any };
@@ -12,14 +12,21 @@ export interface Response {
   callback: () => {};
 }
 
-export default class Io extends Server {
+export interface Route {
+  event: string | { req: string; res: string };
+  handler: (req: Request, res?: Response) => void;
+  auth?: (socket: Socket) => { socket: Socket; isLogged: boolean };
+  schema?: any;
+}
+
+export class SocketServer extends HttpServer {
   io: any;
   sockets: { [key: string]: any };
-  defaultRoutes: { event: string; handler: any }[];
+  defaultRoutes: Route[];
 
   constructor(host: string, port: number) {
     super(host, port);
-    this.io = new SocketServer(this.server, {
+    this.io = new SocketIoServer(this.server, {
       pingInterval: 5000,
       pingTimeout: 15000,
     });
@@ -29,6 +36,10 @@ export default class Io extends Server {
       {
         event: 'connect',
         handler: this.connect.bind(this),
+      },
+      {
+        event: 'disconnecting',
+        handler: this.disconnecting.bind(this),
       },
       {
         event: 'disconnect',
@@ -113,6 +124,10 @@ export default class Io extends Server {
 
   connect(req: any) {
     this.setSocket(req.socket);
+  }
+
+  disconnecting(req: any) {
+    // console.log(req.socket.rooms);
   }
 
   disconnect(req: any) {

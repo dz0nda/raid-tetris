@@ -8,7 +8,7 @@ import { mockMiddleware, id, mockSocket } from '../helpers/socketHelper';
 
 describe('# Socket Tests - Player Events', () => {
   describe('## Client Events', () => {
-    it('should execute req_UPDATE_PLAYER', () => {
+    it('should execute REQUEST_UPDATE_PLAYER', () => {
       const payload = {
         keyCode: 'keyCode',
       };
@@ -19,7 +19,7 @@ describe('# Socket Tests - Player Events', () => {
       };
 
       mockMiddleware(store)(() => true)(actions.reqMove(payload));
-      expect(mockSocket.emit).toHaveBeenCalledWith(ev.req_UPDATE_PLAYER, payloadExpected);
+      expect(mockSocket.emit).toHaveBeenCalledWith(ev.REQUEST_UPDATE_PLAYER, payloadExpected);
     });
   });
 
@@ -28,7 +28,7 @@ describe('# Socket Tests - Player Events', () => {
       td.replace(store, 'dispatch', jest.fn());
     });
 
-    it('should execute res_UPDATE_PLAYER', () => {
+    it('should execute RESPONSE_UPDATE_PLAYER', () => {
       const data = {
         status: 200,
         payload: {
@@ -39,7 +39,7 @@ describe('# Socket Tests - Player Events', () => {
       mockMiddleware(store)(() => true)({
         type: `${id}_*`,
         payload: {
-          type: ev.res_UPDATE_PLAYER,
+          type: ev.RESPONSE_UPDATE_PLAYER,
           data,
         },
       });

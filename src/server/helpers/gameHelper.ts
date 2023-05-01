@@ -1,4 +1,4 @@
-import { Piece } from '@server/app/Piece';
+import { Piece } from '@/server/app/Piece';
 
 export const keys = {
   KDOWN: 40,

@@ -3,9 +3,9 @@ import { Card, Container } from '@mantine/core';
 
 // import GameRoom from '../components/game/GameRoom';
 import { GameBoard } from '../components/game/GameBoard';
+import { GameAside } from '@/client/components/game/GameAside';
 // import GameChat from '../components/game/GameChat';
 // import { RoomInfo } from '../components/game/RoomInfo';
-import { GameAside } from '../components/game/GameAside';
 
 export const Game: FC = () => {
   return (
@@ -22,7 +22,7 @@ export const Game: FC = () => {
           {/* </Group> */}
         </Card>
       </Container>
-      <GameAside />
+      {/* <GameAside /> */}
     </>
   );
 };

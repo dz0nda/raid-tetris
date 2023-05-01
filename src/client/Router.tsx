@@ -19,12 +19,11 @@ import { Game } from './pages/Game';
 import { history } from './store';
 import { GameAside } from './components/game/GameAside';
 import { useSocketConnect } from './hooks/useSocketConnect';
-import { Router } from './Router';
 
-export const App: FC = () => {
+export const Router: FC = () => {
   const { host, port } = params.server;
   const theme = useMantineTheme();
-  const connected = useSocketConnect();
+  // const connected = useSocketConnect();
   // const [opened, setOpened] = useState(false);
   // const { connected, reqConnect, isLoading } = props;
   // const connected = useAppSelector(selectSocketConnected);
@@ -40,41 +39,11 @@ export const App: FC = () => {
   // }, [connected]);
 
   return (
-    <>
-      <Notifications />
-      <AppShell
-        styles={{
-          main: {
-            background: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
-          },
-        }}
-        navbarOffsetBreakpoint="sm"
-        asideOffsetBreakpoint="sm"
-        // navbar={
-        //   <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
-        //     <Text>Application navbar</Text>
-        //   </Navbar>
-        // }
-        aside={<GameAside />}
-        // aside={
-        //   // <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-        //   <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
-        //     <Text>Application sidebar</Text>
-        //   </Aside>
-        //   // </MediaQuery>
-        // }
-        footer={<Footer />}
-        header={<Header />}
-      >
-        {/* <LoadingOverlay visible={visible} overlayBlur={2} /> */}
-        <Router />
-        {/* <ConnectedRouter history={history}>
-          <Switch>
-            <Route path="/:room[:name]" component={Game} />
-            <Route path="/" component={Login} />
-          </Switch>
-        </ConnectedRouter> */}
-      </AppShell>
-    </>
+    <ConnectedRouter history={history}>
+      <Switch>
+        <Route path="/:room[:name]" component={Game} />
+        <Route path="/" component={Login} />
+      </Switch>
+    </ConnectedRouter>
   );
 };
