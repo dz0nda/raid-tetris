@@ -1,7 +1,8 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "unused-imports", "eslint-plugin-import"],
+  "plugins": ["@typescript-eslint", "prettier", "unused-imports", "eslint-plugin-import"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
   "overrides": [
     {
       "files": ["*.js", "*.jsx", "*.ts", "*.tsx"],
@@ -15,9 +16,9 @@
         "unused-imports/no-unused-vars": [
           "warn",
           {
-            "vars": "all",
+            // "vars": "all",
             "varsIgnorePattern": "^_",
-            "args": "after-used",
+            // "args": "after-used",
             "argsIgnorePattern": "^_"
           }
         ],
@@ -34,10 +35,5 @@
     "node": true,
     "browser": true,
     "amd": true
-  },
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
-  ]
+  }
 }
