@@ -16,6 +16,8 @@ import { reqMove, selectPlayer, selectRoom } from '@/client/store/reducers/app';
 
 import Stage from '../common/Board';
 import { useAppDispatch, useAppSelector } from '@/client/store';
+import { createStage } from '@/server/helpers/gameHelper';
+import { createStagePiece } from '@/server/helpers/gameHelper';
 // import { selectRoomSettings } from '@/client/store/reducers/game';
 
 const useStyles = createUseStyles({
@@ -29,7 +31,7 @@ const useStyles = createUseStyles({
 });
 
 function GameBoardComponent(props: any) {
-  const { stage, pieceOne, pieceTwo, score, lines, mallus } = props;
+  const { stage, stagePiece, score, lines, mallus } = props;
   const classes = useStyles();
 
   // const renderItem = (field, value) => (
@@ -44,7 +46,7 @@ function GameBoardComponent(props: any) {
       <Grid container justifyContent="center" alignItems="center" className={classes.root}>
         <Grid item xs={8}>
           <Box className={classes.stage}>
-            <Stage stage={stage} />
+            <Stage stage={stage || createStage()} />
           </Box>
         </Grid>
         <Grid item xs={4}>
@@ -53,10 +55,10 @@ function GameBoardComponent(props: any) {
               <CardContent>
                 <Grid container direction="column" spacing={1}>
                   <Grid item>
-                    <Stage stage={pieceOne} type="stagePiece" />
+                    <Stage stage={stagePiece.length ? stagePiece[0] : createStagePiece()} type="stagePiece" />
                   </Grid>
                   <Grid item>
-                    <Stage stage={pieceTwo} type="stagePiece" />
+                    <Stage stage={stagePiece.length ? stagePiece[1] : createStagePiece()} type="stagePiece" />
                   </Grid>
                 </Grid>
               </CardContent>
@@ -95,30 +97,40 @@ export const GameBoard: FC = () => {
 
   console.log(player);
 
-  const { started, nbPlayers, dropTime } = room.settings;
-  const { stage, stagePiece, score, lines, mallus, rank, loose, win } = player;
+  // const { started, nbPlayers, dropTime } = room.settings? room.settings : {};
+  // const { stage, stagePiece, score, lines, mallus, rank, loose, win } = player;
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
-    setOpen(loose || win);
-  }, [loose, win]);
+    setOpen(player.loose || player.win);
+  }, [player?.loose, player?.win]);
 
   const handleCloseLoose = () => {
     setOpen(false);
   };
 
-  useInterval(() => dispatch(reqMove({ keyCode: keys.KDOWN, started, dropTime })));
-  useKey((event: KeyboardEvent) => dispatch(reqMove({ keyCode: event.keyCode, started, loose })));
+  useInterval(() =>
+    dispatch(
+      reqMove({ keyCode: keys.KDOWN, started: room?.settings.started || false, dropTime: room.settings.dropTime }),
+    ),
+  );
+  useKey(
+    (event: KeyboardEvent) => {
+      console.log('key', event.keyCode);
+      dispatch(reqMove({ keyCode: event.keyCode, started: room, loose: player?.loose || false }));
+    },
+    room?.settings.started,
+    player?.loose,
+  );
 
   return (
     <>
       <GameBoardComponent
-        stage={stage}
-        pieceOne={stagePiece[0]}
-        pieceTwo={stagePiece[1]}
-        score={score}
-        lines={lines}
-        mallus={mallus}
+        stage={player?.stage}
+        stagePiece={player?.stagePiece || []}
+        score={player?.score || 0}
+        lines={player?.lines || 0}
+        mallus={player?.mallus || 0}
       />
       {/* <GameLoose
         rank={rank}

@@ -24,7 +24,7 @@ const appSlice = createSlice({
   reducers: {
     reqLogin(_state, _action) {},
     resLogin(state, action) {
-      state.username = action.payload.username;
+      state.username = action.payload.name;
       state.room = action.payload.room;
     },
 
@@ -45,7 +45,7 @@ const appSlice = createSlice({
     },
 
     updateGame(state, action) {
-      state.rooms[state.room] = action.payload.game;
+      state.rooms[action.payload.game.room] = action.payload.game;
     },
 
     updateGameSettings(state, action) {
@@ -63,7 +63,6 @@ const appSlice = createSlice({
     updatePlayer(state, action) {
       state.rooms[state.room].players[action.payload.id] = action.payload.player;
     },
-    // resLzogout()
   },
 });
 
@@ -95,8 +94,8 @@ export const {
 export const appReducer = appSlice.reducer;
 
 export const selectRooms = (state: RootState) => state.app.rooms;
-export const selectRoom = (state: RootState) => state.app.rooms[state.app.room];
-export const selectRoomOwner = (state: RootState) => state.app.rooms[state.app.room]?.settings.owner;
+export const selectRoom = (state: RootState): Room => state.app.rooms[state.app.room] || {};
+export const selectRoomOwner = (state: RootState) => state.app.rooms[state.app.room]?.settings.owner || '';
 export const selectAppChats = (state: RootState) => state.app.chats;
 
 export const selectAppInfos = (state: RootState): { roomsAcc: number; playersAcc: number } =>

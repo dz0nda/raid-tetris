@@ -72,5 +72,5 @@ export const notificationsMiddleware: Middleware = (store) => (next) => (action)
       break;
   }
 
-  next(action);
+  return next(action);
 };

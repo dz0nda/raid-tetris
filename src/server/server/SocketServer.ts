@@ -3,7 +3,7 @@ import { Socket, Server as SocketIoServer } from 'socket.io';
 import { HttpServer } from '@/server/server/HttpServer';
 
 export interface Request {
-  socket: Socket & { redTetris?: any };
+  socket: Socket;
   data: any;
 }
 
@@ -60,8 +60,20 @@ export class SocketServer extends HttpServer {
     return this.sockets[id];
   }
 
-  isConnected(id: string) {
-    return this.getSocket(id) !== undefined;
+  getSocketRoom(socket: Socket): string {
+    // socket.rooms.forEach((room: string) => {
+    //   console.log('room', room);
+    //   if (room !== socket.id) {
+    //     return room
+    //   }
+    // });
+    for (const room of socket.rooms.values()) {
+      if (room !== socket.id) {
+        return room;
+      }
+    }
+
+    throw new Error('Socket is not in a room');
   }
 
   emitToAll(event: any, data: any) {
@@ -78,6 +90,10 @@ export class SocketServer extends HttpServer {
 
   emitToRoomExceptSender(id: string, room: string, event: any, data: any) {
     this.getSocket(id).to(room).emit(event, data);
+  }
+
+  isLogged(socket: Socket) {
+    return { socket, isLogged: socket.rooms.size === 2 ? true : false };
   }
 
   router(routes: any[]) {

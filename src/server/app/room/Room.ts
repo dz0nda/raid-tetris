@@ -38,6 +38,10 @@ export class Room {
 
   /* Settings */
 
+  getSettings() {
+    return this.settings;
+  }
+
   setStarted(started: boolean) {
     this.settings.started = started;
   }

@@ -1,5 +1,4 @@
 /* eslint-disable max-classes-per-file */
-import { Socket } from 'socket.io';
 
 import ev from '../../shared/events';
 // import Io, { Request } from '@/server/server/Io';
@@ -9,6 +8,8 @@ import { Request, Route, SocketServer } from '@/server/server/SocketServer';
 import Game from '@/server/app/Game';
 import { Rooms } from '@/server/app/room/Rooms';
 import { Chats } from '@/server/app/chat/Chats';
+import { Socket } from 'socket.io';
+// import { Socket } from 'socket.io-client';
 
 export class RedTetris extends SocketServer {
   games: { [key: string]: Game };
@@ -51,19 +52,19 @@ export class RedTetris extends SocketServer {
       {
         event: { req: ev.REQUEST_UPDATE_GAME_OWNER, res: ev.RESPONSE_UPDATE_GAME_OWNER },
         handler: this.owner.bind(this),
-        auth: this.isLogged.bind(this),
+        // auth: this.isLogged.bind(this),
         schema: ownerSchema,
       },
       {
         event: { req: ev.REQUEST_UPDATE_GAME_CHAT, res: ev.RESPONSE_UPDATE_GAME_CHAT },
         handler: this.chat.bind(this),
-        auth: this.isLogged.bind(this),
+        // auth: this.isLogged.bind(this),
         schema: chatSchema,
       },
       {
-        event: { req: ev.REQUEST_UPDATE_PLAYER, res: ev.RESPONSE_UPDATE_PLAYER },
+        event: { req: ev.REQUEST_MOVE, res: ev.RESPONSE_MOVE },
         handler: this.move.bind(this),
-        auth: this.isLogged.bind(this),
+        // auth: this.isLogged.bind(this),
         schema: moveSchema,
       },
     ];
@@ -78,35 +79,31 @@ export class RedTetris extends SocketServer {
   /*
    *  Setters / Getters
    */
-  getGame(room: string): Game | null {
-    return this.games[room] || null;
-  }
+  // getGame(room: string): Game | null {
+  //   return this.games[room] || null;
+  // }
 
-  getOrCreateGame(room: string, name: string): Game {
-    return this.getGame(room) || (this.games[room] = new Game(room, name));
-  }
+  // // getOrCreateGame(room: string, name: string): Game {
+  // //   return this.getGame(room) || (this.games[room] = new Game(room, name));
+  // // }
 
-  unsetGame(room: string): void {
-    delete this.games[room];
-  }
+  // unsetGame(room: string): void {
+  //   delete this.games[room];
+  // }
 
-  getSocketRoom(id: string) {
-    return this.getSocket(id).redTetris ? this.getSocket(id).redTetris.room : false;
-  }
+  // isLogged(socket: Socket) {
+  //   // if (!this.isConnected(socket.id)) {
+  //   //   return {
+  //   //     socket,
+  //   //     isLogged: false,
+  //   //   };
+  //   // }
 
-  isLogged(socket: Socket) {
-    if (!this.isConnected(socket.id)) {
-      return {
-        socket,
-        isLogged: false,
-      };
-    }
-
-    return {
-      socket: this.getSocket(socket.id),
-      isLogged: this.getSocketRoom(socket.id),
-    };
-  }
+  //   return {
+  //     socket: this.getSocket(socket.id),
+  //     isLogged: this.getSocketRoom(socket.id),
+  //   };
+  // }
 
   // resInfo() {
   //   this.emitToAll(ev.res_UPDATE_APP_INFOS, {
@@ -128,12 +125,13 @@ export class RedTetris extends SocketServer {
     });
   }
 
-  resPlayer(id: string, status: number, message: string) {
-    this.emitToSocket(id, ev.RESPONSE_UPDATE_PLAYER, {
+  resPlayer(socket: Socket, status: number, message: string) {
+    this.emitToSocket(socket.id, ev.RESPONSE_UPDATE_PLAYER, {
       status,
       message,
       payload: {
-        player: this.getGame(this.getSocketRoom(id))?.getPlayer(id),
+        id: socket.id,
+        player: this.rooms.getRoom(this.getSocketRoom(socket))?.getPlayer(socket.id),
       },
     });
   }
@@ -143,7 +141,7 @@ export class RedTetris extends SocketServer {
       status,
       payload: {
         message,
-        players: status === 200 ? this.getGame(room)?.getPlayers() : {},
+        players: status === 200 ? this.rooms.getRoom(room)?.getPlayers() : {},
       },
     });
   }
@@ -236,15 +234,15 @@ export class RedTetris extends SocketServer {
     // console.log('LOGOUT');
 
     try {
-      this.getGame(this.getSocketRoom(socket.id))?.unsetPlayer(socket.id);
-      if (this.getGame(this.getSocketRoom(socket.id))?.isEmpty()) {
-        this.unsetGame(this.getSocketRoom(socket.id));
+      this.rooms.getRoom(this.getSocketRoom(socket))?.unsetPlayer(socket.id);
+      if (this.rooms.getRoom(this.getSocketRoom(socket))?.isEmpty()) {
+        this.rooms.unsetRoom(this.getSocketRoom(socket));
       } else {
-        this.resGame(this.getSocketRoom(socket.id));
+        this.resGame(this.getSocketRoom(socket));
       }
 
-      socket.leave(this.getSocketRoom(socket.id));
-      delete socket.redTetris;
+      socket.leave(this.getSocketRoom(socket));
+      // delete socket.redTetris;
       this.setSocket(socket);
 
       // this.resInfo();
@@ -263,104 +261,106 @@ export class RedTetris extends SocketServer {
   }
 
   start(req: Request) {
-    const { id } = req.socket;
+    const { socket } = req;
     // const status = 200;
 
     console.log('START');
+    console.log(this.getSocketRoom(socket));
 
     try {
-      this.getGame(this.getSocketRoom(id))?.initGameStart(id);
-      this.resGame(this.getSocketRoom(id));
-      this.getGame(this.getSocketRoom(id))?.setGameStart();
+      this.rooms.getRoom(this.getSocketRoom(socket))?.initGameStart(socket.id);
+      this.rooms.getRoom(this.getSocketRoom(socket));
+      this.rooms.getRoom(this.getSocketRoom(socket))?.setGameStart();
 
       const countdown = (room: string, count: number, self: any) => {
         if (count > 0) {
           setTimeout(countdown, 1000, room, count - 1, self);
 
-          self.resStart(room, 100, `Game will start in ${count}s...`);
+          // self.resStart(room, 100, `Game will start in ${count}s...`);
         } else {
           self.emitToRoom(room, ev.RESPONSE_UPDATE_GAME_SETTINGS, {
             status: 200,
             payload: {
-              settings: this.getGame(room)?.settings,
+              settings: this.rooms.getRoom(room)?.settings,
             },
           });
           self.resStart(room, 200, 'Game started !');
           // self.chat({ ...req, data: { text: 'A new game started.' } });
           this.chats.getChat(room)?.setMessage('server', `${this.rooms.getRoom(room)?.getOwner()} started the game`);
-          self.resInfo();
+          // self.resInfo();
         }
       };
 
-      setTimeout(countdown, 100, this.getSocketRoom(id), 3, this);
+      setTimeout(countdown, 100, this.getSocketRoom(socket), 3, this);
     } catch (err: any) {
       // logger.error(err);
-      this.resPlayer(id, 500, err.message);
+      this.resPlayer(socket, 500, err.message);
     }
   }
 
   owner(req: Request) {
-    const { id, redTetris } = req.socket;
+    const { socket } = req;
     const { newOwner } = req.data;
 
     try {
-      this.getGame(redTetris.room)?.setNewOwner(id, newOwner);
+      this.rooms.getRoom(this.getSocketRoom(socket))?.setNewOwner(socket.id, newOwner);
 
-      this.resGame(redTetris.room);
+      this.resGame(this.getSocketRoom(socket));
     } catch (err: any) {
       // logger.error('[reqOwner] ');
 
-      this.resPlayer(req.socket.id, 500, err.message);
+      this.resPlayer(socket, 500, err.message);
     }
   }
 
   chat(req: Request) {
-    const { id, redTetris } = req.socket;
+    const { socket } = req;
     const { text } = req.data;
 
     try {
-      this.getGame(redTetris.room)?.setMessage(this.getGame(redTetris.room)?.getPlayer(id).getName() || '', text);
+      this.chats
+        .getChat(this.getSocketRoom(socket))
+        ?.setMessage(this.rooms.getRoom(this.getSocketRoom(socket))?.getPlayer(socket.id).getName() || '', text);
 
-      this.emitToRoom(redTetris.room, ev.RESPONSE_UPDATE_GAME_CHAT, {
+      this.emitToRoom(this.getSocketRoom(socket), ev.RESPONSE_UPDATE_GAME_CHAT, {
         status: 200,
         payload: {
-          chat: this.getGame(redTetris.room)?.getMessages(),
+          chat: this.chats.getChat(this.getSocketRoom(socket))?.getMessages(),
         },
       });
     } catch (err: any) {
       // logger.error(err);
 
-      this.resPlayer(req.socket.id, 500, err.message);
+      this.resPlayer(socket, 500, err.message);
     }
   }
 
   move(req: Request) {
-    const { id, redTetris } = req.socket;
+    const { socket } = req;
     const { keyCode } = req.data;
     let status = 200;
 
     try {
-      const collided = this.getGame(this.getSocketRoom(id))?.setMove(id, keyCode);
+      const collided = this.rooms.getRoom(this.getSocketRoom(socket))?.setMove(socket.id, keyCode);
 
       if (collided) {
-        this.emitToRoom(redTetris.room, ev.RESPONSE_UPDATE_GAME_PLAYERS, {
+        this.emitToRoom(this.getSocketRoom(socket), ev.RESPONSE_UPDATE_GAME_PLAYERS, {
           status: 200,
           payload: {
-            id,
-            player: this.getGame(redTetris.room)?.getPlayer(id),
+            players: this.rooms.getRoom(this.getSocketRoom(socket))?.getPlayers(),
           },
         });
       }
 
-      if (!this.getGame(this.getSocketRoom(id))?.getStarted()) {
-        this.resGame(this.getSocketRoom(id));
+      if (!this.rooms.getRoom(this.getSocketRoom(socket))?.getStarted()) {
+        this.resGame(this.getSocketRoom(socket));
         // this.resInfo();
       }
     } catch (err) {
       // logger.error(err);
       status = 500;
     } finally {
-      this.resPlayer(id, status, '');
+      this.resPlayer(socket, status, '');
     }
   }
 }

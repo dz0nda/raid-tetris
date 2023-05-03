@@ -1,10 +1,11 @@
 import { Socket, io } from 'socket.io-client';
 import { push } from 'connected-react-router';
 // import serverEventHandler from './middleware/server';
-import { IClientEvent, IEvent, IServerEvent, IStateEvent } from '@/client/store/events/event.interface';
+// import { IClientEvent, IEvent, IServerEvent, IStateEvent } from '@/client/store/events/event.interface';
 
 import { updateConnection } from '@/client/store/reducers/socket';
 import {
+  resLogin,
   updateGame,
   updateGameChat,
   updateGamePlayers,
@@ -13,8 +14,32 @@ import {
 } from '@/client/store/reducers/app';
 // import { updatePlayer } from '@/client/store/reducers/player';
 
-import ev from '../@/shared/events';
+import ev from '@/shared/events';
 // import { resLogin } from '@/client/store/events/server';
+
+export interface IEvent {
+  action: string;
+  dispatch: (socket: Socket, store: any, action?: any) => any;
+}
+
+export interface IClientEvent {
+  action: string;
+  dispatch: (socket: Socket, store: any, action?: any) => any;
+}
+
+export interface IServerEvent {
+  action: string;
+  dispatch: (
+    action: string,
+    data: { status: number; payload: any; message?: string },
+    dispatch: (payload: any) => any,
+  ) => any;
+}
+
+export interface IStateEvent {
+  action: string;
+  dispatch: (socket: Socket, store: any, next: (action: string) => void, action: string) => any;
+}
 
 export enum ESocketEvent {
   SOCKET_CONNECTED = 'connect',
@@ -96,14 +121,15 @@ export const initialStateEvents: IStateEvent[] = [
 ];
 
 export const initialServerEvents: IServerEvent[] = [
-  {
-    action: ev.res_UPDATE_APP_INFOS,
-    dispatch: (_, data, dispatch) => {}, //dispatch(updateInfos(data.payload)),
-  },
+  // {
+  //   action: ev.res_UPDATE_APP_INFOS,
+  //   dispatch: (_, data, dispatch) => {}, //dispatch(updateInfos(data.payload)),
+  // },
   {
     action: ev.RESPONSE_LOGIN,
     dispatch: (_, data, dispatch) => {
       console.log('resLogin3423', data);
+      dispatch(resLogin(data.payload));
       dispatch(push(`${data.payload.room}[${data.payload.name}]`));
     },
   },
@@ -113,7 +139,7 @@ export const initialServerEvents: IServerEvent[] = [
   },
   {
     action: ev.RESPONSE_START_GAME,
-    dispatch: (_, data, dispatch) => dispatch(updateGamePlayers(data)),
+    dispatch: (_, data, dispatch) => dispatch(updateGamePlayers(data.payload)),
   },
   {
     action: ev.RESPONSE_UPDATE_GAME,
@@ -125,7 +151,7 @@ export const initialServerEvents: IServerEvent[] = [
   },
   {
     action: ev.RESPONSE_UPDATE_GAME_PLAYERS,
-    dispatch: (_, data, dispatch) => dispatch(push(`/${data.payload.room}[${data.payload.name}]`)),
+    dispatch: (_, data, dispatch) => dispatch(updateGamePlayers(data.payload)),
   },
   {
     action: ev.RESPONSE_UPDATE_GAME_SETTINGS,
@@ -142,10 +168,19 @@ export const initialClientEvents: IClientEvent[] = [
     action: ev.REQUEST_LOGIN,
     dispatch: (socket, store, action) => socket.emit(ev.REQUEST_LOGIN, action.payload),
   },
-
   {
     action: ev.REQUEST_START_GAME,
-    dispatch: (socket, store, action) => socket.emit(ev.REQUEST_START_GAME, action.payload),
+    dispatch: (socket, store, action) => {
+      console.log('dsqdsd');
+      socket.emit(ev.REQUEST_START_GAME, action.payload);
+    },
+  },
+  {
+    action: ev.REQUEST_MOVE,
+    dispatch: (socket, store, action) => {
+      console.log('dsqdsd');
+      socket.emit(ev.REQUEST_MOVE, action.payload);
+    },
   },
 ];
 

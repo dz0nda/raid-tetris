@@ -2,6 +2,7 @@ import { Middleware } from '@reduxjs/toolkit';
 
 import { events } from '@/shared/events';
 import { reqLogin } from '@/client/store/reducers/app';
+import { reqConnect } from '../store/reducers/socket';
 
 export const routerMiddleware: Middleware = (store) => (next) => (action) => {
   console.log('routerMiddleware');
@@ -16,6 +17,8 @@ export const routerMiddleware: Middleware = (store) => (next) => (action) => {
     case events.ROUTER_LOCATION_CHANGE:
       if (isFirstRendering) {
         const { pathname } = location;
+
+        store.dispatch(reqConnect({}));
 
         if (pathname !== '/') {
           const room = pathname.split('/')[1].split('[')[0].trim();

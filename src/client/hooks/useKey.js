@@ -17,6 +17,8 @@ function useKey(callback, started, loose) {
   let lastKeyCode = null;
   let lastKeyTime = Date.now();
 
+  console.log('useKey', started, loose);
+
   const handleEvent = (event) => {
     const currentTime = Date.now();
 

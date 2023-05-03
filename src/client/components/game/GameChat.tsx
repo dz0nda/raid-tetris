@@ -5,15 +5,15 @@ import { createUseStyles } from 'react-jss';
 // import { chatStatePropTypes } from '@/client/store/reducers/reducers.types';
 
 import {
-  Grid,
+  Box,
   CardContent,
-  List,
-  Paper,
-  ListItem,
+  Grid,
   InputBase,
+  List,
+  ListItem,
+  Paper,
   Typography,
   // IconButton,
-  Box,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '@/client/store';
 import { reqChat, selectAppChats } from '@/client/store/reducers/app';

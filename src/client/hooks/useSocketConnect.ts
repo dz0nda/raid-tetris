@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/client//store';
-import { reqConnect, selectSocketConnected } from '@/client/store/reducers/socket';
+import { selectSocketConnected } from '@/client/store/reducers/socket';
 
 export const useSocketConnect = (delay = 10000) => {
   const dispatch = useAppDispatch();
@@ -13,7 +13,7 @@ export const useSocketConnect = (delay = 10000) => {
     if (!connected && now - lastCall > delay) {
       console.log('useSocketConnect: ', lastCall);
       lastCall = now;
-      dispatch(reqConnect({}));
+      // dispatch(reqConnect({}));
     }
   }, [connected, dispatch, lastCall, delay]);
 
