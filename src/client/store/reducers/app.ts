@@ -1,13 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { createSlice } from '@reduxjs/toolkit';
-// import { Game } from '../../types';
 
-import { RootState } from '..';
 import { Room } from '@/server/app/room/Room';
-
-// export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
-//   const response = await client.get('/fakeApi/todos');
-//   return response.todos;
-// });
+import { RootState } from '..';
 
 export interface AppState {
   username: string;
@@ -71,14 +67,6 @@ const appSlice = createSlice({
     },
   },
 });
-
-// const countRoomsAndPlayers = (rooms: Record<string, { players: Record<string, any> }>): { number; number } =>
-//   Object.values(rooms).reduce(
-//     ({ roomsAcc, playersAcc }, { players: roomPlayers }) => {
-//       return { roomAcc: roomsAcc + 1, playersAcc: playersAcc + Object.values(roomPlayers).length };
-//     },
-//     { roomsAcc: 0, playersAcc: 0 },
-//   );
 
 export const {
   reqLogin,

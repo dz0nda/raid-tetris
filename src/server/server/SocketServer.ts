@@ -15,12 +15,12 @@ export interface Response {
 export interface Route {
   event: string | { req: string; res: string };
   handler: (req: Request, res?: Response) => void;
-  auth?: (socket: Socket) => { socket: Socket; isLogged: boolean };
-  schema?: any;
+  auth?: ((socket: Socket) => { socket: Socket; isLogged: boolean }) | boolean;
+  schema?: any | null;
 }
 
 export class SocketServer extends HttpServer {
-  io: any;
+  io: SocketIoServer;
   sockets: { [key: string]: any };
   defaultRoutes: Route[];
 

@@ -19,7 +19,6 @@ import { Box, Button, Group, Navbar, Tabs, Text, Tooltip, createStyles, getStyle
 //   IconSwitchHorizontal,
 // } from '@tabler/icons-react';
 import { IconSettings } from '@tabler/icons-react';
-import { CustomTabs } from '../common/CustomTabs';
 // import GameChat from './GameChat';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { reqStartGame, selectPlayer, selectRoomOwner } from '@/client/store/reducers/app';
@@ -182,7 +181,7 @@ export const GameNavbar: FC = () => {
       </Aside.Section> */}
 
       <Navbar.Section mt="xl">
-        <CustomTabs defaultValue="settings">
+        <Tabs defaultValue="settings">
           <Tabs.List grow>
             <Tabs.Tab value="settings" icon={<IconSettings size="1rem" />}>
               Settings
@@ -217,7 +216,7 @@ export const GameNavbar: FC = () => {
             {/* <GameRoom /> */}
             <GamePlayers data={playersData} />
           </Tabs.Panel>
-        </CustomTabs>
+        </Tabs>
       </Navbar.Section>
     </Navbar>
   );

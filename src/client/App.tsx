@@ -13,7 +13,7 @@ import { Header } from './pages/Header';
 import { Footer } from './pages/Footer';
 
 // import { Login } from './pages/Login';
-import { GameNavbar } from './components/game/GameNavbar';
+import { GameNavbar } from './components/game/Navbar';
 import { GameAside } from './components/game/GameAside';
 import { useSocketConnect } from './hooks/useSocketConnect';
 // import { Router } from './Router';
