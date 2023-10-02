@@ -1,12 +1,11 @@
 import React, { FC } from 'react';
 import { Header as MantineHeader } from '@mantine/core';
 
-import { Grid, IconButton, Typography } from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
+// import { Grid, IconButton, Typography } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '@/client/store';
 
-import { reqLogout, selectAppInfos } from '@/client/store/reducers/app';
+import { selectAppInfos } from '@/client/store/reducers/app';
 // import logo from '../assets/header.png';
 
 export const Header: FC = () => {
@@ -15,17 +14,12 @@ export const Header: FC = () => {
 
   return (
     <MantineHeader height={{ base: 50, md: 70 }} p="md">
-      <Grid container alignItems="center" justifyContent="center">
+      {/* <Grid container alignItems="center" justifyContent="center">
         <Grid item xs={3} justifyContent="center">
           <Grid container justifyContent="center">
             <IconButton onClick={() => dispatch(reqLogout({}))}>
               <HomeIcon />
             </IconButton>
-          </Grid>
-        </Grid>
-        <Grid item xs={6}>
-          <Grid container justifyContent="center">
-            {/* <img src={logo} width="35%" alt="Logo" /> */}
           </Grid>
         </Grid>
         <Grid item xs={3}>
@@ -44,7 +38,7 @@ export const Header: FC = () => {
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </Grid> */}
     </MantineHeader>
   );
 };

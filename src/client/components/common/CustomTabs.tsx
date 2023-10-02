@@ -16,6 +16,7 @@ export const CustomTabs = (props: TabsProps): JSX.Element => {
           fontSize: theme.fontSizes.sm,
           display: 'flex',
           alignItems: 'center',
+          width: '100%',
 
           '&:disabled': {
             opacity: 0.5,

@@ -278,7 +278,7 @@ export function registerSocketEvents(id: string, client: IClientEvent[], server:
 export const getSocketEvents = (id: string, key: EVENTS_ENUM) => EVENTS[id][key];
 
 export function socketio(
-  initializedSocket = null,
+  initializedSocket: Socket | null = null,
   clientEvents = initialClientEvents,
   serverEvents = initialServerEvents,
   stateEvents = initialStateEvents,
@@ -298,6 +298,7 @@ export function socketio(
 
     if (action.type === `socket/reqConnect` && !SOCKET_INITIALIZED[id]) {
       if (getSocket(id) === null) {
+        console.log('Initializing socket...');
         SOCKETS[id] = io(`http://${host}:${port}/${namespace || ''}`, {
           transports: ['websocket'],
         });
@@ -350,7 +351,7 @@ export function socketio(
       });
     }
 
-    return next(action);
+    next(action);
   };
 }
 

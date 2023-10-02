@@ -15,6 +15,9 @@ export const events = {
   ROUTER_LOCATION_CHANGE: '@@router/LOCATION_CHANGE',
 
   /* App events */
+  REQUEST_LOGIN_USER: 'app/reqLoginUser',
+  RESPONSE_LOGIN_USER: 'server/resLoginUser',
+
   REQUEST_LOGIN: 'app/reqLogin',
   RESPONSE_LOGIN: 'server/resLogin',
   REQUEST_LOGOUT: 'app/reqLogout',

@@ -1,3 +1,4 @@
+import { io } from 'socket.io-client';
 import * as socketMiddleware from './socketIo/index';
 import params from '@/shared/params';
 
@@ -7,6 +8,9 @@ import params from '@/shared/params';
 
 export const { id } = params.socket;
 export const middleware = socketMiddleware;
-const initialSocket = null;
+export const initialSocket = io('http://0.0.0.0:3000', {
+  autoConnect: false,
+  transports: ['websocket'],
+});
 
-export default socketMiddleware.socketio(initialSocket);
+export default socketMiddleware.socketio();

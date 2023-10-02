@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { ScrollArea, Table, createStyles, rem } from '@mantine/core';
 import { useAppSelector } from '@/client/store';
 import { selectRoomPlayers } from '@/client/store/reducers/app';
+import { Stage } from '../board/Board';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -35,14 +36,16 @@ export const GamePlayers: FC<TableScrollAreaProps> = ({ data }) => {
   const [scrolled, setScrolled] = useState(false);
   const players = useAppSelector(selectRoomPlayers);
 
-  console.log(players);
+  // console.log(players);
 
   const rows = Object.values(players).map((player: any) => (
     <tr key={player.name}>
       <td>{player.name}</td>
       <td>{player.score}</td>
       <td>{player.lines}</td>
-      <td>0</td>
+      <td>
+        <Stage style={{ padding: '2px' }} stage={player.stage} type="stagePlayers" />
+      </td>
     </tr>
   ));
 

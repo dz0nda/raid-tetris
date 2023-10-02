@@ -14,7 +14,7 @@ import EmojiFlagsIcon from '@mui/icons-material/EmojiFlags';
 // import IconButton from './IconButton'
 import IconButton from './IconButton';
 
-import Stage from './Board';
+import Stage from '../board/Board';
 
 const styles = () => ({
   flexContainer: {

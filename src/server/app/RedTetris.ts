@@ -33,6 +33,12 @@ export class RedTetris extends SocketServer {
         handler: this.disconnect.bind(this),
       },
       {
+        event: { req: ev.REQUEST_LOGIN_USER, res: ev.RESPONSE_LOGIN_USER },
+        handler: this.loginUser.bind(this),
+        // auth: this.isLogged.bind(this),
+        // schema: loginSchema,
+      },
+      {
         event: { req: ev.REQUEST_LOGIN, res: ev.RESPONSE_LOGIN },
         handler: this.login.bind(this),
         // auth: this.isLogged.bind(this),
@@ -151,6 +157,7 @@ export class RedTetris extends SocketServer {
     super.connect(req);
     console.log(`socket: ${req.socket.id} connected in RedTetris`);
 
+    this.login({ ...req, data: { name: 'test', room: 'test' } });
     // console.log(req.socket.emit);
     // console.log(this.getSocket(req.socket.id).emit);
 
@@ -199,6 +206,17 @@ export class RedTetris extends SocketServer {
    *
    *  Bind ev.REQUEST_LOGIN
    */
+  loginUser(req: Request) {
+    const { socket } = req;
+    const { name, room } = req.data;
+    // let status = 200;
+  }
+
+  /*
+   *  Login
+   *
+   *  Bind ev.REQUEST_LOGIN
+   */
   login(req: Request) {
     const { socket } = req;
     const { name, room } = req.data;
@@ -207,12 +225,20 @@ export class RedTetris extends SocketServer {
     try {
       // this.getOrCreateGame(room, name).setPlayer(socket.id, name);
       this.rooms.getOrCreateRoom(room, name).setPlayer(socket.id, name);
+      this.chats.getOrCreateChat(room).setMessage('server', `${name} joined the room`);
 
       socket.join(room);
       // socket.redTetris = { name, room };
       // this.setSocket(socket);
 
       this.resGame(room);
+      this.emitToRoom(room, ev.RESPONSE_UPDATE_GAME_CHAT, {
+        status: 200,
+        payload: {
+          room,
+          chat: this.chats.getChat(room)?.getMessages(),
+        },
+      });
       // this.resInfo();
     } catch (err) {
       // logger.error(err);

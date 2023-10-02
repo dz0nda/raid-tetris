@@ -10,7 +10,7 @@ module.exports = {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        include: path.resolve('src/client'),
+        include: [path.resolve('src/client'), path.resolve('src/shared'), path.resolve('src/server')],
         exclude: path.resolve('node_modules'),
         loader: 'ts-loader',
       },
@@ -49,6 +49,7 @@ module.exports = {
     extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
     alias: {
       '@/client': path.resolve(__dirname, 'src/client'),
+      '@/server': path.resolve(__dirname, 'src/server'),
       '@/shared': path.resolve(__dirname, 'src/shared'),
     },
   },

@@ -4,6 +4,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '..';
 import { Room } from '@/server/app/room/Room';
 
+// export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
+//   const response = await client.get('/fakeApi/todos');
+//   return response.todos;
+// });
+
 export interface AppState {
   username: string;
   room: string;
@@ -24,6 +29,7 @@ const appSlice = createSlice({
   reducers: {
     reqLogin(_state, _action) {},
     resLogin(state, action) {
+      console.log('resLogin', action.payload);
       state.username = action.payload.name;
       state.room = action.payload.room;
     },
@@ -57,7 +63,7 @@ const appSlice = createSlice({
     },
 
     updateGameChat(state, action) {
-      state.chats[state.room] = action.payload.chat;
+      state.chats[action.payload.room] = action.payload.chat;
     },
 
     updatePlayer(state, action) {

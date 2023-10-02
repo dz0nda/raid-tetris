@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Aside, Button, Group, Tabs, Text, Tooltip, createStyles, getStylesRef, rem } from '@mantine/core';
+import { Aside, createStyles, getStylesRef, rem } from '@mantine/core';
 // import {
 //   IconShoppingCart,
 //   IconLicense,
@@ -18,18 +18,11 @@ import { Aside, Button, Group, Tabs, Text, Tooltip, createStyles, getStylesRef, 
 //   IconLogout,
 //   IconSwitchHorizontal,
 // } from '@tabler/icons-react';
-import { IconMessageCircle, IconPhoto, IconSettings } from '@tabler/icons-react';
-import { CustomTabs } from '../common/CustomTabs';
 // import GameChat from './GameChat';
-import { RoomInfo } from './RoomInfo';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { reqStartGame, selectPlayer, selectRoomOwner } from '@/client/store/reducers/app';
-import { Info } from '../common/Info';
-
-import { playersData } from '@/client/helpers/data';
+import { selectPlayer, selectRoomOwner } from '@/client/store/reducers/app';
 
 import { Chat } from '@/client/components/chat/Chat';
-import { GamePlayers } from './Players';
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -129,86 +122,8 @@ export const GameAside: FC = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <Aside width={{ sm: 300, md: 500 }} p="md" className={classes.navbar}>
-      <Aside.Section>
-        <Group>
-          <Text weight={500} size="sm" className={classes.title} color="dimmed" mb="xs">
-            {player?.name || 'Player'}
-          </Text>
-          <Tooltip label="Tooltip" disabled={owner === player?.name} withArrow>
-            <Button disabled={owner !== player?.name} onClick={() => dispatch(reqStartGame({}))}>
-              Start
-            </Button>
-          </Tooltip>
-        </Group>
-      </Aside.Section>
-
-      <Aside.Section className={classes.footer}>
-        <Group grow>
-          {[
-            {
-              title: 'Score',
-              value: `${player?.score}`,
-            },
-            {
-              title: 'Level',
-              value: `${player?.level}`,
-            },
-            {
-              title: 'Rank',
-              value: `${player?.rank}`,
-            },
-          ].map((stat) => (
-            <Info {...stat} />
-          ))}
-        </Group>
-        {/* <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-          <span>Change account</span>
-        </a>
-
-        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-          <span>Logout</span>
-        </a> */}
-      </Aside.Section>
-      {/* <Aside.Section className={classes.footer}>
-        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-          <span>Change account</span>
-        </a>
-
-        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-          <span>Logout</span>
-        </a>
-      </Aside.Section> */}
-
-      <Aside.Section mt="xl">
-        <CustomTabs defaultValue="settings">
-          <Tabs.List>
-            <Tabs.Tab value="settings" icon={<IconSettings size="1rem" />}>
-              Settings
-            </Tabs.Tab>
-            <Tabs.Tab value="players" icon={<IconSettings size="1rem" />}>
-              Players
-            </Tabs.Tab>
-            <Tabs.Tab value="messages" icon={<IconMessageCircle size="1rem" />}>
-              Messages
-            </Tabs.Tab>
-            <Tabs.Tab value="gallery" icon={<IconPhoto size="1rem" />}>
-              Gallery
-            </Tabs.Tab>
-          </Tabs.List>
-
-          <Tabs.Panel value="settings">
-            <RoomInfo />
-          </Tabs.Panel>
-          <Tabs.Panel value="players">
-            {/* <GameRoom /> */}
-            <GamePlayers data={playersData} />
-          </Tabs.Panel>
-          <Tabs.Panel value="messages">
-            <Chat />
-          </Tabs.Panel>
-        </CustomTabs>
-      </Aside.Section>
+    <Aside width={{ sm: 300, md: 400 }} hidden={false} p="md" className={classes.navbar}>
+      <Chat />
     </Aside>
   );
 };

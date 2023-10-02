@@ -11,6 +11,7 @@ import { notificationsMiddleware } from '@/client/middlewares/notifications';
 import { routerMiddleware } from '@/client/middlewares/router';
 import socketIoMiddleware from '@/client/middlewares/socketIo';
 import { socketReducer } from './reducers/socket';
+// import { socketReducer } from './socket/socket.slice';
 import { appReducer } from './reducers/app';
 
 export const history = createHashHistory();

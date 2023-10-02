@@ -1,6 +1,9 @@
 import React, { FC } from 'react';
-import { AppShell, useMantineTheme } from '@mantine/core';
+import { AppShell, MantineProvider, useMantineTheme } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
+import { ConnectedRouter } from 'connected-react-router';
+import { Route, Switch } from 'react-router-dom';
+
 // import { useDisclosure } from '@mantine/hooks';
 
 // import useWindowDimensions from './hooks/useWindowDimensions';
@@ -10,9 +13,13 @@ import { Header } from './pages/Header';
 import { Footer } from './pages/Footer';
 
 // import { Login } from './pages/Login';
+import { GameNavbar } from './components/game/GameNavbar';
 import { GameAside } from './components/game/GameAside';
 import { useSocketConnect } from './hooks/useSocketConnect';
-import { Router } from './Router';
+// import { Router } from './Router';
+import { Login } from './pages/Login2';
+import { Game } from './pages/Game';
+import { history } from './store';
 
 export const App: FC = () => {
   const { host, port } = params.server;
@@ -33,7 +40,7 @@ export const App: FC = () => {
   // }, [connected]);
 
   return (
-    <>
+    <MantineProvider withNormalizeCSS withGlobalStyles>
       <Notifications />
       <AppShell
         styles={{
@@ -43,11 +50,7 @@ export const App: FC = () => {
         }}
         navbarOffsetBreakpoint="sm"
         asideOffsetBreakpoint="sm"
-        // navbar={
-        //   <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
-        //     <Text>Application navbar</Text>
-        //   </Navbar>
-        // }
+        navbar={<GameNavbar />}
         aside={<GameAside />}
         // aside={
         //   // <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
@@ -60,7 +63,12 @@ export const App: FC = () => {
         header={<Header />}
       >
         {/* <LoadingOverlay visible={visible} overlayBlur={2} /> */}
-        <Router />
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path="/:room[:name]" component={Game} />
+            <Route path="/" component={Login} />
+          </Switch>
+        </ConnectedRouter>
         {/* <ConnectedRouter history={history}>
           <Switch>
             <Route path="/:room[:name]" component={Game} />
@@ -68,6 +76,6 @@ export const App: FC = () => {
           </Switch>
         </ConnectedRouter> */}
       </AppShell>
-    </>
+    </MantineProvider>
   );
 };

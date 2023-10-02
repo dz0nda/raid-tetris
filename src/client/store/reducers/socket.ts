@@ -19,6 +19,7 @@ const socketSlice = createSlice({
     reqConnect(_state, _action) {},
 
     updateConnection(state, action) {
+      console.log('UPDATE_CONNECTION', action);
       state.id = action.payload.id;
       state.connected = action.payload.connected;
     },

@@ -4,17 +4,19 @@ import { Alert, Group, Loader, ScrollArea, Stack, Tabs, Text } from '@mantine/co
 // import { makeStyles } from '@material-ui/core/styles';
 // import { chatStatePropTypes } from '@/client/store/reducers/reducers.types';
 
-import {
-  // List,
-  Paper,
-  InputBase,
-  // Typography,
-  // IconButton,
-  // Box,
-} from '@mui/material';
+// import {
+//   // List,
+//   Paper,
+//   InputBase,
+//   // Typography,
+//   // IconButton,
+//   // Box,
+// } from '@mui/material';
 // import { reqChat, selectRoomChat } from '@/client/store/reducers/game';
 
 import ChatBox from './ChatBox';
+import { useAppSelector } from '@/client/store';
+import { selectAppChats } from '@/client/store/reducers/app';
 
 const messages = new Array(100).fill({ id: 'key', user: 'test', date: '29/02: 19h', text: 'test' });
 
@@ -92,6 +94,9 @@ export const Chat: FC = () => {
     setMessage(e.target.value);
   };
 
+  const chats = useAppSelector(selectAppChats);
+
+  console.log('chats', chats);
   // const handleSubmit = () => {
   //   if (!message) return;
 
@@ -106,30 +111,30 @@ export const Chat: FC = () => {
   //   // }
   // }, [chat]);
 
-  const renderBox = () => {
-    return (
-      <Paper elevation={0}>
-        <InputBase
-          id="chatBoxInput"
-          //   className={classes.chatBoxInput}
-          placeholder="message..."
-          value={message}
-          onChange={handleMessage}
-          onKeyPress={(ev) => {
-            if (ev.key === 'Enter') {
-              // handleSubmit();
-            }
-          }}
-        />
-        {/* <IconButton className="chatBoxButton" onClick={handleSubmit}>
-          <Telegram />
-        </IconButton> */}
-        {/* <RedIconButton className="chatBoxButton" onClick={handleSubmit}>
-          <Telegram />
-        </RedIconButton> */}
-      </Paper>
-    );
-  };
+  // const renderBox = () => {
+  //   return (
+  //     <Paper elevation={0}>
+  //       <InputBase
+  //         id="chatBoxInput"
+  //         //   className={classes.chatBoxInput}
+  //         placeholder="message..."
+  //         value={message}
+  //         onChange={handleMessage}
+  //         onKeyPress={(ev) => {
+  //           if (ev.key === 'Enter') {
+  //             // handleSubmit();
+  //           }
+  //         }}
+  //       />
+  //       {/* <IconButton className="chatBoxButton" onClick={handleSubmit}>
+  //         <Telegram />
+  //       </IconButton> */}
+  //       {/* <RedIconButton className="chatBoxButton" onClick={handleSubmit}>
+  //         <Telegram />
+  //       </RedIconButton> */}
+  //     </Paper>
+  //   );
+  // };
 
   const rows = messages.map((row, i) => (
     <tr key={i}>
@@ -141,14 +146,17 @@ export const Chat: FC = () => {
   return (
     <Tabs defaultValue="gallery">
       <Tabs.List>
-        <Tabs.Tab value="gallery"># Gallery</Tabs.Tab>
+        {Object.keys(chats).map((key: string) => (
+          <Tabs.Tab value={key}>#{key}</Tabs.Tab>
+        ))}
+        {/* <Tabs.Tab value="gallery"># Gallery</Tabs.Tab>
         <Tabs.Tab value="messages"># Messages</Tabs.Tab>
-        <Tabs.Tab value="settings"># Settings</Tabs.Tab>
+        <Tabs.Tab value="settings"># Settings</Tabs.Tab> */}
       </Tabs.List>
 
       <Tabs.Panel value="gallery" pt="xs">
-        <Stack h={350} p={0}>
-          <ScrollArea p="xs" scrollbarSize={1} h={350}>
+        <Stack h={450} p={0}>
+          <ScrollArea p="xs" scrollbarSize={1} h={450}>
             <Stack>
               {messages.map((message, i) => (
                 <Message key={i} {...message} />

@@ -11,7 +11,7 @@ export class Chats {
     return this.chats[chan] || null;
   }
 
-  getOrCreateChat(chan: string, name: string): Chat {
+  getOrCreateChat(chan: string): Chat {
     return this.getChat(chan) || (this.chats[chan] = new Chat(chan));
   }
 
