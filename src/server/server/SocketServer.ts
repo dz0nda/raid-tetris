@@ -1,6 +1,9 @@
+import express, { Application } from 'express';
 import { Socket, Server as SocketIoServer } from 'socket.io';
 
-import { HttpServer } from '@/server/server/HttpServer';
+const http = require('http');
+
+import { Logger } from '@/server/modules/utils/utils';
 
 export interface Request {
   socket: Socket;
@@ -14,18 +17,25 @@ export interface Response {
 
 export interface Route {
   event: string | { req: string; res: string };
-  handler: (req: Request, res?: Response) => void;
+  handler: (req: Request, res: Response) => void;
   auth?: ((socket: Socket) => { socket: Socket; isLogged: boolean }) | boolean;
   schema?: any | null;
 }
 
-export class SocketServer extends HttpServer {
+export class SocketServer {
+  host: string;
+  port: number;
+  app: Application;
+  server: any;
   io: SocketIoServer;
   sockets: { [key: string]: any };
   defaultRoutes: Route[];
 
   constructor(host: string, port: number) {
-    super(host, port);
+    this.host = host;
+    this.port = port;
+    this.app = express();
+    this.server = http.createServer(this.app);
     this.io = new SocketIoServer(this.server, {
       pingInterval: 5000,
       pingTimeout: 15000,
@@ -48,19 +58,19 @@ export class SocketServer extends HttpServer {
     ];
   }
 
-  setSocket(socket: any) {
+  private setSocket(socket: any) {
     this.sockets[socket.id] = socket;
   }
 
-  deleteSocket(id: string) {
+  private deleteSocket(id: string) {
     delete this.sockets[id];
   }
 
-  getSocket(id: string) {
+  private getSocket(id: string) {
     return this.sockets[id];
   }
 
-  getSocketRoom(socket: Socket): string {
+  private getSocketRoom(socket: Socket): string {
     // socket.rooms.forEach((room: string) => {
     //   console.log('room', room);
     //   if (room !== socket.id) {
@@ -138,6 +148,9 @@ export class SocketServer extends HttpServer {
     });
   }
 
+  /*
+   ** Default routes
+   */
   connect(req: any) {
     this.setSocket(req.socket);
   }
@@ -148,5 +161,21 @@ export class SocketServer extends HttpServer {
 
   disconnect(req: any) {
     this.deleteSocket(req.socket.id);
+  }
+
+  /*
+   ** Server
+   */
+  public listen() {
+    this.server.listen(this.port, () => {
+      Logger.info(`Server listening on port ${this.port}`);
+    });
+  }
+
+  public close() {
+    this.server.close((err: Error) => {
+      Logger.info('server closed');
+      process.exit(err ? 1 : 0);
+    });
   }
 }

@@ -67,13 +67,12 @@ export class AuthService {
   /*
    *  Login
    */
-  login({ socket }: Request, res: Response) {
-    // const { socket } = req;
-    const { name, room } = req.data;
+  login({ socket, data }: Request, res: Response) {
+    const { name, room } = data;
     let status = 200;
 
+    const socketWrapper = new Socket(socket, io);
     try {
-      const socketWrapper = new Socket(socket, io);
       // this.getOrCreateGame(room, name).setPlayer(socket.id, name);
       this.rooms.getOrCreateRoom(room, name).setPlayer(socket.id, name);
       this.chats.getOrCreateChat(room).setMessage('server', `${name} joined the room`);
@@ -102,7 +101,7 @@ export class AuthService {
     } finally {
       // console.log(this.getGame(this.getSocketRoom(socket.id)));
       //   console.log(this.getSocket(socket.id).emit)
-      this.emitToSocket(socket.id, ev.RESPONSE_LOGIN, {
+      socketWrapper.emitToSocket(socket.id, ev.RESPONSE_LOGIN, {
         status,
         payload: { name, room },
       });

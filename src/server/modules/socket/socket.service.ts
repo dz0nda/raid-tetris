@@ -63,4 +63,12 @@ export class SocketService {
   public ioOn(callback: (socket: SocketIo) => void) {
     this.io.on('connection', callback);
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public emitToRoom(room: string, event: string, data: any) {
+    this.io.in(room).emit(event, data);
+  }
+
+  public emitToSocket(id: string, event: string, data: any) {
+    this.io.to(id).emit(event, data);
 }

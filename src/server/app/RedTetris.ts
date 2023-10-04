@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 
-import ev from '../shared/events';
+import ev from '@/shared/events';
 // import Io, { Request } from '@/server/server/Io';
 import { chatSchema, loginSchema, moveSchema, ownerSchema } from '@/server/redtetris.validation';
 

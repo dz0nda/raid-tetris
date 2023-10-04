@@ -9,6 +9,10 @@ export class Socket {
     this._io = io;
   }
 
+  get getSocketId(): string {
+    return this._socket.id;
+  }
+
   set setUsername(username: string) {
     this._socket.data.username = username;
   }

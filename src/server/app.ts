@@ -4,7 +4,7 @@
 import 'reflect-metadata';
 import { Socket as SocketIo } from 'socket.io';
 
-import { Route } from '@/server/server/SocketServer';
+import { Route } from '@/server/modules/utils/types';
 import Game from '@/server/app/Game';
 import { Rooms } from '@/server/app/room/Rooms';
 import { Chats } from '@/server/app/chat/Chats';
@@ -26,7 +26,7 @@ export class RedTetris {
   constructor(host: string, port: number) {
     // super(host, port);
     this.socket = new SocketModule(host, port);
-    this.db = new DatabaseModule();
+    this.chat = this.db = new DatabaseModule();
     // this.db.;
     // this.authService = new AuthService(this.server);
     // this.authController = new AuthController(new AuthService(this.server));
@@ -42,6 +42,10 @@ export class RedTetris {
     this.socket.service.listen();
   }
 
+  // private _guard(data, schema) {
+
+  // }
+
   router(routes: any[]) {
     this.socket.service.ioOn((socket: SocketIo) => {
       const clientSocket = new Socket(socket, this.socket.service.io);
@@ -52,14 +56,10 @@ export class RedTetris {
 
         Logger.info(`Socket ${socket.id} listening on ${event}`);
         socket.on(event as string, (data: any, callback: any) => {
-          if (schema.validate(data).error) {
+          if (schema && schema.validate(data).error) {
             Logger.error(`Socket ${socket.id} invalid arguments on ${event}`);
-            // this.emitToSocket(socket.id, event.res, {
-            //   status: 500,
-            //   message: 'Invalid arguments',
-            // });
           }
-          handler({ socket, data }, { io: this.socket.service.io, callback });
+          handler({ socket: clientSocket, data }, { io: this.socket.service.io, callback });
         });
       });
 

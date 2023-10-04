@@ -1,4 +1,4 @@
-import { Socket } from 'socket.io';
+import { Socket } from '@/server/modules/socket/socket.entity';
 
 export interface Request {
   socket: Socket;
