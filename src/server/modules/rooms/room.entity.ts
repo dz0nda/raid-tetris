@@ -13,5 +13,20 @@ export class Room {
     dropTime: number;
     pieces: Piece[];
   };
-  players: { [key: string]: Player };
+  players: Record<string, Player>;
+
+  constructor(room: string, owner: string, password = '') {
+    this.room = room;
+    this.password = password;
+    this.settings = {
+      owner,
+      started: false,
+      status: '',
+      nbPlayers: 0,
+      nbLoosers: 0,
+      dropTime: 0,
+      pieces: [],
+    };
+    this.players = {};
+  }
 }
