@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ScrollArea, Table, Text, createStyles, rem } from '@mantine/core';
 import { keys } from '@mantine/utils';
-import { Room } from '@/server/app/room/Room';
+import { Room } from '@/server/modules/rooms/room.entity';
 
 const useStyles = createStyles((theme) => ({
   header: {

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { createSlice } from '@reduxjs/toolkit';
 
-import { Room } from '@/server/app/room/Room';
+import { Room } from '@/server/modules/rooms/room.entity';
 import { RootState } from '..';
 
 export interface AppState {
