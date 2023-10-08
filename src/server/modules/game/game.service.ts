@@ -2,13 +2,12 @@
 
 // import Io, { Request } from '@/server/server/Io';
 
-import Game from '@/server/app/Game';
 // import { Socket } from 'socket.io-client';
 
 export class GameService {
-  game: Game;
+  // game: Game;
 
   constructor(room: string, owner: string) {
-    this.game = new Game();
+    // this.game = new Game();
   }
 }

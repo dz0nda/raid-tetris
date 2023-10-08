@@ -1,4 +1,4 @@
-import { Chat, IMessage } from '@/server/app/chat/Chat';
+import { Chat, IMessage } from './chat.entity';
 
 export class ChatsService {
   chats: Record<string, Chat>;

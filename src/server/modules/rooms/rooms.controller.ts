@@ -7,7 +7,7 @@ import { SocketService } from '../socket/socket.service';
 import { RoomsService } from './rooms.service';
 import { Logger } from '../utils/utils';
 
-export class RoomController {
+export class RoomsController {
   service: RoomsService;
   socket: SocketService;
   routes: Route[];
@@ -37,60 +37,61 @@ export class RoomController {
     ];
   }
 
-  public start(req: Request) {
+  get getRoutes() {
+    return this.routes;
+  }
+
+  public start(req: Request<any>) {
     const socket = req.socket;
 
-    try {
-      Logger.info(`Socket ${socket.getSocketId} start game`);
-    } catch (err) {
-      Logger.err(err);
+    Logger.info(`Socket ${socket.getSocketId} started a game`);
+    this.service.getRoom(socket.getRoom)?.initGameStart(socket.getSocketId);
 
-      this.socket.emitToSocket(socket.getSocketId, ev.RESPONSE_START_GAME, {
-        status: 500,
-        message: err,
+    socket.emitToRoom(socket.getRoom, ev.RESPONSE_UPDATE_GAME, {
+      status: 200,
+      payload: {
+        players: this.service.getRoom(socket.getRoom)?.getPlayers(),
+      },
+    });
+  }
+
+  public owner(req: Request<{ owner: string }>) {
+    const socket = req.socket;
+
+    this.service.getRoom(socket.getRoom)?.setOwner(req.data.owner);
+
+    socket.emitToRoom(socket.getRoom, ev.RESPONSE_UPDATE_GAME_OWNER, {
+      status: 200,
+      payload: {
+        game: this.service.getRoom(socket.getRoom),
+      },
+    });
+  }
+
+  public move(req: Request<{ keyCode: number }>) {
+    const socket = req.socket;
+    const room = this.service.getRoom(socket.getRoom);
+
+    if (!room) {
+      throw new Error('Room not found');
+    }
+
+    const collided = room.setMove(req.socket.getSocketId, req.data.keyCode);
+
+    if (collided) {
+      socket.emitToRoom(socket.getRoom, ev.RESPONSE_UPDATE_GAME, {
+        status: 200,
         payload: {
-          id: socket.getSocketId,
-          player: {},
+          players: this.service.getRoom(socket.getRoom)?.getPlayers(),
         },
       });
     }
-  }
 
-  public owner(req: Request) {
-    const { socket } = req;
-    const { owner } = req.data;
-
-    try {
-      Logger.info(`Socket ${socket.getSocketId} change owner to ${owner}`);
-    } catch (err) {
-      Logger.err(err);
-
-      this.socket.emitToSocket(socket.getSocketId, ev.RESPONSE_UPDATE_GAME_OWNER, {
-        status: 500,
-        message: err,
+    if (room.getStarted() === false) {
+      socket.emitToRoom(socket.getRoom, ev.RESPONSE_UPDATE_GAME, {
+        status: 200,
         payload: {
-          id: socket.getSocketId,
-          player: {},
-        },
-      });
-    }
-  }
-
-  public move(req: Request) {
-    const { socket } = req;
-    const { move } = req.data;
-
-    try {
-      Logger.info(`Socket ${socket.getSocketId} move ${move}`);
-    } catch (err) {
-      Logger.err(err);
-
-      this.socket.emitToSocket(socket.getSocketId, ev.RESPONSE_MOVE, {
-        status: 500,
-        message: err,
-        payload: {
-          id: socket.getSocketId,
-          player: {},
+          game: this.service.getRoom(socket.getRoom),
         },
       });
     }

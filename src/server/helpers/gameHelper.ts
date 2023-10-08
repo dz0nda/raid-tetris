@@ -1,4 +1,4 @@
-import { Piece } from '@/server/app/Piece';
+import { Piece } from '@/server/modules/game/piece.entity';
 
 export const keys = {
   KDOWN: 40,

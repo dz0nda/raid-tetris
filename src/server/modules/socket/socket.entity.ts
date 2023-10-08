@@ -41,9 +41,9 @@ export class Socket {
   //   this.io.emit(event, data);
   // }
 
-  // emitToSocket(id: string, event: any, data: any) {
-  //   this.sockets.get(id)?.emit(event, data);
-  // }
+  emitToSocket(id: string, event: any, data: any) {
+    this._io.to(id)?.emit(event, data);
+  }
 
   public emitToRoom(room: string, event: any, data: any) {
     this._io.in(room).emit(event, data);

@@ -3,7 +3,7 @@ import { SocketService } from '@/server/modules/socket/socket.service';
 import { ChatsService } from './chats.service';
 import { ChatsController } from './chats.controller';
 
-export class SocketModule {
+export class ChatsModule {
   public service: ChatsService;
   public controller: ChatsController;
 

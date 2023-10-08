@@ -1,8 +1,8 @@
 import { Socket } from '@/server/modules/socket/socket.entity';
 
-export interface Request {
+export interface Request<T> {
   socket: Socket;
-  data: any;
+  data: T;
 }
 
 export interface Response {
@@ -11,8 +11,8 @@ export interface Response {
 }
 
 export interface Route {
-  event: string | { req: string; res: string };
-  handler: (req: Request, res?: Response) => void;
+  event: { req: string; res?: string };
+  handler: (req: Request<any>, res?: Response) => void;
   auth?: ((socket: Socket) => { socket: Socket; isLogged: boolean }) | boolean;
   schema?: any | null;
 }

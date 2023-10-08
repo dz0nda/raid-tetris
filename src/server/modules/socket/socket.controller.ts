@@ -8,21 +8,21 @@ export class SocketController {
   constructor(service: SocketService) {
     this.defaultRoutes = [
       {
-        event: 'connect',
+        event: { req: 'connect' },
         handler: service.connect.bind(this),
       },
       {
-        event: 'disconnecting',
+        event: { req: 'disconnecting' },
         handler: service.disconnecting.bind(this),
       },
       {
-        event: 'disconnect',
+        event: { req: 'disconnect' },
         handler: service.disconnect.bind(this),
       },
     ];
   }
 
-  public getDefaultsRoutes() {
+  get getRoutes() {
     return this.defaultRoutes;
   }
 }

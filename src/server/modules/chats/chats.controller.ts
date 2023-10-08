@@ -1,5 +1,4 @@
 import ev from '@/shared/events';
-import { Logger } from '@/server/modules/utils/utils';
 import { Route } from '@/server/modules/utils/types';
 import { Request } from '@/server/modules/utils/types';
 import { SocketService } from '@/server/modules/socket/socket.service';
@@ -25,28 +24,20 @@ export class ChatsController {
     ];
   }
 
-  public sendChatMessage(req: Request) {
+  get getRoutes() {
+    return this.routes;
+  }
+
+  public sendChatMessage(req: Request<{ text: string }>) {
     const socket = req.socket;
 
-    try {
-      const messages = this.service.addMessage(socket.getRoom, socket.getUsername, req.data.text);
+    const messages = this.service.addMessage(socket.getRoom, socket.getUsername, req.data.text);
 
-      this.socket.emitToRoom(socket.getRoom, ev.RESPONSE_UPDATE_GAME_CHAT, {
-        status: 200,
-        payload: {
-          chat: messages,
-        },
-      });
-    } catch (err: unknown) {
-      Logger.err(err);
-      this.socket.emitToSocket(socket.getSocketId, ev.RESPONSE_UPDATE_PLAYER, {
-        status: 500,
-        message: err,
-        payload: {
-          id: socket.getSocketId,
-          player: {},
-        },
-      });
-    }
+    this.socket.emitToRoom(socket.getRoom, ev.RESPONSE_UPDATE_GAME_CHAT, {
+      status: 200,
+      payload: {
+        chat: messages,
+      },
+    });
   }
 }

@@ -71,4 +71,5 @@ export class SocketService {
 
   public emitToSocket(id: string, event: string, data: any) {
     this.io.to(id).emit(event, data);
+  }
 }
