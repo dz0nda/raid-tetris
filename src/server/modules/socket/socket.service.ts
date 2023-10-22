@@ -1,20 +1,20 @@
 import { Socket as SocketIo, Server as SocketIoServer } from 'socket.io';
 
-import { Logger } from '@/server/modules/utils/utils';
-import { SocketMap } from './socket-map';
 import { DatabaseService } from '../database/database.service';
 import { HttpService } from '../http/http.service';
+import { SocketEntity } from './socket.entity';
+import { Base } from '../utils/service';
 
-export class SocketService {
+export class SocketService extends Base {
   io!: SocketIoServer;
-  sockets!: SocketMap;
 
   constructor(private dbService: DatabaseService, httpService: HttpService) {
+    super('SocketService');
+
     this.io = new SocketIoServer(httpService.getHttp(), {
       pingInterval: 5000,
       pingTimeout: 15000,
     });
-    this.sockets = new SocketMap();
   }
 
   /**
@@ -23,42 +23,54 @@ export class SocketService {
    * @param room - The room object.
    * @returns The room if found, otherwise null.
    */
-  // async setSocket(socket: Socket): Promise<void> {
-  //   this.dbService.set('room', , room);
-  // }
+  async setSocket(socket: SocketEntity): Promise<void> {
+    try {
+      await this.dbService.set('sockets', socket.id, socket);
+    } catch (error) {
+      this.err(`Error setting socket: ${(error as Error).message}`);
+    }
+  }
 
-  // /**
-  //  * Fetches a room by its name.
-  //  *
-  //  * @param roomName - The room name.
-  //  * @returns The room if found, otherwise null.
-  //  */
-  // async getRoom(room: string): Promise<Room | null> {
-  //   return this.dbService.get<Room>('room', room);
-  // }
-
-  /*
-   ** Server
+  /**
+   * Fetches a room by its name.
+   *
+   * @param roomName - The room name.
+   * @returns The room if found, otherwise null.
    */
-  // public listen() {
-  //   this.app.listen(this.port, () => {
-  //     Logger.info(`Server listening on port ${this.port}`);
-  //   });
-  // }
+  async getSocket(socketId: string): Promise<SocketEntity | null> {
+    try {
+      return await this.dbService.get<SocketEntity>('sockets', socketId);
+    } catch (error) {
+      this.log(`Error getting socket: ${(error as Error).message}`);
+      return null;
+    }
+  }
 
-  // public close() {
-  //   this.app.close((err: any) => {
-  //     Logger.info('server closed');
-  //     // process.exit(err ? 1 : 0);
-  //   });
-  // }
+  /**
+   * Fetches a room by its name.
+   *
+   * @param roomName - The room name.
+   * @returns The room if found, otherwise null.
+   */
+  async deleteSocket(socketId: string): Promise<void> {
+    return this.dbService.del('sockets', socketId);
+  }
 
   /*
    ** Events
    */
   public connect(socket: SocketIo) {
-    Logger.info(`Socket ${socket.id} connected.`);
-    // this.sockets.set(socket.id, socket);
+    this.log(`Socket ${socket.id} connected.`);
+    this.setSocket(new SocketEntity(socket.id));
+  }
+
+  public disconnecting(socket: SocketIo) {
+    this.log(`Socket ${socket.id} is disconnecting...`);
+  }
+
+  public disconnect(socket: SocketIo) {
+    this.log(`Socket ${socket.id} diconnected.`);
+    this.deleteSocket(socket.id);
   }
 
   /*

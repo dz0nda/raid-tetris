@@ -1,7 +1,6 @@
 import { SocketService } from './socket.service';
 
 import { Request, Route } from '@/server/modules/utils/types';
-import { Logger } from '@/server/modules/utils/utils';
 
 export class SocketController {
   service: SocketService;
@@ -11,7 +10,7 @@ export class SocketController {
     this.service = service;
     this.routes = [
       {
-        event: { req: 'connection' },
+        event: { req: 'connect' },
         handler: this.connect.bind(this),
       },
       {
@@ -30,15 +29,14 @@ export class SocketController {
   }
 
   connect(req: Request<unknown>) {
-    Logger.info(`Socket ${req.socket.getSocketId} connected.`);
+    this.service.connect(req.socket.value());
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  disconnecting(req: any) {
-    Logger.info(`Socket ${req.socket.id} disconnecting...`);
+  disconnecting(req: Request<unknown>) {
+    this.service.disconnecting(req.socket.value());
   }
 
   disconnect(req: Request<unknown>) {
-    Logger.info(`Socket ${req.socket.getSocketId} disconnected.`);
+    this.service.disconnect(req.socket.value());
   }
 }

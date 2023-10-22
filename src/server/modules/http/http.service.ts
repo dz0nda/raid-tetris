@@ -1,10 +1,12 @@
 import express from 'express';
 import { Server, createServer } from 'http';
+import { Base } from '../utils/service';
 
-export class HttpService {
+export class HttpService extends Base {
   private http: Server;
 
   constructor() {
+    super('HttpService');
     this.http = createServer(express());
   }
 
@@ -14,13 +16,13 @@ export class HttpService {
 
   public listen(host: string, port: number) {
     this.http.listen(port, host, () => {
-      console.log(`HTTP Server listening on ${host}:${port}`);
+      this.log(`Server listening on ${host}:${port}`);
     });
   }
 
   public close() {
     this.http.close((err?: Error) => {
-      console.log('HTTP server closed');
+      this.log('Server closed');
       process.exit(err ? 1 : 0);
     });
   }

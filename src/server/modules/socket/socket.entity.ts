@@ -1,10 +1,13 @@
 import { Socket as SocketIo, Server as SocketIoServer } from 'socket.io';
+import { Entity } from '../database/entities/Entity';
 
-export class SocketEntity {
+export class SocketEntity extends Entity {
   id: string;
-  user?: string;
+  user?: string | null;
 
-  constructor(id: string, user?: string) {
+  constructor(id: string, user?: string | null) {
+    super();
+
     this.id = id;
     this.user = user;
   }

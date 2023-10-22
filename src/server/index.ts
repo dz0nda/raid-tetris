@@ -2,7 +2,7 @@
 // import Server from './server';
 import { RedTetris } from './app';
 
-const app = new RedTetris('0.0.0.0', 3000);
+const app = new RedTetris();
 
 app.listen('0.0.0.0', 3000);
 

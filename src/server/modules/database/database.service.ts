@@ -39,6 +39,11 @@ export class DatabaseService {
     await this.db.set(redisKey, value.serialize());
   }
 
+  async del(type: string, key: string): Promise<void> {
+    const redisKey = this.generateRedisKey(type, key);
+    await this.db.del(redisKey);
+  }
+
   /**
    * Retrieves an entity from Redis.
    * @param type - The type of the entity.

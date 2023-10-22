@@ -1,16 +1,27 @@
-import { Socket as SocketIo, Server as SocketIoServer } from 'socket.io';
+import { Socket as SocketIo } from 'socket.io';
 
 import { Route } from '@/modules/utils/types';
 import { Logger } from '@/modules/utils/utils';
 import { Socket } from '@/modules/socket/socket.entity';
+import { SocketService } from '../socket/socket.service';
 
 export class RouterService {
   private routes: Route[] = [];
 
-  constructor(private io: SocketIoServer) {}
+  constructor(private readonly socketService: SocketService, routes: Route[] = []) {
+    this.addRoutes(routes);
+    this.setupSocketRouting();
+  }
 
   public addRoutes(routes: Route[]): void {
     this.routes = [...this.routes, ...routes];
+  }
+
+  private setupSocketRouting(): void {
+    this.socketService.ioOn((socket: SocketIo) => {
+      this.socketService.connect(socket);
+      this.routeRequests(socket);
+    });
   }
 
   /**
@@ -19,7 +30,7 @@ export class RouterService {
    * @param socketIo - The individual socket instance.
    */
   public routeRequests(socket: SocketIo): void {
-    const wrappedSocket = new Socket(socket, this.io);
+    const wrappedSocket = new Socket(socket, this.socketService.io);
 
     this.routes.forEach((route) => {
       const { event, handler, schema } = route;
@@ -30,7 +41,7 @@ export class RouterService {
           if (schema && schema.validate(data).error) {
             throw new Error(`Invalid arguments: ${JSON.stringify(data)} -> ${schema.validate(data).error}`);
           } else {
-            handler({ socket: wrappedSocket, data }, { io: this.io, callback });
+            handler({ socket: wrappedSocket, data }, { io: this.socketService.io, callback });
           }
         } catch (err) {
           Logger.error(`[${event}] Error: ${err}`);

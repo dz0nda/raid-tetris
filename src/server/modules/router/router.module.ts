@@ -1,5 +1,4 @@
 import { SocketModule } from '@/modules/socket/socket.module';
-import { Route } from '@/server/modules/utils/types';
 
 import { RouterService } from './router.service';
 
@@ -7,16 +6,12 @@ export class RouterModule {
   private serviceInstance: RouterService;
 
   constructor(socketModule: SocketModule) {
-    this.serviceInstance = new RouterService(socketModule.service.io);
-  }
-
-  public addRoutes(routes: Route[]): void {
-    this.service.addRoutes(routes);
+    this.serviceInstance = new RouterService(socketModule.service);
   }
 
   /**
-   * Provides the DatabaseService instance.
-   * @returns The DatabaseService instance.
+   * Provides the RouterService instance.
+   * @returns The RouterService instance.
    */
   get service(): RouterService {
     return this.serviceInstance;

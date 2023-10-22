@@ -1,5 +1,4 @@
 import 'reflect-metadata';
-import { Socket as SocketIo } from 'socket.io';
 
 import { Route } from '@/server/modules/utils/types';
 import { Logger } from './modules/utils/utils';
@@ -32,19 +31,7 @@ export class RedTetris {
    * @param host - The host address.
    * @param port - The port number.
    */
-  constructor(host: string, port: number) {
-    this.initializeModules(host, port);
-    // this.setupRoutes();
-    // this.setupSocketRouting();
-  }
-
-  /**
-   * Initializes the main application modules.
-   *
-   * @param host - The host address.
-   * @param port - The port number.
-   */
-  private initializeModules(host: string, port: number): void {
+  constructor() {
     this.http = HttpModule.getInstance();
     this.db = DatabaseModule.getInstance();
     this.db.redis.on('error', (error) => {
@@ -54,34 +41,17 @@ export class RedTetris {
     // SocketModule.initialize(host, port);
     this.socket = SocketModule.getInstance();
 
-    // this.router = new RouterModule(this.socket);
-    // this.chats = new ChatsModule(this.socket.service);
-    // this.rooms = new RoomModule(this.socket.service);
-    // this.auth = new AuthModule();
-  }
+    this.chats = new ChatsModule(this.socket.service);
+    this.rooms = new RoomModule(this.socket.service);
+    this.auth = new AuthModule();
 
-  /**
-   * Sets up the application routes.
-   */
-  private setupRoutes(): void {
-    this.routes = [
+    this.router = new RouterModule(this.socket);
+    this.router.service.addRoutes([
       ...this.socket.controller.getRoutes,
       ...this.rooms.controller.getRoutes,
       ...this.chats.controller.getRoutes,
       ...this.auth.controller.getRoutes,
-    ];
-    this.router.addRoutes(this.routes);
-  }
-
-  /**
-   * Sets up socket routing for the application.
-   */
-  private setupSocketRouting(): void {
-    this.socket.service.ioOn((socket: SocketIo) => {
-      // const req: Request<any> = { socket, data: {} };
-      this.socket.service.connect(socket);
-      this.router.service.routeRequests(socket);
-    });
+    ]);
   }
 
   /**
