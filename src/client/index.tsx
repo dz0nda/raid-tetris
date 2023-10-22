@@ -5,8 +5,7 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import { App } from './App';
 
-const root = ReactDOM.createRoot(document.getElementById('tetris') as HTMLElement);
-root.render(
+ReactDOM.createRoot(document.getElementById('tetris') as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
       <App />

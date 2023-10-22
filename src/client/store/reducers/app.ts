@@ -4,33 +4,35 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { Room } from '@/server/modules/rooms/room.entity';
 import { RootState } from '..';
+import { Message } from '@/client/components/chat/ChatRoom';
+import { chatData } from '@/client/helpers/chatData';
 
 export interface AppState {
   username: string;
   room: string;
   rooms: { [key: string]: Room };
-  chats: { [key: string]: any };
+  chats: { [key: string]: Message[] };
 }
 
 export const appState: AppState = {
   username: '',
   room: '',
   rooms: {},
-  chats: {},
+  chats: chatData,
 };
 
 const appSlice = createSlice({
   name: 'app',
   initialState: appState,
   reducers: {
-    reqLogin(_state, _action) {},
-    resLogin(state, action) {
-      console.log('resLogin', action.payload);
-      state.username = action.payload.name;
-      state.room = action.payload.room;
-    },
+    // reqLogin(_state, _action) {},
+    // resLogin(state, action) {
+    //   // console.log('resLogin', action.payload);
+    //   state.username = action.payload.name;
+    //   state.room = action.payload.room;
+    // },
 
-    reqLogout(_state, _action) {},
+    // reqLogout(_state, _action) {},
 
     reqStartGame(_state, _action) {},
 
@@ -69,9 +71,9 @@ const appSlice = createSlice({
 });
 
 export const {
-  reqLogin,
-  resLogin,
-  reqLogout,
+  // reqLogin,
+  // resLogin,
+  // reqLogout,
   reqStartGame,
   reqOwner,
   reqChat,
@@ -87,21 +89,24 @@ export const {
 
 export const appReducer = appSlice.reducer;
 
-export const selectRooms = (state: RootState) => state.app.rooms;
-export const selectRoom = (state: RootState): Room => state.app.rooms[state.app.room] || {};
-export const selectRoomOwner = (state: RootState) => state.app.rooms[state.app.room]?.settings.owner || '';
-export const selectAppChats = (state: RootState) => state.app.chats;
+export const selectIsLogged = (state: RootState) => state.user.username.length > 0;
+export const selectUsername = (state: RootState) => state.user.username;
 
-export const selectAppInfos = (state: RootState): { roomsAcc: number; playersAcc: number } =>
-  Object.values(state.app.rooms).reduce(
-    ({ roomsAcc, playersAcc }, { players: roomPlayers }): { roomsAcc: number; playersAcc: number } => {
-      return { roomsAcc: roomsAcc + 1, playersAcc: playersAcc + Object.values(roomPlayers).length };
-    },
-    { roomsAcc: 0, playersAcc: 0 },
-  );
+// export const selectRooms = (state: RootState) => state.app.rooms;
+// export const selectRoom = (state: RootState): Room => state.app.rooms[state.app.room] || {};
+// export const selectRoomOwner = (state: RootState) => state.app.rooms[state.app.room]?.settings.owner || '';
+// export const selectAppChats = (state: RootState) => state.app.chats;
 
-export const selectRoomPlayers = (state: RootState) => state.app.rooms[state.app.room]?.players || {};
-export const selectPlayer = (state: RootState) => state.app.rooms[state.app.room]?.players[state.socket.id] || {};
+// export const selectAppInfos = (state: RootState): { roomsAcc: number; playersAcc: number } =>
+//   Object.values(state.app.rooms).reduce(
+//     ({ roomsAcc, playersAcc }, { players: roomPlayers }): { roomsAcc: number; playersAcc: number } => {
+//       return { roomsAcc: roomsAcc + 1, playersAcc: playersAcc + Object.values(roomPlayers).length };
+//     },
+//     { roomsAcc: 0, playersAcc: 0 },
+//   );
+
+// export const selectRoomPlayers = (state: RootState) => state.app.rooms[state.app.room]?.players || {};
+// export const selectPlayer = (state: RootState) => state.app.rooms[state.app.room]?.players[state.user.id] || {};
 
 // // eslint-disable-next-line default-param-last
 // const appReducer = (state = appState, action) => {

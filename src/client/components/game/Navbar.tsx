@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Button, Group, Navbar, Tabs, Text, Tooltip, createStyles, getStylesRef, rem } from '@mantine/core';
+import { Aside, Group, Tabs, createStyles, getStylesRef, rem } from '@mantine/core';
 // import {
 //   IconShoppingCart,
 //   IconLicense,
@@ -20,9 +20,8 @@ import { Box, Button, Group, Navbar, Tabs, Text, Tooltip, createStyles, getStyle
 // } from '@tabler/icons-react';
 import { IconSettings } from '@tabler/icons-react';
 // import GameChat from './GameChat';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { reqStartGame, selectPlayer, selectRoomOwner } from '@/client/store/reducers/app';
-import { Info } from '../common/Info';
+import { useAppDispatch } from '../../store';
+// import { reqStartGame, selectPlayer, selectRoomOwner } from '@/client/store/reducers/app';
 
 import { Settings } from './Settings';
 import { playersData } from '@/client/helpers/data';
@@ -122,29 +121,29 @@ export const GameNavbar: FC = () => {
   const { classes, cx } = useStyles();
   // const [section, setSection] = useState<'account' | 'general'>('account');
   // const [active, setActive] = useState('Billing');
-  const player = useAppSelector(selectPlayer);
-  const owner = useAppSelector(selectRoomOwner);
+  // const player = useAppSelector(selectPlayer);
+  // const owner = useAppSelector(selectRoomOwner);
   const dispatch = useAppDispatch();
 
   return (
-    <Navbar width={{ sm: 300, md: 400 }} hidden={false} p="md" className={classes.navbar}>
-      <Navbar.Section>
+    <Aside width={{ sm: 300, md: 400 }} hidden={false} p="md" className={classes.navbar}>
+      <Aside.Section>
         <Group position="apart" align="center" p="xs">
-          <Text weight={500} size="sm" className={classes.title} color="dimmed" mb="xs">
+          {/* <Text weight={500} size="sm" className={classes.title} color="dimmed" mb="xs">
             {player?.name || 'Player'}
-          </Text>
-          <Tooltip label="Only owner can start the game" disabled={owner === player?.name} withArrow>
+          </Text> */}
+          {/* <Tooltip label="Only owner can start the game" disabled={owner === player?.name} withArrow>
             <Box>
               <Button disabled={owner !== player?.name} onClick={() => dispatch(reqStartGame({}))}>
                 Start
               </Button>
             </Box>
-          </Tooltip>
+          </Tooltip> */}
         </Group>
-      </Navbar.Section>
+      </Aside.Section>
 
-      <Navbar.Section className={classes.footer}>
-        <Group grow>
+      <Aside.Section className={classes.footer}>
+        {/* <Group grow>
           {[
             {
               title: 'Score',
@@ -161,7 +160,7 @@ export const GameNavbar: FC = () => {
           ].map((stat) => (
             <Info {...stat} />
           ))}
-        </Group>
+        </Group> */}
         {/* <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
           <span>Change account</span>
         </a>
@@ -169,7 +168,7 @@ export const GameNavbar: FC = () => {
         <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
           <span>Logout</span>
         </a> */}
-      </Navbar.Section>
+      </Aside.Section>
       {/* <Aside.Section className={classes.footer}>
         <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
           <span>Change account</span>
@@ -180,7 +179,7 @@ export const GameNavbar: FC = () => {
         </a>
       </Aside.Section> */}
 
-      <Navbar.Section mt="xl">
+      <Aside.Section mt="xl">
         <Tabs defaultValue="settings">
           <Tabs.List grow>
             <Tabs.Tab value="settings" icon={<IconSettings size="1rem" />}>
@@ -217,7 +216,7 @@ export const GameNavbar: FC = () => {
             <GamePlayers data={playersData} />
           </Tabs.Panel>
         </Tabs>
-      </Navbar.Section>
-    </Navbar>
+      </Aside.Section>
+    </Aside>
   );
 };

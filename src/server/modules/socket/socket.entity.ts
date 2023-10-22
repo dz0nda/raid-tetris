@@ -1,5 +1,15 @@
 import { Socket as SocketIo, Server as SocketIoServer } from 'socket.io';
 
+export class SocketEntity {
+  id: string;
+  user?: string;
+
+  constructor(id: string, user?: string) {
+    this.id = id;
+    this.user = user;
+  }
+}
+
 export class Socket {
   private _io: SocketIoServer;
   private _socket: SocketIo;
@@ -32,24 +42,4 @@ export class Socket {
   public value(): SocketIo {
     return this._socket;
   }
-
-  // public emitToAll(event: string, data: any) {
-
-  // }
-
-  // emitToAll(event: any, data: any) {
-  //   this.io.emit(event, data);
-  // }
-
-  emitToSocket(id: string, event: any, data: any) {
-    this._io.to(id)?.emit(event, data);
-  }
-
-  public emitToRoom(room: string, event: any, data: any) {
-    this._io.in(room).emit(event, data);
-  }
-
-  // emitToRoomExceptSender(id: string, room: string, event: any, data: any) {
-  //   this.sockets.get(id)?.to(room).emit(event, data);
-  // }
 }

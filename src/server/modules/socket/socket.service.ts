@@ -1,60 +1,64 @@
-import express from 'express';
 import { Socket as SocketIo, Server as SocketIoServer } from 'socket.io';
-
-import * as http from 'http';
 
 import { Logger } from '@/server/modules/utils/utils';
 import { SocketMap } from './socket-map';
+import { DatabaseService } from '../database/database.service';
+import { HttpService } from '../http/http.service';
 
 export class SocketService {
-  host: string;
-  port: number;
-  // app: express.Server;
-  app: http.Server;
-  io: SocketIoServer;
-  sockets: SocketMap;
+  io!: SocketIoServer;
+  sockets!: SocketMap;
 
-  constructor(host: string, port: number) {
-    this.host = host;
-    this.port = port;
-    // this.app = express();
-    this.app = http.createServer(express());
-    this.io = new SocketIoServer(this.app, {
+  constructor(private dbService: DatabaseService, httpService: HttpService) {
+    this.io = new SocketIoServer(httpService.getHttp(), {
       pingInterval: 5000,
       pingTimeout: 15000,
     });
     this.sockets = new SocketMap();
   }
 
-  /*
-   ** Default routes
+  /**
+   * Create / update a room by its name.
+   *
+   * @param room - The room object.
+   * @returns The room if found, otherwise null.
    */
-  connect(req: any) {
-    Logger.info(`Socket ${req.socket.id} connected.`);
-  }
+  // async setSocket(socket: Socket): Promise<void> {
+  //   this.dbService.set('room', , room);
+  // }
 
-  disconnecting(req: any) {
-    Logger.info(`Socket ${req.socket.id} disconnecting...`);
-  }
-
-  disconnect(req: any) {
-    Logger.info(`Socket ${req.socket.id} disconnected.`);
-  }
+  // /**
+  //  * Fetches a room by its name.
+  //  *
+  //  * @param roomName - The room name.
+  //  * @returns The room if found, otherwise null.
+  //  */
+  // async getRoom(room: string): Promise<Room | null> {
+  //   return this.dbService.get<Room>('room', room);
+  // }
 
   /*
    ** Server
    */
-  public listen() {
-    this.app.listen(this.port, () => {
-      Logger.info(`Server listening on port ${this.port}`);
-    });
-  }
+  // public listen() {
+  //   this.app.listen(this.port, () => {
+  //     Logger.info(`Server listening on port ${this.port}`);
+  //   });
+  // }
 
-  public close() {
-    this.app.close((err: any) => {
-      Logger.info('server closed');
-      process.exit(err ? 1 : 0);
-    });
+  // public close() {
+  //   this.app.close((err: any) => {
+  //     Logger.info('server closed');
+  //     // process.exit(err ? 1 : 0);
+  //   });
+  // }
+
+  /*
+   ** Events
+   */
+  public connect(socket: SocketIo) {
+    Logger.info(`Socket ${socket.id} connected.`);
+    // this.sockets.set(socket.id, socket);
   }
 
   /*
@@ -69,6 +73,7 @@ export class SocketService {
     this.io.in(room).emit(event, data);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public emitToSocket(id: string, event: string, data: any) {
     this.io.to(id).emit(event, data);
   }

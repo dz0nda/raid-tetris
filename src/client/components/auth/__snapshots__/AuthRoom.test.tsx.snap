@@ -1,0 +1,471 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AuthRoom /> snapshot matches snapshot 1`] = `
+<div
+  className="mantine-Paper-root mantine-14hio24"
+>
+  <form
+    onSubmit={[Function]}
+  >
+    <div
+      className="mantine-Stack-root mantine-caxjnw"
+    >
+      <div
+        className="mantine-Text-root mantine-vgr5eq"
+      >
+        Hi
+         
+        <span
+          className="mantine-Text-root mantine-1w85feo"
+        >
+          TestUser
+        </span>
+        , choose or create a room to get started
+      </div>
+      <div
+        className="mantine-Group-root mantine-1uvkm47"
+      >
+        <div
+          className="mantine-Stack-root mantine-1lp970e"
+        >
+          <div
+            className="mantine-InputWrapper-root mantine-TextInput-root mantine-1erl5jz"
+          >
+            <label
+              className="mantine-InputWrapper-label mantine-TextInput-label mantine-1fzet7j"
+              htmlFor="mantine-j8j0cg6bk"
+              id="mantine-j8j0cg6bk-label"
+              onMouseDown={[Function]}
+            >
+              Room
+            </label>
+            <div
+              className="mantine-Input-wrapper mantine-TextInput-wrapper mantine-7c7vou"
+            >
+              <input
+                aria-invalid={false}
+                className="mantine-Input-input mantine-TextInput-input mantine-e237sj"
+                id="mantine-j8j0cg6bk"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                placeholder="My room"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            className="mantine-Group-root mantine-1j8fxwl"
+          >
+            <div
+              className="mantine-InputWrapper-root mantine-TextInput-root mantine-1erl5jz"
+            >
+              <label
+                className="mantine-InputWrapper-label mantine-TextInput-label mantine-jkwmhw"
+                htmlFor="mantine-c7doek2h1"
+                id="mantine-c7doek2h1-label"
+                onMouseDown={[Function]}
+              >
+                Password
+              </label>
+              <div
+                className="mantine-Input-wrapper mantine-TextInput-wrapper mantine-7c7vou"
+              >
+                <input
+                  aria-invalid={false}
+                  className="mantine-Input-input mantine-TextInput-input mantine-1mzjuus"
+                  data-disabled={true}
+                  disabled={true}
+                  id="mantine-c7doek2h1"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  placeholder="Search by any field"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              className="mantine-Switch-root mantine-Switch-root mantine-1n3c3ai"
+            >
+              <div
+                className="mantine-14n9mxy mantine-Switch-body"
+              >
+                <input
+                  checked={false}
+                  className="mantine-19htmtn mantine-Switch-input"
+                  id="mantine-gjj38jxuz"
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <label
+                  className="mantine-1xnvbd7 mantine-Switch-track"
+                  htmlFor="mantine-gjj38jxuz"
+                >
+                  <div
+                    className="mantine-htyghh mantine-Switch-thumb"
+                  >
+                    <svg
+                      className="tabler-icon tabler-icon-x"
+                      fill="none"
+                      height="0.8rem"
+                      stroke="#fa5252"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={3}
+                      viewBox="0 0 24 24"
+                      width="0.8rem"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M18 6l-12 12"
+                      />
+                      <path
+                        d="M6 6l12 12"
+                      />
+                    </svg>
+                  </div>
+                  <div
+                    className="mantine-oxtfyg mantine-Switch-trackLabel"
+                  />
+                </label>
+                <div
+                  className="mantine-19yx22c mantine-Switch-labelWrapper"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className="mantine-Stack-root mantine-62sv8f"
+          >
+            <h1
+              className="mantine-Text-root mantine-Title-root mantine-smsr0k"
+            >
+              Rooms
+            </h1>
+            <div
+              className="mantine-ScrollArea-root mantine-1deqy7c"
+              dir="ltr"
+              style={
+                {
+                  "--radix-scroll-area-corner-height": "0px",
+                  "--radix-scroll-area-corner-width": "0px",
+                  "position": "relative",
+                }
+              }
+            >
+              <style
+                dangerouslySetInnerHTML={
+                  {
+                    "__html": "[data-radix-scroll-area-viewport]{scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;}[data-radix-scroll-area-viewport]::-webkit-scrollbar{display:none}",
+                  }
+                }
+              />
+              <div
+                className="mantine-b6zkvl mantine-ScrollArea-viewport"
+                data-radix-scroll-area-viewport=""
+                style={
+                  {
+                    "overflowX": "scroll",
+                    "overflowY": "scroll",
+                  }
+                }
+              >
+                <div
+                  style={
+                    {
+                      "display": "table",
+                      "minWidth": "100%",
+                    }
+                  }
+                >
+                  <table
+                    className="mantine-Table-root mantine-1mv0s2g"
+                  >
+                    <thead>
+                      <tr>
+                        <th
+                          className="mantine-1y22qhp"
+                        >
+                          <button
+                            className="mantine-UnstyledButton-root mantine-12qguul"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <div
+                              className="mantine-Group-root mantine-1emc9ft"
+                            >
+                              <div
+                                className="mantine-Text-root mantine-9gu3tx"
+                              >
+                                Name
+                              </div>
+                              <div
+                                className="mantine-Center-root mantine-z86dzc"
+                              >
+                                <svg
+                                  className="tabler-icon tabler-icon-selector"
+                                  fill="none"
+                                  height="0.9rem"
+                                  stroke="currentColor"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={1.5}
+                                  viewBox="0 0 24 24"
+                                  width="0.9rem"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M8 9l4 -4l4 4"
+                                  />
+                                  <path
+                                    d="M16 15l-4 4l-4 -4"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </button>
+                        </th>
+                        <th
+                          className="mantine-1y22qhp"
+                        >
+                          <button
+                            className="mantine-UnstyledButton-root mantine-12qguul"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <div
+                              className="mantine-Group-root mantine-1emc9ft"
+                            >
+                              <div
+                                className="mantine-Text-root mantine-9gu3tx"
+                              >
+                                Owner
+                              </div>
+                              <div
+                                className="mantine-Center-root mantine-z86dzc"
+                              >
+                                <svg
+                                  className="tabler-icon tabler-icon-selector"
+                                  fill="none"
+                                  height="0.9rem"
+                                  stroke="currentColor"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={1.5}
+                                  viewBox="0 0 24 24"
+                                  width="0.9rem"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M8 9l4 -4l4 4"
+                                  />
+                                  <path
+                                    d="M16 15l-4 4l-4 -4"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </button>
+                        </th>
+                        <th
+                          className="mantine-1y22qhp"
+                        >
+                          <button
+                            className="mantine-UnstyledButton-root mantine-12qguul"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <div
+                              className="mantine-Group-root mantine-1emc9ft"
+                            >
+                              <div
+                                className="mantine-Text-root mantine-9gu3tx"
+                              >
+                                Status
+                              </div>
+                              <div
+                                className="mantine-Center-root mantine-z86dzc"
+                              >
+                                <svg
+                                  className="tabler-icon tabler-icon-selector"
+                                  fill="none"
+                                  height="0.9rem"
+                                  stroke="currentColor"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={1.5}
+                                  viewBox="0 0 24 24"
+                                  width="0.9rem"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M8 9l4 -4l4 4"
+                                  />
+                                  <path
+                                    d="M16 15l-4 4l-4 -4"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </button>
+                        </th>
+                        <th
+                          className="mantine-1y22qhp"
+                        >
+                          <button
+                            className="mantine-UnstyledButton-root mantine-12qguul"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <div
+                              className="mantine-Group-root mantine-1emc9ft"
+                            >
+                              <div
+                                className="mantine-Text-root mantine-9gu3tx"
+                              >
+                                Nb. Players
+                              </div>
+                              <div
+                                className="mantine-Center-root mantine-z86dzc"
+                              >
+                                <svg
+                                  className="tabler-icon tabler-icon-selector"
+                                  fill="none"
+                                  height="0.9rem"
+                                  stroke="currentColor"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={1.5}
+                                  viewBox="0 0 24 24"
+                                  width="0.9rem"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M8 9l4 -4l4 4"
+                                  />
+                                  <path
+                                    d="M16 15l-4 4l-4 -4"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </button>
+                        </th>
+                        <th
+                          className="mantine-1y22qhp"
+                        >
+                          <button
+                            className="mantine-UnstyledButton-root mantine-12qguul"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            <div
+                              className="mantine-Group-root mantine-1emc9ft"
+                            >
+                              <div
+                                className="mantine-Text-root mantine-9gu3tx"
+                              >
+                                Drop Time
+                              </div>
+                              <div
+                                className="mantine-Center-root mantine-z86dzc"
+                              >
+                                <svg
+                                  className="tabler-icon tabler-icon-selector"
+                                  fill="none"
+                                  height="0.9rem"
+                                  stroke="currentColor"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={1.5}
+                                  viewBox="0 0 24 24"
+                                  width="0.9rem"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M8 9l4 -4l4 4"
+                                  />
+                                  <path
+                                    d="M16 15l-4 4l-4 -4"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                          </button>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          dzsazs
+                        </td>
+                        <td>
+                          Alice
+                        </td>
+                        <td>
+                          active
+                        </td>
+                        <td>
+                          4
+                        </td>
+                        <td>
+                          5000
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          fdfsdf
+                        </td>
+                        <td>
+                          Bob
+                        </td>
+                        <td>
+                          waiting
+                        </td>
+                        <td>
+                          2
+                        </td>
+                        <td>
+                          6000
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="mantine-Group-root mantine-gnwlu3"
+      >
+        <button
+          className="mantine-UnstyledButton-root mantine-Button-root mantine-j4t094"
+          data-button={true}
+          type="submit"
+        >
+          <div
+            className="mantine-1wpc1xj mantine-Button-inner"
+          >
+            <span
+              className="mantine-1ryt1ht mantine-Button-label"
+              style={
+                {
+                  "textTransform": "uppercase",
+                }
+              }
+            >
+              Login
+            </span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+`;

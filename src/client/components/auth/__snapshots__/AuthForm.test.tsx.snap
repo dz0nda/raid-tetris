@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<div
+  className="mantine-Paper-root mantine-1kp3ejf"
+>
+  <form
+    onSubmit={[Function]}
+  >
+    <div
+      className="mantine-Stack-root mantine-caxjnw"
+    >
+      <div
+        className="mantine-Group-root mantine-1uvkm47"
+      >
+        <div
+          className="mantine-Stack-root mantine-1lp970e"
+        >
+          <div
+            className="mantine-InputWrapper-root mantine-TextInput-root mantine-1ejqehl"
+          >
+            <label
+              className="mantine-InputWrapper-label mantine-TextInput-label mantine-1fzet7j"
+              htmlFor="auth-input-username"
+              id="auth-input-username-label"
+              onMouseDown={[Function]}
+            >
+              Anonymous
+            </label>
+            <div
+              className="mantine-Input-wrapper mantine-TextInput-wrapper mantine-7c7vou"
+            >
+              <input
+                aria-invalid={false}
+                className="mantine-Input-input mantine-TextInput-input mantine-e237sj"
+                id="auth-input-username"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                placeholder="Your username"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            className="mantine-1avyp1d"
+          >
+            <div
+              className="mantine-Divider-root mantine-Divider-horizontal mantine-Divider-withLabel mantine-1xhm9ux"
+              role="separator"
+            >
+              <div
+                className="mantine-Text-root mantine-Divider-label mantine-Divider-labelDefaultStyles mantine-n5j5v3"
+              >
+                Or sign in with a wallet
+              </div>
+            </div>
+            <div
+              className="mantine-Group-root mantine-1pg17b9"
+            >
+              <button
+                className="mantine-UnstyledButton-root mantine-Button-root mantine-yddmfv"
+                data-button={true}
+                type="button"
+              >
+                <div
+                  className="mantine-1wpc1xj mantine-Button-inner"
+                >
+                  <span
+                    className="mantine-1ryt1ht mantine-Button-label"
+                    style={
+                      {
+                        "textTransform": undefined,
+                      }
+                    }
+                  >
+                    Beacon
+                  </span>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="mantine-Group-root mantine-w8seur"
+      >
+        <button
+          className="mantine-UnstyledButton-root mantine-Button-root mantine-1xgg2sc"
+          data-button={true}
+          type="submit"
+        >
+          <div
+            className="mantine-1wpc1xj mantine-Button-inner"
+          >
+            <span
+              className="mantine-1ryt1ht mantine-Button-label"
+              style={
+                {
+                  "textTransform": undefined,
+                }
+              }
+            >
+              Login
+            </span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+`;

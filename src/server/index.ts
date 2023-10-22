@@ -2,4 +2,22 @@
 // import Server from './server';
 import { RedTetris } from './app';
 
-new RedTetris('0.0.0.0', 3000).listen();
+const app = new RedTetris('0.0.0.0', 3000);
+
+app.listen('0.0.0.0', 3000);
+
+// Listen for SIGINT event (e.g., Ctrl+C)
+process.on('SIGINT', () => {
+  console.info('Received SIGINT. Shutting down gracefully...');
+  app.cleanup();
+});
+
+process.on('SIGTERM', () => {
+  console.info('Received SIGTERM. Shutting down gracefully...');
+  app.cleanup();
+});
+// Listen for the exit event
+process.on('exit', () => {
+  console.log('Exiting process...');
+  app.cleanup();
+});

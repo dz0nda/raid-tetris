@@ -1,3 +1,5 @@
+import { Room } from '../interfaces/room.interface';
+
 export const playersData = [
   {
     name: 'Athena Weissnat',
@@ -151,133 +153,128 @@ export const playersData = [
   },
 ];
 
-export const roomsListData = [
+export const roomsListData: Room[] = [
+  {
+    room: 'dzsazs',
+    pass: 'password123',
+    settings: {
+      owner: 'Alice',
+      started: true,
+      status: 'active',
+      nbPlayers: 4,
+      nbLoosers: 1,
+      dropTime: 5000,
+      pieces: [
+        { type: 'square', color: 'red' },
+        { type: 'circle', color: 'blue' },
+      ],
+    },
+    players: {
+      player1: { name: 'Alice', score: 100, status: 'online' },
+      player2: { name: 'Bob', score: 80, status: 'online' },
+    },
+  },
+  {
+    room: 'fdfsdf',
+    pass: 'secret456',
+    settings: {
+      owner: 'Bob',
+      started: false,
+      status: 'waiting',
+      nbPlayers: 2,
+      nbLoosers: 0,
+      dropTime: 6000,
+      pieces: [
+        { type: 'triangle', color: 'green' },
+        { type: 'rectangle', color: 'yellow' },
+      ],
+    },
+    players: {
+      player3: { name: 'Charlie', score: 50, status: 'offline' },
+      player4: { name: 'David', score: 70, status: 'online' },
+    },
+  },
+];
+
+export const TableSortData = [
   {
     name: 'Athena Weissnat',
-    settings: {
-      owner: 'Weissnat',
-      started: false,
-    },
-    players: { ...playersData },
+    company: 'Little - Rippin',
+    email: 'Elouise.Prohaska@yahoo.com',
   },
   {
     name: 'Deangelo Runolfsson',
-    settings: {
-      owner: 'Weissnat',
-      started: false,
-    },
-    players: { ...playersData },
+    company: 'Greenfelder - Krajcik',
+    email: 'Kadin_Trantow87@yahoo.com',
   },
   {
     name: 'Danny Carter',
-    settings: {
-      owner: 'Weissnat',
-      started: false,
-    },
-    players: { ...playersData },
+    company: 'Kohler and Sons',
+    email: 'Marina3@hotmail.com',
   },
   {
     name: 'Trace Tremblay PhD',
-    settings: {
-      owner: 'Weissnat',
-      started: false,
-    },
-    players: { ...playersData },
+    company: 'Crona, Aufderhar and Senger',
+    email: 'Antonina.Pouros@yahoo.com',
   },
   {
     name: 'Derek Dibbert',
-    settings: {
-      owner: 'Weissnat',
-      started: false,
-    },
-    players: { ...playersData },
+    company: 'Gottlieb LLC',
+    email: 'Abagail29@hotmail.com',
   },
   {
     name: 'Viola Bernhard',
-    settings: {
-      owner: 'Weissnat',
-      started: false,
-    },
-    players: { ...playersData },
+    company: 'Funk, Rohan and Kreiger',
+    email: 'Jamie23@hotmail.com',
   },
   {
     name: 'Austin Jacobi',
-    settings: {
-      owner: 'Weissnat',
-      started: false,
-    },
-    players: { ...playersData },
+    company: 'Botsford - Corwin',
+    email: 'Genesis42@yahoo.com',
   },
   {
     name: 'Hershel Mosciski',
-    settings: {
-      owner: 'Weissnat',
-      started: false,
-    },
-    players: { ...playersData },
+    company: 'Okuneva, Farrell and Kilback',
+    email: 'Idella.Stehr28@yahoo.com',
   },
   {
     name: 'Mylene Ebert',
-    settings: {
-      owner: 'Weissnat',
-      started: false,
-    },
-    players: { ...playersData },
+    company: 'Kirlin and Sons',
+    email: 'Hildegard17@hotmail.com',
   },
   {
     name: 'Lou Trantow',
-    settings: {
-      owner: 'Weissnat',
-      started: false,
-    },
-    players: { ...playersData },
+    company: 'Parisian - Lemke',
+    email: 'Hillard.Barrows1@hotmail.com',
   },
   {
     name: 'Dariana Weimann',
-    settings: {
-      owner: 'Weissnat',
-      started: false,
-    },
-    players: { ...playersData },
+    company: 'Schowalter - Donnelly',
+    email: 'Colleen80@gmail.com',
   },
   {
     name: 'Dr. Christy Herman',
-    settings: {
-      owner: 'Weissnat',
-      started: false,
-    },
-    players: { ...playersData },
+    company: 'VonRueden - Labadie',
+    email: 'Lilyan98@gmail.com',
   },
   {
     name: 'Katelin Schuster',
-    settings: {
-      owner: 'Weissnat',
-      started: false,
-    },
-    players: { ...playersData },
+    company: 'Jacobson - Smitham',
+    email: 'Erich_Brekke76@gmail.com',
   },
   {
     name: 'Melyna Macejkovic',
-    settings: {
-      owner: 'Weissnat',
-      started: false,
-    },
-    players: { ...playersData },
+    company: 'Schuster LLC',
+    email: 'Kylee4@yahoo.com',
   },
   {
     name: 'Pinkie Rice',
-    settings: {
-      owner: 'Weissnat',
-      started: false,
-    },
-    players: { ...playersData },
+    company: 'Wolf, Trantow and Zulauf',
+    email: 'Fiona.Kutch@hotmail.com',
   },
   {
     name: 'Brain Kreiger',
-    settings: {
-      owner: 'Weissnat',
-      started: false,
-    },
-    players: { ...playersData },
+    company: 'Lueilwitz Group',
+    email: 'Rico98@hotmail.com',
   },
 ];

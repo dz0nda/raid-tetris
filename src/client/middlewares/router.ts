@@ -1,15 +1,9 @@
 import { Middleware } from '@reduxjs/toolkit';
 
 import { events } from '@/shared/events';
-import { reqLogin } from '@/client/store/reducers/app';
-import { reqConnect } from '../store/reducers/socket';
+import { reqConnect, reqLogin } from '@/client/store/slices/user.slice';
 
 export const routerMiddleware: Middleware = (store) => (next) => (action) => {
-  console.log('routerMiddleware');
-  console.log('action', action);
-  console.log(store.getState());
-
-  const isConnected = store.getState().app.isConnected;
   const { type, payload } = action;
   const { isFirstRendering, location } = payload;
 
@@ -25,7 +19,7 @@ export const routerMiddleware: Middleware = (store) => (next) => (action) => {
           const name = pathname.split('/')[1].split('[')[1].split(']')[0].trim();
 
           if (name && room) {
-            store.dispatch(reqLogin({ name, room }));
+            store.dispatch(reqLogin({ name }));
           }
         }
       }

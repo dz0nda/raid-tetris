@@ -1,17 +1,19 @@
 import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/client//store';
-import { selectSocketConnected } from '@/client/store/reducers/socket';
+import { selectUser } from '@/client/store/selectors/user.selectors';
 
 export const useSocketConnect = (delay = 10000) => {
   const dispatch = useAppDispatch();
-  const connected = useAppSelector(selectSocketConnected);
+  const user = useAppSelector(selectUser);
+  const connected = user?.id ? true : false;
+
   let lastCall = 0;
 
   useEffect(() => {
     const now = Date.now();
     if (!connected && now - lastCall > delay) {
-      console.log('useSocketConnect: ', lastCall);
+      // console.log('useSocketConnect: ', lastCall);
       lastCall = now;
       // dispatch(reqConnect({}));
     }

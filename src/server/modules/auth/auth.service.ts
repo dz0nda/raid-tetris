@@ -1,41 +1,75 @@
-import bcrypt from 'bcrypt';
+import { Request } from '@/modules/utils/types';
 
-import { Request } from '@/server/server/SocketServer';
-import { RoomsService } from '../rooms/rooms.service';
-import { ChatsService } from '../chats/chats.service';
+import { UserService } from '../user/user.service';
+import { JoinRoomDto, LoginDto } from './auth.dto';
+import { User } from '../user/user.entity';
+import { RoomService } from '../room/room.service';
+import { sha256 } from '../utils/crypto';
 
 export class AuthService {
-  roomsService: RoomsService;
-  chatsService: ChatsService;
+  userService: UserService;
+  roomService: RoomService;
 
-  constructor(roomsService: RoomsService, chatsService: ChatsService) {
-    this.roomsService = roomsService;
-    this.chatsService = chatsService;
+  constructor(userService: UserService, roomService: RoomService) {
+    this.userService = userService;
+    this.roomService = roomService;
   }
 
-  /*
-   *  Login
+  /**
+   * Logs in a user.
+   * If the user does not exist, it creates a new user.
+   * If the user exists, it checks the password and logs in the user.
+   *
+   * @param dto - Data transfer object containing user's name and password.
+   * @param socketId - The socket ID of the user.
+   * @returns The logged-in user.
+   * @throws Error if the password is invalid or if the user is already logged in.
    */
-  loginUser(req: Request) {
-    const { socket } = req;
-    const { name, room } = req.data;
-    // let status = 200;
-  }
+  async login(dto: LoginDto, socketId: string): Promise<User> {
+    const { name, password } = dto;
+    const id = sha256(name);
+    let user = await this.userService.getUser(id);
 
-  /*
-   *  Login
-   */
-  async login(id: string, name: string, roomName: string, roomPass?: string) {
-    const room = this.roomsService.getOrCreateRoom(id, roomName, name, roomPass);
-    if (roomPass) {
-      const hashedPass = await bcrypt.hash(roomPass, 10);
-      if (room.pass !== hashedPass) {
-        throw new Error('Invalid password');
-      }
+    if (!user) {
+      user = new User(name, password);
+      await this.userService.setUser(user);
     }
+
+    if (user.socketId) {
+      throw new Error('User already logged in.');
+    }
+
+    user.socketId = socketId;
+    await this.userService.setUser(user);
+
+    return user;
   }
 
-  logout({ socket }: Request) {
+  /*
+   *  Join Room
+   */
+  async joinRoom(dto: JoinRoomDto) {
+    const { name, room: roomName, pass } = dto;
+
+    const res = await this.userService.getLoggedUser(name);
+    if (!res) {
+      throw new Error('User is not logged.');
+    }
+
+    const { id, user } = res;
+    if (user.room) {
+      throw new Error('User already in a room.');
+    }
+
+    const room = await this.roomService.joinRoom(id, roomName, pass);
+
+    user.room = roomName;
+    await this.userService.setUser(user);
+
+    return room;
+  }
+
+  logout({ socket }: Request<any>) {
     // // const { socket } = req;
     // let status = 200;
     // // console.log('LOGOUT');

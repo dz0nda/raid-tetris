@@ -1,4 +1,4 @@
 import { RootState } from '..';
 
-export const selectSocketId = (state: RootState) => state.socket.id;
-export const selectSocketConnected = (state: RootState) => state.socket.connected;
+export const selectSocketId = (state: RootState) => state.user.id;
+export const selectSocketConnected = (state: RootState) => state.user.id;

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
 // import { makeStyles } from '@material-ui/core/styles';
@@ -15,8 +15,8 @@ import {
   Typography,
   // IconButton,
 } from '@mui/material';
-import { useAppDispatch, useAppSelector } from '@/client/store';
-import { reqChat, selectAppChats } from '@/client/store/reducers/app';
+import { useAppDispatch } from '@/client/store';
+// import { reqChat, selectAppChats } from '@/client/store/';
 
 // import { actions } from '@/client/store/reducers/app';
 
@@ -47,7 +47,7 @@ const useStyles = createUseStyles({
 });
 
 function GameChat() {
-  const chat = useAppSelector(selectAppChats);
+  // const chat = useAppSelector(selectAppChats);
   const dispatch = useAppDispatch();
   // const { chat, reqChat } = props;
 
@@ -62,16 +62,16 @@ function GameChat() {
   const handleSubmit = () => {
     if (!message) return;
 
-    dispatch(reqChat({ message }));
+    // dispatch(reqChat({ message }));
 
     setMessage('');
   };
 
-  useEffect(() => {
-    // if (scrollRef.current) {
-    //   scrollRef.current.scrollIntoView({ behaviour: 'smooth' });
-    // }
-  }, [chat]);
+  // useEffect(() => {
+  //   // if (scrollRef.current) {
+  //   //   scrollRef.current.scrollIntoView({ behaviour: 'smooth' });
+  //   // }
+  // }, [chat]);
 
   const renderMessage = ({ id, user, date, text }: { id: string; user: string; date: string; text: string }) => {
     return (

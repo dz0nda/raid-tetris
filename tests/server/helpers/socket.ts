@@ -16,9 +16,9 @@ export const initSocket = (port: number): Promise<Socket> =>
     });
 
     // if connection takes longer than 5 seconds throw error
-    // setTimeout(() => {
-    //   reject(new Error('Failed to connect wihtin 5 seconds.'));
-    // }, 10000);
+    setTimeout(() => {
+      reject(new Error('Failed to connect wihtin 5 seconds.'));
+    }, 10000);
   });
 
 // destroySocket returns a promise
@@ -38,14 +38,14 @@ export const destroySocket = (socket: Socket): Promise<boolean> =>
   });
 
 export const handleResponse = (socket: Socket, event: string): Promise<any> => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     socket.on(event, (data) => {
       resolve(data);
     });
 
     // if connection takes longer than 5 seconds throw error
-    // setTimeout(() => {
-    //   reject(new Error('Failed to connect wihtin 5 seconds.'));
-    // }, 10000);
+    setTimeout(() => {
+      reject(new Error('Failed to connect wihtin 5 seconds.'));
+    }, 10000);
   });
 };

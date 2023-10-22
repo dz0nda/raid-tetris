@@ -1,84 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ActionIcon, Group, Stack, TextInput } from '@mantine/core';
 import { getHotkeyHandler } from '@mantine/hooks';
-// import { serverTimestamp } from 'firebase/firestore';
-import { useState } from 'react';
 // import toast from 'react-hot-toast';
-import { IconMoodHappy, IconSend } from '@tabler/icons-react';
-// import { auth, firestore } from '../lib/firebase';
+import { IconSend } from '@tabler/icons-react';
 
-const ChatBox = (props: any) => {
-  const [value, setValue] = useState('');
-  // const messagesRef = firestore.collection('messages');
-  const user = true; //auth.currentUser;
-  let mess = '';
-  const sendMessage = async () => {
-    if (user) {
-      if (value.length > 100) {
-        // toast.error('Must not exceed 100 characters');
-        setValue('');
-      } else {
-        props.fn();
-        mess = value;
-        setValue('');
-        // const { uid, photoURL } = user;
-        if (props.id === '') {
-          // await messagesRef.add({
-          //   text: mess,
-          //   createdAt: serverTimestamp(),
-          //   uid,
-          //   photoURL,
-          // });
-        } else {
-          // await messagesRef.add({
-          //   text: mess,
-          //   createdAt: serverTimestamp(),
-          //   repliedTo: props.id,
-          //   ruid: props.ruid.senderUid,
-          //   rtext: props.ruid.msgText,
-          //   uid,
-          //   photoURL,
-          // });
-        }
-      }
+interface ChatBoxProps {
+  onSendMessage: () => void;
+
+  messageId: string;
+
+  replyInfo: {
+    senderId: string;
+    messageText: string;
+  };
+}
+
+const ChatBox: React.FC<ChatBoxProps> = ({ onSendMessage, messageId, replyInfo }) => {
+  const [value, setValue] = useState<string>('');
+
+  const sendMessage = () => {
+    if (value.length > 100) {
+      console.error('Must not exceed 100 characters');
+      setValue('');
+    } else {
+      onSendMessage();
+      setValue('');
     }
   };
 
   return (
-    <>
-      <Stack sx={{ height: '8vh' }} justify="center" p={0}>
-        <Group position="right" p="xs">
-          <TextInput
-            value={value}
-            onChange={(event) => setValue(event.currentTarget.value)}
-            sx={{ flexGrow: 1 }}
-            placeholder="Say something nice . . . "
-            rightSection={
-              <ActionIcon
-              // onClick={() =>
-              //   toast('Display only hehe', {
-              //     icon: '😁',
-              //   })
-              // }
-              >
-                <IconMoodHappy />
-              </ActionIcon>
-            }
-            onKeyDown={
-              !/\S/.test(value) ? undefined : value.length < 2 ? undefined : getHotkeyHandler([['Enter', sendMessage]])
-            }
-          />
-          <ActionIcon
-            onClick={() => sendMessage()}
-            variant="hover"
-            size="lg"
-            disabled={!/\S/.test(value) ? true : value.length < 2 ? true : false}
-          >
-            <IconSend />
-          </ActionIcon>
-        </Group>
-      </Stack>
-    </>
+    <Stack sx={{ height: '8vh' }} justify="center" p={0}>
+      <Group position="right" p="xs">
+        <TextInput
+          value={value}
+          onChange={(event) => setValue(event.currentTarget.value)}
+          sx={{ flexGrow: 1 }}
+          placeholder="Say something nice . . . "
+          onKeyDown={!/\S/.test(value) || value.length < 2 ? undefined : getHotkeyHandler([['Enter', sendMessage]])}
+        />
+        <ActionIcon onClick={sendMessage} variant="hover" size="lg" disabled={!/\S/.test(value) || value.length < 2}>
+          <IconSend />
+        </ActionIcon>
+      </Group>
+    </Stack>
   );
 };
 

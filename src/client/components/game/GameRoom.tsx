@@ -1,18 +1,17 @@
 import React, { FC, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import {
-  Grid,
   AppBar,
   Box,
-  // Button,
-  Tabs,
-  Tab,
-  Paper,
-  IconButton,
   Dialog,
-  DialogTitle,
-  DialogContent,
   DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  IconButton,
+  Paper,
+  Tab,
+  Tabs,
   Typography,
 } from '@mui/material';
 import SupervisorAccount from '@mui/icons-material/SupervisorAccount';
@@ -20,17 +19,15 @@ import SupervisorAccount from '@mui/icons-material/SupervisorAccount';
 
 // import { playerStateProp, gameStateProp } from '@/client/store/reducers/reducers.types';
 // import actions from '../../actions';
-import { TABLE_PLAYERS_RANK } from '../../constants/tables';
 
 // import GameRoom from '../../components/Game/GameRoom';
 // import GameRank from '../../components/Game/GameRank';
 
 import Button from '../common/Button';
-import VList from '../common/VList';
 // import { actions } from '@/client/store/reducers/app';
 
-import { useAppDispatch, useAppSelector } from '../../store';
-import { reqOwner, selectRoom, selectRoomPlayers } from '@/client/store/reducers/app';
+import { useAppDispatch } from '../../store';
+// import { reqOwner, selectRoom, selectRoomPlayers } from '@/client/store/reducers/app';
 
 const useStyles = createUseStyles({
   grid: {
@@ -62,15 +59,15 @@ const useStyles = createUseStyles({
 export const GameRoom: FC = () => {
   // const { name, room, settings, players, reqStartGame, reqOwner } = props;
 
-  const room = useAppSelector(selectRoom);
-  const players = useAppSelector(selectRoomPlayers);
+  // const room = useAppSelector(selectRoom);
+  // const players = useAppSelector(selectRoomPlayers);
   const dispatch = useAppDispatch();
   // const { owner, nbPlayers, nbLoosers } = settings;
   const [open, setOpen] = useState(false);
-  const playersList = Object.values(players as any);
+  // const playersList = Object.values(players as any);
   const classes = useStyles();
 
-  const handleSetOwner = (newOwner: string) => dispatch(reqOwner({ newOwner }));
+  // const handleSetOwner = (newOwner: string) => dispatch(reqOwner({ newOwner }));
 
   // useEffect(() => {
   //   if (nbPlayers !== 0 && nbLoosers === nbPlayers) setOpen(true);
@@ -130,13 +127,13 @@ export const GameRoom: FC = () => {
         </DialogTitle>
         <DialogContent>
           <Paper className={classes.paper} elevation={0}>
-            <VList
+            {/* <VList
               owner={room.settings.owner}
               rowCount={playersList.length}
               rowGetter={({ index }: { index: number }) => playersList[index]}
               columns={TABLE_PLAYERS_RANK}
               handleSetOwner={handleSetOwner}
-            />
+            /> */}
           </Paper>
         </DialogContent>
         <DialogActions>

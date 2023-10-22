@@ -1,11 +1,33 @@
 version: '3'
 services:
-  red_tetris:
-    build:
-      dockerfile: Dockerfile
-      context: ./
+  # red_tetris:
+  #   build:
+  #     dockerfile: Dockerfile
+  #     context: ./
+  #   volumes:
+  #     - /app/node_modules
+  #     - ./:/app
+  #   ports:
+  #     - '3000:3000'
+
+  redis:
+    container_name: rt-redis
+    hostname: rt-redis
+    image: redis:7-alpine
+    restart: always
     volumes:
-      - /app/node_modules
-      - ./:/app
+      - ./.data:/root/redis
     ports:
-      - '3000:3000'
+      - '6379:6379'
+
+  redis-commander:
+    container_name: rt-redis-commander
+    hostname: rt-redis-commander
+    image: ghcr.io/joeferner/redis-commander:latest
+    restart: always
+    depends_on:
+      - redis
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - '8081:8081'

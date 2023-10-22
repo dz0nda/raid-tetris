@@ -1,8 +1,10 @@
 import { Socket } from '@/server/modules/socket/socket.entity';
+import { User } from '../user/user.entity';
 
 export interface Request<T> {
   socket: Socket;
   data: T;
+  user?: User;
 }
 
 export interface Response {

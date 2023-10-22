@@ -1,9 +1,6 @@
 import React, { FC } from 'react';
 import { useState } from 'react';
 import { ScrollArea, Table, createStyles, rem } from '@mantine/core';
-import { useAppSelector } from '@/client/store';
-import { selectRoomPlayers } from '@/client/store/reducers/app';
-import { Stage } from '../board/Board';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -34,20 +31,20 @@ interface TableScrollAreaProps {
 export const GamePlayers: FC<TableScrollAreaProps> = ({ data }) => {
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
-  const players = useAppSelector(selectRoomPlayers);
+  // const players = useAppSelector(selectRoomPlayers);
 
   // console.log(players);
 
-  const rows = Object.values(players).map((player: any) => (
-    <tr key={player.name}>
-      <td>{player.name}</td>
-      <td>{player.score}</td>
-      <td>{player.lines}</td>
-      <td>
-        <Stage style={{ padding: '2px' }} stage={player.stage} type="stagePlayers" />
-      </td>
-    </tr>
-  ));
+  // const rows = Object.values(players).map((player: any) => (
+  //   <tr key={player.name}>
+  //     <td>{player.name}</td>
+  //     <td>{player.score}</td>
+  //     <td>{player.lines}</td>
+  //     <td>
+  //       <Stage style={{ padding: '2px' }} stage={player.stage} type="stagePlayers" />
+  //     </td>
+  //   </tr>
+  // ));
 
   return (
     <ScrollArea h={300} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
@@ -60,7 +57,7 @@ export const GamePlayers: FC<TableScrollAreaProps> = ({ data }) => {
             <th>Stage</th>
           </tr>
         </thead>
-        <tbody>{rows}</tbody>
+        {/* <tbody>{rows}</tbody> */}
       </Table>
     </ScrollArea>
   );

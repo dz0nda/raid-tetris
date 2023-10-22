@@ -9,7 +9,7 @@ import { useMantineTheme } from '@mantine/core';
 import params from '../shared/params';
 
 // import { Login } from './pages/Login';
-import { Login } from './pages/Login2';
+// import { Login } from './pages/Login2';
 import { Game } from './pages/Game';
 import { history } from './store';
 
@@ -35,7 +35,7 @@ export const Router: FC = () => {
     <ConnectedRouter history={history}>
       <Switch>
         <Route path="/:room[:name]" component={Game} />
-        <Route path="/" component={Login} />
+        {/* <Route path="/" component={Login} /> */}
       </Switch>
     </ConnectedRouter>
   );

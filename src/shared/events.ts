@@ -15,13 +15,20 @@ export const events = {
   ROUTER_LOCATION_CHANGE: '@@router/LOCATION_CHANGE',
 
   /* App events */
-  REQUEST_LOGIN_USER: 'app/reqLoginUser',
+  REQUEST_LOGIN_USER: 'user/reqLoginUser',
   RESPONSE_LOGIN_USER: 'server/resLoginUser',
 
-  REQUEST_LOGIN: 'app/reqLogin',
+  /* Auth events */
+  REQUEST_LOGIN: 'user/reqLogin',
   RESPONSE_LOGIN: 'server/resLogin',
+
+  REQUEST_JOIN_ROOM: 'user/reqJoinRoom',
+  RESPONSE_JOIN_ROOM: 'server/resJoinRoom',
+
   REQUEST_LOGOUT: 'app/reqLogout',
   RESPONSE_LOGOUT: 'server/resLogout',
+
+  /* Room events */
   REQUEST_START_GAME: 'app/reqStartGame',
   RESPONSE_START_GAME: 'server/resStartGame',
   REQUEST_MOVE: 'app/reqMove',

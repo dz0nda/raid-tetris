@@ -1,0 +1,6 @@
+DATABASE_TYPE=redis  # Database type
+DATABASE_HOST=127.0.0.1 # Database host
+DATABASE_PORT=6379  # Database port
+DATABASE_USERNAME=tezos # Database username
+DATABASE_PASSWORD=tezos # Database password
+DATABASE_NAME=tezos # Database name

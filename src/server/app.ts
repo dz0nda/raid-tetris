@@ -1,100 +1,116 @@
 import 'reflect-metadata';
-import { Socket as SocketIo, Server as SocketIoServer } from 'socket.io';
+import { Socket as SocketIo } from 'socket.io';
 
 import { Route } from '@/server/modules/utils/types';
 import { Logger } from './modules/utils/utils';
 
-// import { DatabaseModule } from './modules/database/database.module';
 import { SocketModule } from './modules/socket/socket.module';
-import { Socket } from './modules/socket/socket.entity';
 
 import { AuthModule } from './modules/auth/auth.modules';
 import { ChatsModule } from './modules/chats/chats.module';
-import { RoomsModule } from './modules/rooms/rooms.module';
+import { RoomModule } from './modules/room/room.module';
+import { DatabaseModule } from './modules/database/database.module';
+import { RouterModule } from './modules/router/router.module';
+import { HttpModule } from './modules/http/http.module';
 
+/**
+ * The RedTetris class is responsible for initializing and managing the main application modules.
+ */
 export class RedTetris {
-  socket: SocketModule;
-  rooms: RoomsModule;
-  chats: ChatsModule;
-  auth: AuthModule;
-  // db: DatabaseModule;
-  routes: Route[];
+  private http!: HttpModule;
+  private socket!: SocketModule;
+  private router!: RouterModule;
+  private rooms!: RoomModule;
+  private chats!: ChatsModule;
+  private auth!: AuthModule;
+  private db!: DatabaseModule;
+  private routes!: Route[];
 
+  /**
+   * Initializes the RedTetris application.
+   *
+   * @param host - The host address.
+   * @param port - The port number.
+   */
   constructor(host: string, port: number) {
-    this.socket = new SocketModule(host, port);
-    this.chats = new ChatsModule(this.socket.service);
-    this.rooms = new RoomsModule(this.socket.service);
-    this.auth = new AuthModule(this.rooms.service, this.chats.service);
-    // this.db = new DatabaseModule();
+    this.initializeModules(host, port);
+    // this.setupRoutes();
+    // this.setupSocketRouting();
+  }
 
+  /**
+   * Initializes the main application modules.
+   *
+   * @param host - The host address.
+   * @param port - The port number.
+   */
+  private initializeModules(host: string, port: number): void {
+    this.http = HttpModule.getInstance();
+    this.db = DatabaseModule.getInstance();
+    this.db.redis.on('error', (error) => {
+      Logger.error(`Redis connection error: ${error}`);
+      this.cleanup();
+    });
+    // SocketModule.initialize(host, port);
+    this.socket = SocketModule.getInstance();
+
+    // this.router = new RouterModule(this.socket);
+    // this.chats = new ChatsModule(this.socket.service);
+    // this.rooms = new RoomModule(this.socket.service);
+    // this.auth = new AuthModule();
+  }
+
+  /**
+   * Sets up the application routes.
+   */
+  private setupRoutes(): void {
     this.routes = [
       ...this.socket.controller.getRoutes,
       ...this.rooms.controller.getRoutes,
       ...this.chats.controller.getRoutes,
       ...this.auth.controller.getRoutes,
     ];
-
-    this.socket.service.ioOn((socket: SocketIo) => this._router(this.socket.service.io, socket));
+    this.router.addRoutes(this.routes);
   }
 
-  private _router(io: SocketIoServer, socketIo: SocketIo) {
-    const socket = new Socket(socketIo, io);
-    this.socket.service.connect({ socket: socket.value() });
-
-    this.routes.forEach((route) => {
-      const { event, handler, auth, schema } = route;
-
-      Logger.info(`Socket ${socket.getSocketId} listening on ${event.req}`);
-      socket.value().on(event.req, (data: any, callback: any) => {
-        if (schema && schema.validate(data).error) {
-          Logger.err(`[${event}] Error: invalid arguments`);
-        }
-
-        try {
-          handler({ socket, data }, { io: this.socket.service.io, callback });
-        } catch (err) {
-          Logger.err(`[${event}] Error: ${err}`);
-
-          socket.emitToSocket(socket.getSocketId, event.res, {
-            status: 500,
-            message: err,
-          });
-        }
-      });
+  /**
+   * Sets up socket routing for the application.
+   */
+  private setupSocketRouting(): void {
+    this.socket.service.ioOn((socket: SocketIo) => {
+      // const req: Request<any> = { socket, data: {} };
+      this.socket.service.connect(socket);
+      this.router.service.routeRequests(socket);
     });
-
-    // routes.forEach((route) => {
-    //   const { event, handler, auth } = route;
-    //   socket.on(event.req, (data: any, callback: any) => {
-    //     // console.log(data);
-    //     let isLogged = false;
-    //     // eslint-disable-next-line no-param-reassign
-    //     ({ socket, isLogged } = auth ? auth(socket) : { socket, isLogged: true });
-    //     console.log(socket.redTetris, isLogged);
-    //     if (!socket || !isLogged) {
-    //       this.emitToSocket(socket.id, event.res, {
-    //         status: 500,
-    //         message: 'Unauthorized',
-    //       });
-
-    //       return;
-    //     }
-    //     // if (schema && schema.validate(data).error) {
-    //     //   this.emitToSocket(socket.id, event.res, {
-    //     //     status: 500,
-    //     //     message: 'Invalid arguments',
-    //     //   });
-
-    //     //   return;
-    //     // }
-
-    //     handler({ socket, data }, { io: this.io, callback });
-    //   });
-    // });
-    // });
   }
 
-  public listen() {
-    this.socket.service.listen();
+  /**
+   * Starts the application.
+   */
+  public listen(host: string, port: number): void {
+    this.http.service.listen(host, port);
+  }
+
+  /**
+   * Closes the application.
+   */
+  public close(): void {
+    this.http.service.close();
+  }
+
+  /**
+   * Cleans up resources and exits the application.
+   */
+  public cleanup(): void {
+    Logger.info('Cleaning up resources...');
+
+    // Close the Redis connection
+    this.db.redis.quit();
+
+    // Close the socket.io connection
+    this.close();
+
+    Logger.info('Cleanup complete. Exiting.');
+    process.exit(0);
   }
 }

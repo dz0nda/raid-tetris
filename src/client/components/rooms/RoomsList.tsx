@@ -103,7 +103,7 @@ export function RoomsList({ data }: any) {
 
   const rows = sortedData.map((row: any) => (
     <tr key={row.room}>
-      <td>{row.name}</td>
+      <td>{row.room}</td>
       <td>{row.settings.owner}</td>
       <td>{Object.keys(row.players).length}</td>
     </tr>
@@ -111,12 +111,12 @@ export function RoomsList({ data }: any) {
 
   return (
     <ScrollArea p="xs" scrollbarSize={1} onScrollPositionChange={({ y }) => setScrolled(y !== 0)} h={300}>
-      <Table horizontalSpacing="md" verticalSpacing="xs" sx={{ tableLayout: 'fixed' }}>
+      <Table striped horizontalSpacing="md" verticalSpacing="xs" sx={{ tableLayout: 'fixed' }}>
         <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
           <tr>
             <th>Name</th>
-            <th>Email</th>
-            <th>Company</th>
+            <th>Owner</th>
+            <th>Nb. Players</th>
           </tr>
         </thead>
         <tbody>

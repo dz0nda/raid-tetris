@@ -3,45 +3,38 @@ import { combineReducers } from 'redux';
 import { History } from 'history';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { connectRouter, routerMiddleware as connectedRouterMiddleware } from 'connected-react-router';
-import { createHashHistory } from 'history';
+import { createHashHistory, createMemoryHistory } from 'history';
 
-// import rootReducer from '../reducers'
-import { logger } from '@/client/middlewares/logger';
+// Middlewares
 import { notificationsMiddleware } from '@/client/middlewares/notifications';
 import { routerMiddleware } from '@/client/middlewares/router';
-import socketIoMiddleware from '@/client/middlewares/socketIo';
-import { socketReducer } from './reducers/socket';
-// import { socketReducer } from './socket/socket.slice';
-import { appReducer } from './reducers/app';
+import { socketioMiddleware } from '@/client/middlewares/socketIo/socket.middleware';
 
-export const history = createHashHistory();
+// Reducers
+import userReducer from './slices/user.slice';
+import chatReducer from './slices/chat.slice';
 
+// Create history based on the environment
+export const history = process.env.NODE_ENV === 'test' ? createMemoryHistory() : createHashHistory();
+
+// Root reducer combining all individual reducers
 export const rootReducer = (history: History) =>
   combineReducers({
     router: connectRouter(history),
-    socket: socketReducer,
-    app: appReducer,
-    // game: gameReducer,
-    // player: playerReducer,
+    user: userReducer,
+    chat: chatReducer,
   });
 
-// export const middleware = [routerMiddleware(history), thunk, loggerMiddleware, socketIoMiddleware];
-
-// const store = createStore(rootReducer(history), applyMiddleware(...middleware));
-
-// export default store;
-
+// Configure store with reducers and middlewares
 export const store = configureStore({
-  // Automatically calls `combineReducers`
   reducer: rootReducer(history),
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat([
+    getDefaultMiddleware().prepend(
       connectedRouterMiddleware(history),
-      socketIoMiddleware,
+      socketioMiddleware(),
       notificationsMiddleware,
-      logger,
       routerMiddleware,
-    ]),
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
