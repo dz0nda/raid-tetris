@@ -19,25 +19,15 @@ jobs:
           USER: ${{ secrets.VPS_SSH_USER }}
           PRIVATE_KEY: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
         run: |
-          # Install SSH client
-          sudo apt-get install -y openssh-client
+          cd /home/ubuntu
 
-          # Write the SSH private key from secrets to a file
-          echo "$PRIVATE_KEY" > private_key
-          chmod 600 private_key
+          # If the git repo doesn't exist, clone it. Otherwise, pull the latest changes.
+          if [ ! -d raid-tetris ]; then
+            git clone https://github.com/dz0nda/raid-tetris.git
+          fi
+          cd raid-tetris
+          git checkout next
+          git pull origin next
 
-          # SSH into the VPS and run commands
-          ssh -o StrictHostKeyChecking=no -i private_key $USER@$HOST << 'ENDSSH'
-            # Navigate to your project directory
-            cd /home/ubuntu
-
-            # If the git repo doesn't exist, clone it. Otherwise, pull the latest changes.
-            if [ ! -d .git ]; then
-              git clone https://github.com/dz0nda/raid-tetris.git .
-            fi
-            git checkout next
-            git pull origin next
-
-            # Build and run with Docker Compose
-            docker-compose up --build -d
-          ENDSSH
+          # Build and run with Docker Compose
+          docker-compose up --build -d
