@@ -24,6 +24,10 @@
     "paths": {
       "@/client/*": ["src/client/*"],
       "@/client": ["src/client"],
+      "@/components/*": ["src/client/components/*"],
+      "@/components": ["src/client/components"],
+      "@/mantine/*": ["src/client/components/mantine/*"],
+      "@/mantine": ["src/client/components/mantine"],
       "@/server/*": ["src/server/*"],
       "@/server": ["src/server"],
       "@/modules/*": ["src/server/modules/*"],
@@ -34,5 +38,5 @@
     "types": ["node", "jest", "@testing-library/jest-dom"]
   },
   "include": ["src", "tests"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "src/server"]
 }

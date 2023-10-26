@@ -14,4 +14,8 @@ export class Base {
   public err(value: string): void {
     Logger.error(`[${this.name}] ${value}`);
   }
+
+  public debug(value: string): void {
+    Logger.debug(`[${this.name}] ${value}`);
+  }
 }

@@ -1,5 +1,4 @@
 import { Entity } from '../database/entities/Entity';
-import { sha256 } from '../utils/crypto';
 
 export class Room extends Entity {
   id: string;
@@ -10,10 +9,10 @@ export class Room extends Entity {
   // pieces: Piece[];
   players: Set<string>;
 
-  constructor(name: string, pass?: string) {
+  constructor(id: string, name: string, pass?: string) {
     super();
 
-    this.id = sha256(name);
+    this.id = id;
     this.room = name;
     this.pass = pass;
     this.owner = '';

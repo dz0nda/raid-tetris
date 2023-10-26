@@ -1,29 +1,20 @@
 import React, { useState } from 'react';
 import { ActionIcon, Group, Stack, TextInput } from '@mantine/core';
 import { getHotkeyHandler } from '@mantine/hooks';
-// import toast from 'react-hot-toast';
 import { IconSend } from '@tabler/icons-react';
 
 interface ChatBoxProps {
-  onSendMessage: () => void;
-
-  messageId: string;
-
-  replyInfo: {
-    senderId: string;
-    messageText: string;
-  };
+  onSendMessage: (value: string) => void;
 }
 
-const ChatBox: React.FC<ChatBoxProps> = ({ onSendMessage, messageId, replyInfo }) => {
+const ChatBox: React.FC<ChatBoxProps> = ({ onSendMessage }) => {
   const [value, setValue] = useState<string>('');
 
   const sendMessage = () => {
     if (value.length > 100) {
       console.error('Must not exceed 100 characters');
-      setValue('');
     } else {
-      onSendMessage();
+      onSendMessage(value);
       setValue('');
     }
   };

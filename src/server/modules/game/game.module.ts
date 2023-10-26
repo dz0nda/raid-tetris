@@ -1,15 +1,18 @@
 import { SocketService } from '@/server/modules/socket/socket.service';
-import { DatabaseModule } from '../database/database.module';
+
+import { GameRepository } from './game.repository';
 import { GameService } from './game.service';
-// import { GameController } from './game.controller'; // Uncomment if you have a GameController
+import { GameController } from './game.controller';
+import { DatabaseModule } from '../database/database.module';
 
 export class GameModule {
   public service: GameService;
-  // public controller: GameController; // Uncomment if you have a GameController
+  public controller: GameController;
 
   constructor(socket: SocketService) {
-    const dbModule = DatabaseModule.getInstance();
-    this.service = new GameService(dbModule.service);
-    // this.controller = new GameController(this.service, socket); // Uncomment if you have a GameController
+    const dbService = DatabaseModule.getInstance().service;
+    const gameRepository = new GameRepository(dbService);
+    this.service = new GameService(gameRepository);
+    this.controller = new GameController(this.service, socket);
   }
 }

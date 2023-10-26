@@ -4,12 +4,14 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface UserState {
   id: string | null;
+  isLogged: boolean;
   username: string;
   room: string;
 }
 
 const initialState: UserState = {
   id: null,
+  isLogged: false,
   username: '',
   room: '',
 };
@@ -25,16 +27,22 @@ const userSlice = createSlice({
 
     reqLogin(_state, _action) {},
     resLogin(state, action) {
-      state.username = action.payload.name;
+      state.username = action.payload.user.username;
+      state.isLogged = action.payload.user.username.length;
       // state.room = action.payload.room;
     },
 
     reqJoinRoom(_state, _action) {},
     resJoinRoom(state, action) {
-      state.room = action.payload.room;
+      state.room = action.payload.room.room;
     },
 
     reqLogout(_state, _action) {},
+    resLogout(state, _action) {
+      state.username = '';
+      state.isLogged = false;
+      // state.room = '';
+    },
   },
   // extraReducers: (builder) => {
   //   builder.addCase(updateConnection, (state, action) => {
@@ -43,5 +51,6 @@ const userSlice = createSlice({
   // },
 });
 
-export const { reqConnect, socketUpdate, reqLogin, resLogin, reqJoinRoom, resJoinRoom, reqLogout } = userSlice.actions;
+export const { reqConnect, socketUpdate, reqLogin, resLogin, reqJoinRoom, resJoinRoom, reqLogout, resLogout } =
+  userSlice.actions;
 export default userSlice.reducer;

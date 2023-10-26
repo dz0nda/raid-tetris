@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Aside, Group, Tabs, createStyles, getStylesRef, rem } from '@mantine/core';
+import { Aside, Box, Button, Group, Tabs, Text, Tooltip, createStyles, getStylesRef, rem } from '@mantine/core';
 // import {
 //   IconShoppingCart,
 //   IconLicense,
@@ -27,6 +27,7 @@ import { Settings } from './Settings';
 import { playersData } from '@/client/helpers/data';
 
 import { GamePlayers } from './Players';
+import { Info } from '../common/Info';
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -102,6 +103,17 @@ const tabs = {
   ],
 };
 
+const player = {
+  name: 'dsdqsds',
+  score: 27.4,
+  level: 9.6,
+  rank: 88,
+};
+
+const room = {
+  owner: 'Owner',
+};
+
 const stats = [
   {
     title: 'Score',
@@ -129,21 +141,21 @@ export const GameNavbar: FC = () => {
     <Aside width={{ sm: 300, md: 400 }} hidden={false} p="md" className={classes.navbar}>
       <Aside.Section>
         <Group position="apart" align="center" p="xs">
-          {/* <Text weight={500} size="sm" className={classes.title} color="dimmed" mb="xs">
-            {player?.name || 'Player'}
-          </Text> */}
-          {/* <Tooltip label="Only owner can start the game" disabled={owner === player?.name} withArrow>
+          <Text weight={500} size="sm" className={classes.title} color="dimmed" mb="xs">
+            {player?.name}
+          </Text>
+          <Tooltip label="Only owner can start the game" disabled={room.owner === player?.name} withArrow>
             <Box>
-              <Button disabled={owner !== player?.name} onClick={() => dispatch(reqStartGame({}))}>
+              <Button disabled={room.owner !== player?.name} onClick={() => dispatch(() => {})}>
                 Start
               </Button>
             </Box>
-          </Tooltip> */}
+          </Tooltip>
         </Group>
       </Aside.Section>
 
       <Aside.Section className={classes.footer}>
-        {/* <Group grow>
+        <Group grow>
           {[
             {
               title: 'Score',
@@ -160,7 +172,7 @@ export const GameNavbar: FC = () => {
           ].map((stat) => (
             <Info {...stat} />
           ))}
-        </Group> */}
+        </Group>
         {/* <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
           <span>Change account</span>
         </a>
@@ -182,11 +194,11 @@ export const GameNavbar: FC = () => {
       <Aside.Section mt="xl">
         <Tabs defaultValue="settings">
           <Tabs.List grow>
-            <Tabs.Tab value="settings" icon={<IconSettings size="1rem" />}>
-              Settings
-            </Tabs.Tab>
             <Tabs.Tab value="players" icon={<IconSettings size="1rem" />}>
               Players
+            </Tabs.Tab>
+            <Tabs.Tab value="settings" icon={<IconSettings size="1rem" />}>
+              Settings
             </Tabs.Tab>
           </Tabs.List>
 

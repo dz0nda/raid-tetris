@@ -18,10 +18,6 @@ import {
 // import { GoogleButton, TwitterButton } from '../SocialButtons/SocialButtons';
 import { IconCheck, IconX } from '@tabler/icons-react';
 
-import { RoomsList } from '@/client/components/rooms/RoomsList';
-
-import { roomsListData } from '@/client/helpers/data';
-
 const data = [
   {
     image: 'https://img.icons8.com/clouds/256/000000/futurama-bender.png',
@@ -169,7 +165,7 @@ export const Rooms: FC<Props> = (props) => {
                 />
               </Group>
 
-              <RoomsList data={roomsListData} />
+              {/* <RoomsList data={roomsListData} /> */}
               {/* <TextInput
                 required
                 // label="Email"

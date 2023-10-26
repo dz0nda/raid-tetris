@@ -28,7 +28,7 @@ export const notificationsMiddleware: Middleware = () => (next) => (action) => {
       message: 'Trying to login...',
       loading: true,
     },
-    [ev.RESPONSE_LOGIN_USER]:
+    [ev.RESPONSE_LOGIN]:
       payload.status !== 200
         ? {
             title: 'LOGIN',

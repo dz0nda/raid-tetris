@@ -1,12 +1,12 @@
-import { Center } from '@mantine/core';
+import { Container, SimpleGrid } from '@mantine/core';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { Position, Tetromino, collides, randomTetromino } from '@/shared/game/tetromino';
-import { BOARD_WIDTH, createBoard, merge } from '@/shared/game/board';
+import { BOARD_WIDTH, createBoardOld, merge } from '@/shared/game/board';
 import { dispatchKey, handleTick } from '@/shared/game/game';
 
 export const Tetris: React.FC = () => {
-  const [board, setBoard] = useState<(string | null)[][]>(createBoard());
+  const [board, setBoard] = useState<(string | null)[][]>(createBoardOld());
   const [currentTetromino, setCurrentTetromino] = useState<Tetromino | null>(null);
   const [position, setPosition] = useState<Position>({ x: 5, y: 0 });
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
@@ -78,27 +78,26 @@ export const Tetris: React.FC = () => {
   const displayBoard = currentTetromino ? merge(board, currentTetromino, position) : board;
 
   return (
-    <Center>
-      <div>
-        {displayBoard.map((row, rowIndex) => (
-          <div key={rowIndex}>
-            {row.map((cell, cellIndex) => (
-              <div
-                key={cellIndex}
-                style={{
-                  display: 'inline-block',
-                  width: '20px',
-                  height: '20px',
-                  border: '1px solid black',
-                  margin: '0px',
-                  backgroundColor: cell || 'white',
-                }}
-              />
-            ))}
-          </div>
-        ))}
-        {isGameOver && <div>Game Over</div>}
-      </div>
-    </Center>
+    <Container size="xs">
+      <SimpleGrid cols={10} spacing={0}>
+        {displayBoard.map((row, rowIndex) =>
+          row.map((cell, cellIndex) => (
+            <div
+              key={cellIndex}
+              style={{
+                // display: 'inline-block',
+                width: '20px',
+                height: '20px',
+                // minHeight: '10px',
+                border: '1px solid black',
+                margin: '0px',
+                backgroundColor: cell || 'black',
+              }}
+            />
+          )),
+        )}
+        {/* {isGameOver && <div>Game Over</div>} */}
+      </SimpleGrid>
+    </Container>
   );
 };

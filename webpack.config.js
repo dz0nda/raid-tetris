@@ -49,6 +49,8 @@ module.exports = {
     extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
     alias: {
       '@/client': path.resolve(__dirname, 'src/client'),
+      '@/components': path.resolve(__dirname, 'src/client/components'),
+      '@/mantine': path.resolve(__dirname, 'src/client/components/mantine'),
       '@/server': path.resolve(__dirname, 'src/server'),
       '@/shared': path.resolve(__dirname, 'src/shared'),
     },

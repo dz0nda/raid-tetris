@@ -4,24 +4,20 @@ import dayjs from 'dayjs';
 import calendar from 'dayjs/plugin/calendar';
 
 export type Message = {
+  id: string;
   text: string;
   uid: string;
   photoURL: string;
   createdAt: string | null;
-  id: string;
   deleted?: boolean;
-  repliedTo?: string;
-  ruid?: string;
-  rtext?: string;
 };
 
 type ChatMessageProps = {
   message: Message;
-  replyMessage: (replyInfo: { msgId: string; senderUid: string; msgText: string }) => void;
 };
 
-export const ChatMessage: React.FC<ChatMessageProps> = ({ message, replyMessage }) => {
-  const { text, uid, photoURL, createdAt, id, deleted, repliedTo, ruid, rtext } = message;
+export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
+  const { text, uid, photoURL, createdAt, deleted } = message;
 
   // TODO: Replace with the actual user's UID
   const currentUserUID = 'sampleUID';

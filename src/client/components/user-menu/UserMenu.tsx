@@ -3,6 +3,9 @@ import { Avatar, Group, Menu, Text, UnstyledButton, createStyles, rem } from '@m
 import { IconChevronDown, IconLogout, IconSettings, IconSwitchHorizontal } from '@tabler/icons-react';
 import { useAppSelector } from '@/client/store';
 import { selectIsLogged, selectUsername } from '@/client/store/reducers/app';
+import { selectUser } from '@/client/store/selectors/user.selectors';
+import { useDispatch } from 'react-redux';
+import { reqLogout } from '@/client/store/slices/user.slice';
 
 interface UserMenuProps {
   user: {
@@ -33,11 +36,13 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
+export const UserMenu: React.FC<UserMenuProps> = ({ user: userIo }) => {
   const { classes, theme, cx } = useStyles();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const isLogged = useAppSelector(selectIsLogged);
   const username = useAppSelector(selectUsername);
+  const user = useAppSelector(selectUser);
+  const dispatch = useDispatch();
 
   return (
     <Menu
@@ -52,9 +57,9 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
       <Menu.Target>
         <UnstyledButton className={cx(classes.user, { [classes.userActive]: userMenuOpened })}>
           <Group spacing={7}>
-            <Avatar src={user.image} alt={user.name} radius="xl" size={20} />
+            <Avatar radius="xl" size={25} />
             <Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={3}>
-              {user.name}
+              {user && user.username}
             </Text>
             <IconChevronDown size={rem(12)} stroke={1.5} />
           </Group>
@@ -65,7 +70,9 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
         <Menu.Label>Settings</Menu.Label>
         <Menu.Item icon={<IconSettings size="0.9rem" stroke={1.5} />}>Account settings</Menu.Item>
         <Menu.Item icon={<IconSwitchHorizontal size="0.9rem" stroke={1.5} />}>Change account</Menu.Item>
-        <Menu.Item icon={<IconLogout size="0.9rem" stroke={1.5} />}>Logout</Menu.Item>
+        <Menu.Item icon={<IconLogout size="0.9rem" stroke={1.5} />} onClick={() => dispatch(reqLogout({}))}>
+          Logout
+        </Menu.Item>
       </Menu.Dropdown>
     </Menu>
   );

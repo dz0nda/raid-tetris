@@ -12,6 +12,7 @@ interface Player {
 export interface Room {
   room: string;
   pass: string;
+  private: boolean;
   settings: {
     owner: string;
     started: boolean;

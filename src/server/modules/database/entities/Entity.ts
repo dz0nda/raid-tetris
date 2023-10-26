@@ -23,17 +23,12 @@ export abstract class Entity {
     const instance = new EntityClass();
     const parsedData = JSON.parse(data);
 
-    console.log('instance', instance);
-    console.log('parsedData', parsedData);
-
     for (const key in parsedData) {
       // if (Object.prototype.hasOwnProperty.call(instance, key)) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (instance as any)[key] = parsedData[key];
       // }
     }
-
-    console.log('instance', instance);
 
     return instance;
   }

@@ -1,10 +1,8 @@
 export type LoginDto = {
-  name: string;
+  username: string;
   password?: string;
 };
 
-export type JoinRoomDto = {
-  name: string;
-  room: string;
-  pass: string;
+export type LogoutDto = {
+  // empty
 };

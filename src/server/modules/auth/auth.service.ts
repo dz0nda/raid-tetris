@@ -1,18 +1,53 @@
-import { Request } from '@/modules/utils/types';
-
+import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
 import { UserService } from '../user/user.service';
-import { JoinRoomDto, LoginDto } from './auth.dto';
-import { User } from '../user/user.entity';
-import { RoomService } from '../room/room.service';
+import { LoginDto } from './auth.dto';
+import { User, UserRole } from '../user/user.entity';
 import { sha256 } from '../utils/crypto';
+import { SocketService } from '../socket/socket.service';
+import { Socket } from '../socket/socket.helper';
 
 export class AuthService {
-  userService: UserService;
-  roomService: RoomService;
+  constructor(private readonly socketService: SocketService, private readonly userService: UserService) {
+    this.initializePassportStrategies();
+  }
 
-  constructor(userService: UserService, roomService: RoomService) {
-    this.userService = userService;
-    this.roomService = roomService;
+  private initializePassportStrategies(): void {
+    passport.use(
+      UserRole.ANONYMOUS,
+      new LocalStrategy({ usernameField: 'userId', passwordField: 'password' }, async (username, _, done) => {
+        const user = await this.userService.getUserByName(username);
+        if (user) {
+          return done(null, { username: username, role: 'ANONYMOUS' });
+        }
+
+        return done(null, false);
+      }),
+    );
+
+    passport.use(
+      UserRole.USER,
+      new LocalStrategy({ usernameField: 'username', passwordField: 'password' }, async (username, password, done) => {
+        const user = await this.userService.getUserByName(username);
+
+        if (user && user.password === sha256(password)) {
+          return done(null, user);
+        }
+        return done(null, false);
+      }),
+    );
+
+    // // ROOM Strategy (example, adjust as needed)
+    // passport.use(
+    //   'room',
+    //   new LocalStrategy({ usernameField: 'username', passwordField: 'room' }, async (username, room, done) => {
+    //     const roomUser = await RoomUser.find({ username, room }); // pseudocode
+    //     if (roomUser) {
+    //       return done(null, roomUser);
+    //     }
+    //     return done(null, false);
+    //   }),
+    // );
   }
 
   /**
@@ -25,76 +60,79 @@ export class AuthService {
    * @returns The logged-in user.
    * @throws Error if the password is invalid or if the user is already logged in.
    */
-  async login(dto: LoginDto, socketId: string): Promise<User> {
-    const { name, password } = dto;
-    const id = sha256(name);
-    let user = await this.userService.getUser(id);
+  async login(socket: Socket, dto: LoginDto): Promise<User> {
+    const { username, password } = dto;
+    let user = await this.userService.getUserByName(username);
 
     if (!user) {
-      user = new User(name, password);
-      await this.userService.setUser(user);
+      user = new User(sha256(username), username, password);
+      await this.userService.createOrUpdateUser(user);
     }
 
-    if (user.socketId) {
-      throw new Error('User already logged in.');
+    if (user.password && (!password || !user.checkPassword(sha256(password)))) {
+      throw new Error('Invalid password.');
     }
 
-    user.socketId = socketId;
-    await this.userService.setUser(user);
+    const session = socket.raw.request.session;
+    if (session) {
+      session.user = { id: user.id, username };
+      session.save((err) => {
+        if (err) {
+          throw new Error('Error saving the session');
+        }
+      });
+    }
 
     return user;
   }
 
   /*
-   *  Join Room
+   * Logs out a user.
+   *
+   * @param user - The user to log out.
    */
-  async joinRoom(dto: JoinRoomDto) {
-    const { name, room: roomName, pass } = dto;
+  async logout(socketId: string, user: User): Promise<void> {
+    user.socketId = undefined;
+    await this.userService.createOrUpdateUser(user);
 
-    const res = await this.userService.getLoggedUser(name);
-    if (!res) {
+    await this.socketService.repository.deleteSocket(socketId);
+  }
+
+  /**
+   * Validates a logged-in user.
+   *
+   * @param socketId - The socket ID of the user.
+   *
+   * @returns The logged-in user.
+   *
+   * @throws Error if the user is not logged in.
+   */
+  async validateLoggedUser(socketId: string): Promise<User> {
+    const user = await this.userService.getLoggedUser(socketId);
+    if (!user) {
       throw new Error('User is not logged.');
     }
 
-    const { id, user } = res;
-    if (user.room) {
-      throw new Error('User already in a room.');
-    }
-
-    const room = await this.roomService.joinRoom(id, roomName, pass);
-
-    user.room = roomName;
-    await this.userService.setUser(user);
-
-    return room;
+    return user;
   }
 
-  logout({ socket }: Request<any>) {
-    // // const { socket } = req;
-    // let status = 200;
-    // // console.log('LOGOUT');
-    // try {
-    //   this.rooms.getRoom(this.getSocketRoom(socket))?.unsetPlayer(socket.id);
-    //   if (this.rooms.getRoom(this.getSocketRoom(socket))?.isEmpty()) {
-    //     this.rooms.unsetRoom(this.getSocketRoom(socket));
-    //   } else {
-    //     this.resGame(this.getSocketRoom(socket));
-    //   }
-    //   socket.leave(this.getSocketRoom(socket));
-    //   // delete socket.redTetris;
-    //   this.setSocket(socket);
-    //   // this.resInfo();
-    // } catch (err) {
-    //   console.log(err);
-    //   status = 500;
-    // } finally {
-    //   /* Socket is undefined when the user disconnect */
-    //   if (socket) {
-    //     this.emitToSocket(socket.id, ev.RESPONSE_LOGOUT, {
-    //       status,
-    //       payload: {},
-    //     });
-    //   }
-    // }
+  /*
+   * Validates if a user is in a room.
+   *
+   * @param socketId - The socket ID of the user.
+   * @param roomId - The room ID.
+   *
+   * @returns The room if the user is in the room.
+   *
+   * @throws Error if the user is not in the room.
+   */
+  public async validateUserInRoom(socketId: string, roomId: string) {
+    const user = await this.validateLoggedUser(socketId);
+
+    if (user.roomId !== roomId) {
+      throw new Error('User is not in the room.');
+    }
+
+    return user;
   }
 }

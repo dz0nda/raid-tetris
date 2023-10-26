@@ -2,15 +2,14 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { createSlice } from '@reduxjs/toolkit';
 
-import { Message } from '@/client/components/chat/ChatRoom';
-import { chatData } from '@/client/helpers/chatData';
-
 interface ChatState {
-  chats: Record<string, Message[]>;
+  chats: Record<string, any[]>;
 }
 
 const initialState: ChatState = {
-  chats: chatData,
+  chats: {
+    general: [],
+  },
 };
 
 const chatSlice = createSlice({

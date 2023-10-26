@@ -2,23 +2,21 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { createSlice } from '@reduxjs/toolkit';
 
-import { Room } from '@/server/modules/rooms/room.entity';
+// import { Room } from '@/server/modules/rooms/room.entity';
 import { RootState } from '..';
-import { Message } from '@/client/components/chat/ChatRoom';
-import { chatData } from '@/client/helpers/chatData';
 
 export interface AppState {
   username: string;
   room: string;
-  rooms: { [key: string]: Room };
-  chats: { [key: string]: Message[] };
+  rooms: { [key: string]: any };
+  chats: { [key: string]: any[] };
 }
 
 export const appState: AppState = {
   username: '',
   room: '',
   rooms: {},
-  chats: chatData,
+  chats: {},
 };
 
 const appSlice = createSlice({

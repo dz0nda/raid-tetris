@@ -3,31 +3,31 @@
 // import Io, { Request } from '@/server/server/Io';
 
 // import { Socket } from 'socket.io-client';
-import { DatabaseService } from '@/modules/database/database.service';
 import { Room } from './room.entity';
 import { sha256 } from '../utils/crypto';
+import { Base } from '../utils/service';
+import { RoomRepository } from './room.repository';
+import { GameService } from '../game/game.service';
 
-export class RoomService {
-  constructor(private dbService: DatabaseService) {}
-
-  /**
-   * Create / update a room by its name.
-   *
-   * @param room - The room object.
-   * @returns The room if found, otherwise null.
-   */
-  async setRoom(room: Room): Promise<void> {
-    this.dbService.set('room', room.room, room);
+export class RoomService extends Base {
+  constructor(private readonly roomRepository: RoomRepository, private readonly gameService: GameService) {
+    super('RoomService');
   }
 
   /**
-   * Fetches a room by its name.
+   * Fetchs games from a room.
    *
    * @param roomName - The room name.
-   * @returns The room if found, otherwise null.
    */
-  async getRoom(room: string): Promise<Room | null> {
-    return this.dbService.get<Room>('room', room);
+  async getRoomGames(roomName: string): Promise<null> {
+    const room = await this.roomRepository.getRoom(roomName);
+    if (!room) {
+      return null;
+    }
+
+    return null;
+
+    // return room.games;
   }
 
   /**
@@ -38,14 +38,17 @@ export class RoomService {
    * @param pass - The password for the room (optional).
    */
   public async joinRoom(userId: string, roomName: string, pass?: string): Promise<Room> {
-    let room = await this.getRoom(roomName);
+    console.log(userId, roomName, pass);
+
+    let room = await this.roomRepository.getRoom(roomName);
+
     if (!room) {
-      room = new Room(roomName, pass);
+      room = new Room(sha256(roomName), roomName, pass);
     }
-    if (room.pass && !pass) {
+    if (room.pass && (!pass || !pass.length)) {
       throw new Error('Room requires a password.');
     }
-    if (pass) {
+    if (pass && pass.length) {
       const hashedPass = sha256(pass);
       if (room.pass !== hashedPass) {
         throw new Error('Invalid password.');
@@ -53,7 +56,7 @@ export class RoomService {
     }
     room.setOwner(userId);
     room.addPlayer(userId);
-    await this.setRoom(room);
+    await this.roomRepository.setRoom(room);
 
     return room;
   }
@@ -68,7 +71,7 @@ export class RoomService {
    * @returns The room if found, otherwise null.
    */
   public async startGame(roomName: string, userId: string, socketId: string): Promise<Room | null> {
-    const room = await this.getRoom(roomName);
+    const room = await this.roomRepository.getRoom(roomName);
     if (!room) {
       throw new Error('Room not found.');
     }
@@ -78,6 +81,26 @@ export class RoomService {
 
     // room.startGame();
     // await this.setRoom(room);
+
+    return room;
+  }
+
+  /**
+   * Change owner of a room.
+   *
+   * @param userId - The ID of the user.
+   * @param roomName - The room name.
+   */
+  public async changeOwner(userId: string, roomName: string): Promise<Room> {
+    const room = await this.roomRepository.getRoom(roomName);
+    if (!room) {
+      throw new Error('Room not found.');
+    }
+    if (!room.hasPlayer(userId)) {
+      throw new Error('Player not in the room.');
+    }
+    room.setOwner(userId);
+    await this.roomRepository.setRoom(room);
 
     return room;
   }

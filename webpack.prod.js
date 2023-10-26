@@ -3,13 +3,13 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { merge } = require('webpack-merge');
 const Dotenv = require('dotenv-webpack');
 
-const baseConfig = require('./webpack.base');
+const baseConfig = require('./webpack.config');
 
 const CONFIG_ENV = 'production';
 
 module.exports = merge(baseConfig, {
   mode: CONFIG_ENV,
-  entry: './src/client/index.js',
+  entry: './src/client/index.tsx',
   output: {
     publicPath: '/',
     path: path.resolve('dist'),

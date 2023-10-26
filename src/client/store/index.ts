@@ -12,6 +12,8 @@ import { socketioMiddleware } from '@/client/middlewares/socketIo/socket.middlew
 
 // Reducers
 import userReducer from './slices/user.slice';
+import roomReducer from './slices/room.slice';
+import playerReducer from './slices/player.slice';
 import chatReducer from './slices/chat.slice';
 
 // Create history based on the environment
@@ -22,6 +24,8 @@ export const rootReducer = (history: History) =>
   combineReducers({
     router: connectRouter(history),
     user: userReducer,
+    room: roomReducer,
+    player: playerReducer,
     chat: chatReducer,
   });
 

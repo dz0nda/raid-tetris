@@ -157,6 +157,7 @@ export const roomsListData: Room[] = [
   {
     room: 'dzsazs',
     pass: 'password123',
+    private: true,
     settings: {
       owner: 'Alice',
       started: true,
@@ -177,6 +178,7 @@ export const roomsListData: Room[] = [
   {
     room: 'fdfsdf',
     pass: 'secret456',
+    private: false,
     settings: {
       owner: 'Bob',
       started: false,

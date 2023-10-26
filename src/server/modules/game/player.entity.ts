@@ -1,4 +1,7 @@
-import { STAGE_WIDTH, Stage, calcScore, createStage, createStagePiece, keys } from '../../helpers/gameHelper';
+// import { STAGE_WIDTH, Stage, calcScore, createStage, createBoard, keys } from '../../helpers/gameHelper';
+
+import { BOARD_WIDTH, Stage, calcScore, createBoard } from '@/shared/game/board';
+import { keys } from '@/shared/game/game';
 
 import { Piece } from './piece.entity';
 
@@ -8,11 +11,11 @@ export default class Player {
   lines = 0;
   mallus = 0;
   rank = 0;
-  stage: Stage = createStage();
-  stagePiece: [Stage, Stage] = [createStagePiece(), createStagePiece()];
+  stage: Stage = createBoard();
+  stagePiece: [Stage, Stage] = [createBoard(), createBoard()];
   piece: Piece | null = null;
-  position: { x: number; y: number } = { x: STAGE_WIDTH / 2 - 2, y: 0 };
-  positionDown: { x: number; y: number } = { x: STAGE_WIDTH / 2 - 2, y: 0 };
+  position: { x: number; y: number } = { x: BOARD_WIDTH / 2 - 2, y: 0 };
+  positionDown: { x: number; y: number } = { x: BOARD_WIDTH / 2 - 2, y: 0 };
   nbPiece = 0;
   dropTime = 0;
   collided = false;
@@ -30,8 +33,8 @@ export default class Player {
     this.lines = 0;
     this.mallus = 0;
     this.rank = 0;
-    this.stage = createStage();
-    this.stagePiece = [createStagePiece(), createStagePiece()];
+    this.stage = createBoard();
+    this.stagePiece = [createBoard(), createBoard()];
     this.piece = null;
     this.position = { x: 10 / 2 - 2, y: 0 };
     this.positionDown = { x: 10 / 2 - 2, y: 0 };
@@ -66,7 +69,7 @@ export default class Player {
   }
 
   setStagePiece(index: number, piece: Piece) {
-    this.stagePiece[index] = createStagePiece();
+    this.stagePiece[index] = createBoard();
 
     piece.form.shape.forEach((row: any, fy: any) => {
       row.forEach((value: any, fx: any) => {
@@ -238,7 +241,7 @@ export default class Player {
         // Supprime la ligne avec l'index et decalle e tableau, il restera non pas 20 de hauteur mais 19
         this.stage.splice(index, 1);
         // Ajoute au debut du tableau un nouveau tableau de 10 a 0
-        this.stage.unshift(new Array(STAGE_WIDTH).fill([0, 'clear', 'blank']));
+        this.stage.unshift(new Array(BOARD_WIDTH).fill([0, 'clear', 'blank']));
       }
     });
 

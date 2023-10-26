@@ -1,100 +1,113 @@
+import passport from 'passport';
+
 import ev from '@/shared/events';
-import { Request, Route } from '@/server/modules/utils/types';
-
-import { joinRoomSchema } from '../../redtetris.validation';
-
+import { Request } from '@/server/modules/utils/types';
 import { AuthService } from './auth.service';
-import { JoinRoomDto, LoginDto } from './auth.dto';
+import { LoginDto, LogoutDto } from './auth.dto';
 import { Logger } from '../utils/utils';
 import { loginSchema } from './auth.schema';
+import { SocketService } from '../socket/socket.service';
+import { Controller } from '../module/module.controller';
 
-export class AuthController {
-  service: AuthService;
-  routes: Route[];
+/**
+ * AuthController manages authentication-related routes and their corresponding handlers.
+ */
+export class AuthController extends Controller {
+  /**
+   * Constructs an instance of AuthController.
+   * Initializes the authentication-related routes.
+   *
+   * @param authService - AuthService instance for managing authentication logic.
+   * @param socketService - SocketService instance for socket-related operations.
+   */
+  constructor(private readonly authService: AuthService, private readonly socketService: SocketService) {
+    super('AuthController');
 
-  constructor(service: AuthService) {
-    this.service = service;
-    this.routes = [
+    this._routes = [
       {
         event: { req: ev.REQUEST_LOGIN, res: ev.RESPONSE_LOGIN },
         handler: this.login.bind(this),
-        auth: false,
+        auth: null,
         schema: loginSchema,
-      },
-      {
-        event: { req: ev.REQUEST_JOIN_ROOM, res: ev.RESPONSE_JOIN_ROOM },
-        handler: this.joinRoom.bind(this),
-        auth: false,
-        schema: joinRoomSchema,
       },
       {
         event: { req: ev.REQUEST_LOGOUT, res: ev.RESPONSE_LOGOUT },
         handler: this.logout.bind(this),
-        auth: true,
+        auth: this.authService.validateLoggedUser.bind(this.authService),
         schema: null,
       },
     ];
   }
 
-  get getRoutes() {
-    return this.routes;
+  private authenticateWithStrategy(strategy: string, req: Request<LoginDto>): void {
+    passport.authenticate(strategy, (err: any, user: any, info: any) => {
+      if (err) throw err;
+
+      if (!user) {
+        this.socketService.emitToSocket(req.socket.id, ev.RESPONSE_LOGIN, {
+          status: 401,
+          payload: { user: null },
+        });
+      } else {
+        req.socket.raw.data.user = user;
+
+        this.socketService.emitToSocket(req.socket.id, ev.RESPONSE_LOGIN, {
+          status: 200,
+          payload: { user },
+        });
+      }
+    })({ body: req.data } as any, {} as any, {} as any);
   }
 
-  public async login(req: Request<LoginDto>) {
+  /**
+   * Handles login requests.
+   * If successful, emits a login response to the requester socket with user information.
+   *
+   * @param req - The login request containing user credentials and socket details.
+   */
+  public async login(req: Request<LoginDto>): Promise<void> {
     try {
-      Logger.info(`Socket ${req.socket.getSocketId} try to log in`);
+      this.log(`Socket ${req.socket.id} attempting to log in`);
 
-      const user = await this.service.login(req.data, req.socket.getSocketId);
+      this.authService.login(req.socket, req.data);
 
-      // req.socket.emitToSocket(req.socket.getSocketId, ev.RESPONSE_LOGIN, {
-      //   status: 200,
-      //   payload: { user },
-      // });
+      this.socketService.emitToSocket(req.socket.id, ev.RESPONSE_LOGIN, {
+        status: 200,
+        payload: { user: { username: req.data.username } },
+      });
     } catch (err) {
       Logger.error(err);
+      this.socketService.emitToSocket(req.socket.id, ev.RESPONSE_LOGIN, {
+        status: 500,
+        payload: { user: { username: '' } },
+      });
     }
   }
 
-  public async joinRoom(req: Request<JoinRoomDto>) {
+  /**
+   * Handles logout requests.
+   * TODO: Implement the logout logic and emit relevant responses.
+   *
+   * @param req - The logout request containing the user details and socket information.
+   */
+  public async logout(req: Request<LogoutDto>): Promise<void> {
     try {
-      Logger.info(`Socket ${req.socket.getSocketId} joined room in`);
+      this.log(`Socket ${req.socket.id} attempting to log out`);
 
-      const room = await this.service.joinRoom(req.data);
+      console.log(req.user);
+      // console.log(req.socket.raw.data.user);
+      await this.authService.logout(req.socket.id, req.user!);
 
-      req.socket.value().join(req.data.room);
-
-      // req.socket.emitToSocket(req.socket.getSocketId, ev.RESPONSE_JOIN_ROOM, {
-      //   status: 200,
-      //   payload: {
-      //     room: room,
-      //   },
-      // });
-      // req.socket.emitToRoom(req.data.room, ev.RESPONSE_UPDATE_GAME, {
-      //   status: 200,
-      //   payload: {
-      //     game: this.roomsService.getRoom(req.data.room),
-      //   },
-      // });
-      // req.socket.emitToRoom(req.data.room, ev.RESPONSE_UPDATE_GAME_CHAT, {
-      //   status: 200,
-      //   payload: {
-      //     room: req.data.room,
-      //     // chat: this.chatService.getChat(req.data.room)?.getMessages(),
-      //   },
-      // });
+      this.socketService.emitToSocket(req.socket.id, ev.RESPONSE_LOGOUT, {
+        status: 200,
+        payload: { user: null },
+      });
     } catch (err) {
       Logger.error(err);
+      this.socketService.emitToSocket(req.socket.id, ev.RESPONSE_LOGOUT, {
+        status: 500,
+        payload: { user: null },
+      });
     }
-  }
-
-  public logout(req: Request<any>) {
-    const socket = req.socket;
-    // const messages = this.service.addMessage(socket.getRoom, socket.getUsername, req.data.text);
-    // this.socket.emitToRoom(socket.getRoom, ev.RESPONSE_UPDATE_GAME_CHAT, {
-    //   status: 200,
-    //   payload: {
-    //     chat: messages,
-    //   },
-    // });
   }
 }

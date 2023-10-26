@@ -1,39 +1,61 @@
-import { DatabaseService } from '@/modules/database/database.service';
+import { SocketService } from '../socket/socket.service';
 import { sha256 } from '../utils/crypto';
-import { Logger } from '../utils/utils';
 
 import { User } from './user.entity';
+import { IUserRepository } from './user.repository';
 
 export class UserService {
-  constructor(private dbService: DatabaseService) {}
+  constructor(private readonly userRepository: IUserRepository, private readonly socketService: SocketService) {}
 
-  // private async sha256(key: string): Promise<string> {
-  //   return bcrypt.hash(key, 10);
-  // }
-
-  async setUser(user: User): Promise<void> {
-    const id = sha256(user.name);
-    Logger.info(`setUser: ${user.name}`);
-    Logger.info(`setUser: ${id}`);
-    Logger.info(`getLoggedUser: ${JSON.stringify(user)}`);
-    this.dbService.set('user', id, user);
+  /**
+   * Inserts or updates a user in the database.
+   *
+   * @param user User object to set in the database.
+   *
+   * @returns The User object.
+   */
+  public async createOrUpdateUser(user: User): Promise<void> {
+    return this.userRepository.setUser(user);
   }
 
-  async getUser(id: string): Promise<User | null> {
-    return this.dbService.get<User>('user', id);
+  /**
+   * Fetchs a user by its id.
+   *
+   * @param id The user's id.
+   *
+   * @returns The User object or null if not found.
+   */
+  public async getUserById(id: string): Promise<User | null> {
+    return this.userRepository.getUser(id);
   }
 
-  async getLoggedUser(name: string): Promise<{ id: string; user: User } | null> {
+  /**
+   * Fetchs a user by its name.
+   *
+   * @param name The user's name.
+   *
+   * @returns The User object or null if not found.
+   */
+  public async getUserByName(name: string): Promise<User | null> {
     const id = sha256(name);
-    Logger.info(`getLoggedUser: ${name}`);
-    Logger.info(`getLoggedUser: ${id}`);
-    const user = await this.getUser(id);
-    Logger.info(`getLoggedUser: ${JSON.stringify(user)}`);
-    if (!user || !user.socketId) {
+    return this.userRepository.getUser(id);
+  }
+
+  /**
+   * Retrieves the logged-in user and logs the process.
+   *
+   * @param name The user's name.
+   *
+   * @returns An object with the user's id and User object or null if not found.
+   */
+  async getLoggedUser(socketId: string): Promise<User | null> {
+    const socket = await this.socketService.repository.getSocket(socketId);
+    if (!socket || !socket.userId) {
       return null;
     }
 
-    return { id, user };
+    const id = socket.userId;
+    return this.userRepository.getUser(id);
   }
 
   // async getOrCreateUser(name: string, password?: string): Promise<User> {

@@ -1,92 +1,145 @@
 import { Socket as SocketIo, Server as SocketIoServer } from 'socket.io';
+import RedisStore from 'connect-redis';
+import session from 'express-session';
+import passport from 'passport';
 
-import { DatabaseService } from '../database/database.service';
-import { HttpService } from '../http/http.service';
-import { SocketEntity } from './socket.entity';
-import { Base } from '../utils/service';
+import { Base } from '@/modules/utils/service';
+import { HttpService } from '@/modules/http/http.service';
 
+import { ISocketRepository } from './socket.repository';
+import { Socket } from './socket.helper';
+
+const SESSION_SECRET = 'cats';
+const PING_INTERVAL = 5000;
+const PING_TIMEOUT = 15000;
+const REDIS_PREFIX = 'raid-tetris:';
+
+/**
+ * Service to manage and interact with sockets.
+ */
 export class SocketService extends Base {
-  io!: SocketIoServer;
+  io: SocketIoServer;
 
-  constructor(private dbService: DatabaseService, httpService: HttpService) {
+  /**
+   * Constructor to initialize the socket service.
+   *
+   * @param socketRepository - The repository to manage socket entities.
+   * @param httpService - The service to obtain the underlying HTTP server.
+   */
+  constructor(private readonly socketRepository: ISocketRepository, httpService: HttpService) {
     super('SocketService');
-
     this.io = new SocketIoServer(httpService.getHttp(), {
-      pingInterval: 5000,
-      pingTimeout: 15000,
+      pingInterval: PING_INTERVAL,
+      pingTimeout: PING_TIMEOUT,
     });
+
+    this.initializeAuthentication();
   }
 
   /**
-   * Create / update a room by its name.
+   * Middleware wrapper to adapt express middleware for socket.io.
    *
-   * @param room - The room object.
-   * @returns The room if found, otherwise null.
+   * @param middleware - The express middleware to wrap.
+   * @returns - The adapted middleware for socket.io.
    */
-  async setSocket(socket: SocketEntity): Promise<void> {
-    try {
-      await this.dbService.set('sockets', socket.id, socket);
-    } catch (error) {
-      this.err(`Error setting socket: ${(error as Error).message}`);
+  private wrap(middleware: any) {
+    return (socket: SocketIo, next: (err?: any) => void) => middleware(socket.request, {}, next);
+  }
+
+  /**
+   * Initialize the necessary authentication middlewares for socket.io.
+   */
+  private initializeAuthentication(): void {
+    this.io.use(
+      this.wrap(
+        session({
+          store: new RedisStore({ client: this.socketRepository.service.db, prefix: REDIS_PREFIX }),
+          resave: false,
+          saveUninitialized: true,
+          secret: SESSION_SECRET,
+        }),
+      ),
+    );
+
+    this.io.use(this.wrap(passport.initialize()));
+    this.io.use(this.wrap(passport.session()));
+  }
+
+  /**
+   * Getter to provide access to the underlying socket repository.
+   *
+   * @returns - The socket repository.
+   */
+  get repository(): ISocketRepository {
+    return this.socketRepository;
+  }
+
+  /**
+   * Handles the initial connection of a socket.
+   *
+   * @param socket - The newly connected socket instance.
+   */
+  public connect(socket: Socket): void {
+    const session = socket.raw.request.session;
+
+    if (!session) {
+      this.log(`Socket ${socket.id} connected without session.`);
+      return;
     }
-  }
 
-  /**
-   * Fetches a room by its name.
-   *
-   * @param roomName - The room name.
-   * @returns The room if found, otherwise null.
-   */
-  async getSocket(socketId: string): Promise<SocketEntity | null> {
-    try {
-      return await this.dbService.get<SocketEntity>('sockets', socketId);
-    } catch (error) {
-      this.log(`Error getting socket: ${(error as Error).message}`);
-      return null;
-    }
-  }
+    session.user = { socketId: socket.id };
+    session.save();
 
-  /**
-   * Fetches a room by its name.
-   *
-   * @param roomName - The room name.
-   * @returns The room if found, otherwise null.
-   */
-  async deleteSocket(socketId: string): Promise<void> {
-    return this.dbService.del('sockets', socketId);
-  }
-
-  /*
-   ** Events
-   */
-  public connect(socket: SocketIo) {
     this.log(`Socket ${socket.id} connected.`);
-    this.setSocket(new SocketEntity(socket.id));
   }
 
-  public disconnecting(socket: SocketIo) {
+  /**
+   * Handles the event when a socket is about to disconnect.
+   *
+   * @param socket - The disconnecting socket instance.
+   */
+  public disconnecting(socket: SocketIo): void {
     this.log(`Socket ${socket.id} is disconnecting...`);
   }
 
-  public disconnect(socket: SocketIo) {
-    this.log(`Socket ${socket.id} diconnected.`);
-    this.deleteSocket(socket.id);
-  }
-
-  /*
-   ** Socket
+  /**
+   * Handles the event when a socket has fully disconnected.
+   *
+   * @param socket - The disconnected socket instance.
    */
-  public ioOn(callback: (socket: SocketIo) => void) {
-    this.io.on('connection', callback);
+  public disconnect(socket: SocketIo): void {
+    this.log(`Socket ${socket.id} diconnected.`);
+    this.socketRepository.deleteSocket(socket.id);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public emitToRoom(room: string, event: string, data: any) {
+  /**
+   * Registers a callback for the 'connection' event.
+   *
+   * @param callback - The callback to be executed when a socket connects.
+   */
+  public ioOn(callback: (socket: SocketIo) => void): void {
+    this.io.on('connect', callback);
+  }
+
+  /**
+   * Emits data to a specific room.
+   *
+   * @param room - The target room.
+   * @param event - The event name.
+   * @param data - The data to emit.
+   */
+  public emitToRoom(room: string, event: string, data: any): void {
     this.io.in(room).emit(event, data);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public emitToSocket(id: string, event: string, data: any) {
+  /**
+   * Emits data to a specific socket.
+   *
+   * @param id - The target socket ID.
+   * @param event - The event name.
+   * @param data - The data to emit.
+   */
+  public emitToSocket(id: string, event: string, data: any): void {
     this.io.to(id).emit(event, data);
   }
 }

@@ -1,22 +1,18 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { createSlice } from '@reduxjs/toolkit';
 
-import { Room } from '@/server/modules/rooms/room.entity';
-import { Message } from '@/client/components/chat/ChatRoom';
-import { chatData } from '@/client/helpers/chatData';
-
 export interface AppState {
   username: string;
   room: string;
-  rooms: Record<string, Room>;
-  chats: Record<string, Message[]>;
+  rooms: Record<string, any>;
+  chats: Record<string, any[]>;
 }
 
 const initialState: AppState = {
   username: '',
   room: '',
   rooms: {},
-  chats: chatData,
+  chats: {},
 };
 
 const appSlice = createSlice({

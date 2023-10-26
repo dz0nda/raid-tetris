@@ -3,7 +3,7 @@ import { push } from 'connected-react-router';
 
 import ev from '@/shared/events';
 import { ESocketEvent, IClientEvent, IEvent, IServerEvent, IStateEvent } from './socket.types';
-import { resJoinRoom, resLogin, socketUpdate } from '@/client/store/slices/user.slice';
+import { resJoinRoom, resLogin, resLogout, socketUpdate } from '@/client/store/slices/user.slice';
 import {
   updateGame,
   updateGameChat,
@@ -49,13 +49,16 @@ export const initialServerEvents: IServerEvent[] = [
   },
   {
     action: ev.RESPONSE_LOGOUT,
-    dispatch: (_, data, dispatch) => dispatch(push('/')),
+    dispatch: (_, data, dispatch) => {
+      dispatch(resLogout(data.payload));
+      dispatch(push('/'));
+    },
   },
   {
     action: ev.RESPONSE_JOIN_ROOM,
     dispatch: (_, data, dispatch) => {
       dispatch(resJoinRoom(data.payload));
-      dispatch(push(`${data.payload.room}[${data.payload.name}]`));
+      dispatch(push(`${data.payload.room.room}[${data.payload.username}]`));
     },
   },
   {
@@ -88,6 +91,10 @@ export const initialClientEvents: IClientEvent[] = [
   {
     action: ev.REQUEST_LOGIN,
     dispatch: (socket, store, action) => socket.emit(ev.REQUEST_LOGIN, action.payload),
+  },
+  {
+    action: ev.REQUEST_LOGOUT,
+    dispatch: (socket, store, action) => socket.emit(ev.REQUEST_LOGOUT, action.payload),
   },
   {
     action: ev.REQUEST_JOIN_ROOM,

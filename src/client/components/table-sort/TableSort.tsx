@@ -127,8 +127,8 @@ export function TableSort<T extends object>({ data, search, columns }: TableSort
   ));
 
   return (
-    <ScrollArea>
-      <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} sx={{ tableLayout: 'fixed' }}>
+    <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} sx={{ tableLayout: 'fixed' }}>
+      <ScrollArea h={400} scrollbarSize={2}>
         <thead>
           <tr>
             {columns.map((column, index) => (
@@ -156,7 +156,7 @@ export function TableSort<T extends object>({ data, search, columns }: TableSort
             </tr>
           )}
         </tbody>
-      </Table>
-    </ScrollArea>
+      </ScrollArea>
+    </Table>
   );
 }

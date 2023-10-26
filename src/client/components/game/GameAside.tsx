@@ -13,7 +13,7 @@ export const GameAside: FC = () => {
   const { classes } = useStyles();
 
   return (
-    <Navbar width={{ sm: 300, md: 400 }} hidden={false} p="md" className={classes.navbar}>
+    <Navbar width={{ base: 350 }} hidden={false} p="md" className={classes.navbar}>
       <Chat />
     </Navbar>
   );

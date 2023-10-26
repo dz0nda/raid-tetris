@@ -1,6 +1,17 @@
 import { Position, Tetromino, collides, isValidRotation } from './tetromino';
 import { removeFullRows } from './board';
 
+export const keys = {
+  KDOWN: 40,
+  KLEFT: 37,
+  KRIGHT: 39,
+  KUP: 38,
+  KSPACE: 32,
+  KENTER: 13,
+};
+
+export const allowedKeys = [keys.KDOWN, keys.KLEFT, keys.KRIGHT, keys.KUP, keys.KSPACE];
+
 type GameState = {
   board: (string | null)[][];
   currentTetromino: Tetromino | null;

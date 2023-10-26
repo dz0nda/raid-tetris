@@ -1,23 +1,22 @@
 import React, { FC, useState } from 'react';
 import { useForm } from '@mantine/form';
 import {
-  Button,
+  // Button,
+  Divider,
   Group,
   Paper,
+  SimpleGrid,
   Stack,
-  Switch,
-  Text,
-  TextInput,
-  Title,
   createStyles,
   rem,
   useMantineTheme,
 } from '@mantine/core';
-import { IconCheck, IconX } from '@tabler/icons-react';
 
-import { Column, TableSort } from '../table-sort/TableSort';
+import { Column } from '../table-sort/TableSort';
 import { Room } from '@/client/interfaces/room.interface';
-import { roomsListData } from '@/client/helpers/data';
+import { TextInput } from '@/mantine/TextInput';
+import Button from '../mantine/Button';
+import { RoomsList } from '../rooms/RoomsList';
 
 // Styles
 const useStyles = createStyles((theme) => ({
@@ -74,7 +73,6 @@ export const AuthRoom: FC<AuthRoomProps> = ({ username, onValidated }) => {
     },
   });
 
-  const [checked, setChecked] = useState(false);
   const [search, setSearch] = useState('');
 
   return (
@@ -85,70 +83,59 @@ export const AuthRoom: FC<AuthRoomProps> = ({ username, onValidated }) => {
         })}
       >
         <Stack>
-          <Text size="lg">
-            Hi{' '}
-            <Text span fw={500}>
-              {username}
-            </Text>
-            , choose or create a room to get started
-          </Text>
+          <SimpleGrid
+            cols={2}
+            spacing="md"
+            breakpoints={[
+              { maxWidth: 'sm', cols: 2, spacing: 'sm' },
+              { maxWidth: 'xs', cols: 1, spacing: 'sm' },
+            ]}
+          >
+            <TextInput
+              label="Room"
+              placeholder="Enter room name"
+              {...form.getInputProps('room')}
+              // value={search}
+              onChange={(event) => {
+                form.setFieldValue('room', event.currentTarget.value);
+                setSearch(event.currentTarget.value);
+              }}
+              radius="lg"
+            />
 
-          <Group grow position="center">
-            <Stack px={20}>
-              <TextInput
-                placeholder="My room"
-                mb="md"
-                label="Room"
-                {...form.getInputProps('room')}
-                value={search}
-                onChange={(event) => {
-                  form.setFieldValue('room', event.currentTarget.value);
-                  setSearch(event.currentTarget.value);
-                }}
-                radius="lg"
-              />
+            <TextInput
+              placeholder="Search by any field"
+              label="Password"
+              {...form.getInputProps('password')}
+              // value={form.values.pass}
+              disabled={false}
+            />
+          </SimpleGrid>
 
-              <Group spacing="xl" position="apart" className={classes.item} grow>
-                <TextInput
-                  placeholder="Search by any field"
-                  mb="md"
-                  label="Password"
-                  {...form.getInputProps('password')}
-                  value={form.values.pass}
-                  size="xs"
-                  disabled={!checked}
-                  radius="lg"
-                />
-                <Switch
-                  checked={checked}
-                  onChange={(event) => setChecked(event.currentTarget.checked)}
-                  color="teal"
-                  size="md"
-                  className={classes.switch}
-                  thumbIcon={
-                    checked ? (
-                      <IconCheck size="0.8rem" color={theme.colors.teal[theme.fn.primaryShade()]} stroke={3} />
-                    ) : (
-                      <IconX size="0.8rem" color={theme.colors.red[theme.fn.primaryShade()]} stroke={3} />
-                    )
-                  }
-                />
-              </Group>
-
-              <Stack spacing="xl" mt="xl">
-                <Title fw={600} size="xl">
-                  Rooms
-                </Title>
-                <TableSort data={roomsListData} search={form.values.room} columns={columns} />
-              </Stack>
-            </Stack>
+          <Group grow position="center" m="md">
+            <Button type="submit">Join room</Button>
           </Group>
+          <Stack spacing="xl" mt="xl">
+            <Divider variant="dotted" />
 
-          <Group position="center" m="md">
-            <Button type="submit" size="md" radius="xl" variant="light" uppercase>
-              Login
-            </Button>
-          </Group>
+            <RoomsList search={form.values.room} />
+            {/* <Box>
+              <Title fw={600} size="xl">
+                Rooms
+              </Title>
+              {form.values.room.length > 0 && (
+                <Text c="dimmed">
+                  {` (results for `}
+                  <Text fw={600} span>
+                    {form.values.room}
+                  </Text>
+                  {`)`}
+                </Text>
+              )}
+            </Box>
+
+            <TableSort data={roomsListData} search={form.values.room} columns={columns} /> */}
+          </Stack>
         </Stack>
       </form>
     </Paper>

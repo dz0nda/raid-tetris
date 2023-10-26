@@ -1,39 +1,36 @@
 import React, { FC } from 'react';
-// import { Box } from '@mui/material';
-import { Box, createStyles, rem } from '@mantine/core';
+import { Box, createStyles } from '@mantine/core';
 
-import { TETROMINOS } from '../../helpers/tetrominos';
-
-const useStyles = createStyles((theme, props: any) => ({
-  cell: {
-    width: 'auto',
-    height: props.stage === 'stagePlayers' ? rem(2) : rem(20),
-    background: props.variant !== 'shadow' ? `rgba(${props.color}, 0.8)` : `rgb(0, 0, 0, 0.1)`,
-    border: `${props.type === 0 ? '0px solid' : '1px solid'}`,
-    borderBottomColor: props.variant !== 'shadow' ? `rgba(${props.color}, 0.1)` : `rgb(${props.color}, 0.8)`,
-    borderRightColor: props.variant !== 'shadow' ? `rgba(${props.color}, 1)` : `rgb(${props.color}, 0.8)`,
-    borderTopColor: props.variant !== 'shadow' ? `rgba(${props.color}, 1)` : `rgb(${props.color}, 0.8)`,
-    borderLeftColor: props.variant !== 'shadow' ? `rgba(${props.color}, 0.3)` : `rgb(${props.color}, 0.8)`,
-  },
-}));
-
-export interface CellProps {
+interface CellStylesProps {
   type: string | number;
+  color: string;
   variant: string;
   stage?: string;
 }
 
-export const Cell: FC<CellProps> = (props) => {
-  const { type, variant, stage } = props;
-  const style = {
-    type,
-    color: TETROMINOS[type].color,
-    variant,
-    stage,
-  };
-  const { classes } = useStyles(style);
+const useStyles = createStyles((theme, { type, color, variant, stage }: CellStylesProps) => {
+  const isShadow = variant === 'shadow';
+  const commonBorderColor = isShadow ? `rgba(${color}, 0.8)` : `rgba(${color}, 1)`;
 
+  return {
+    cell: {
+      width: stage === 'stagePlayers' ? '2rem' : '2rem',
+      height: stage === 'stagePlayers' ? '2rem' : '2rem',
+      background: isShadow ? `rgb(0, 0, 0, 0.1)` : `rgba(${color}, 0.8)`,
+      border: type === 0 ? '0px solid' : '1px solid',
+      borderBottomColor: isShadow ? `rgba(${color}, 0.1)` : commonBorderColor,
+      borderRightColor: commonBorderColor,
+      borderTopColor: commonBorderColor,
+      borderLeftColor: isShadow ? commonBorderColor : `rgba(${color}, 0.3)`,
+    },
+  };
+});
+
+export type CellProps = CellStylesProps;
+
+export const Cell: FC<CellProps> = (props) => {
+  const { classes } = useStyles(props);
   return <Box className={classes.cell} />;
 };
 
-export const CellMemo = React.memo(Cell);
+export default React.memo(Cell);

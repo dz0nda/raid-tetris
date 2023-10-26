@@ -6,12 +6,6 @@ export const loginSchema = Joi.object({
   name: Joi.string().alphanum().min(3).max(30).required(),
 });
 
-export const joinRoomSchema = Joi.object({
-  name: Joi.string().alphanum().min(3).max(30).required(),
-  room: Joi.string().alphanum().min(3).max(30).required(),
-  pass: Joi.string().alphanum().min(3).max(30).optional(),
-});
-
 export const ownerSchema = Joi.object({
   newOwner: Joi.string().alphanum().min(3).max(30).required(),
 });

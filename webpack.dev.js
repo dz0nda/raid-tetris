@@ -25,6 +25,9 @@ module.exports = merge(baseConfig, {
       path: path.resolve(`.env.${CONFIG_ENV}`),
       ignoreStub: true,
     }),
+    new webpack.WatchIgnorePlugin({
+      paths: [path.join(__dirname, 'src/server')],
+    }),
   ],
   devtool: 'inline-source-map',
   devServer: {

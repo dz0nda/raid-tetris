@@ -1,8 +1,8 @@
-import { DatabaseService } from '@/modules/database/database.service';
-import Game from './game.entity';
+import { GameRepository } from './game.repository';
+import { Game } from './game.entity';
 
 export class GameService {
-  constructor(private dbService: DatabaseService) {}
+  constructor(private readonly gameRepository: GameRepository) {}
 
   /**
    * Initializes a new game.
@@ -10,28 +10,32 @@ export class GameService {
    * @returns The initialized game instance.
    */
   initNewGame(): Game {
-    return new Game();
+    return new Game('id');
   }
 
-  /**
-   * Save the current game state to the database.
-   *
-   * @param gameId - The ID of the game.
-   * @param game - The game instance.
-   */
-  async saveGameState(gameId: string, game: Game): Promise<void> {
-    await this.dbService.set('game', gameId, game);
+  async move() {
+    console.log('move');
+    // const socket = req.socket;
+    // const room = this.service.getRoom(socket.getRoom);
+    // if (!room) {
+    //   throw new Error('Room not found');
+    // }
+    // const collided = room.setMove(req.socket.getSocketId, req.data.keyCode);
+    // if (collided) {
+    //   socket.emitToRoom(socket.getRoom, ev.RESPONSE_UPDATE_GAME, {
+    //     status: 200,
+    //     payload: {
+    //       players: this.service.getRoom(socket.getRoom)?.getPlayers(),
+    //     },
+    //   });
+    // }
+    // if (room.getStarted() === false) {
+    //   socket.emitToRoom(socket.getRoom, ev.RESPONSE_UPDATE_GAME, {
+    //     status: 200,
+    //     payload: {
+    //       game: this.service.getRoom(socket.getRoom),
+    //     },
+    //   });
+    // }
   }
-
-  /**
-   * Fetches a game by its ID.
-   *
-   * @param gameId - The ID of the game.
-   * @returns The game if found, otherwise null.
-   */
-  async getGame(gameId: string): Promise<Game | null> {
-    return this.dbService.get<Game>('game', gameId);
-  }
-
-  // Add other game-related methods here...
 }

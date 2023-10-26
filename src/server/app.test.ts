@@ -1,6 +1,6 @@
 import { RedTetris } from './app';
 import { SocketModule } from './modules/socket/socket.module';
-import { RoomsModule } from './modules/rooms/rooms.module';
+import { RoomModule } from './modules/room/room.module';
 import { ChatsModule } from './modules/chats/chats.module';
 import { AuthModule } from './modules/auth/auth.modules';
 
@@ -20,7 +20,7 @@ jest.mock('./modules/socket/socket.module', () => ({
 }));
 
 jest.mock('./modules/rooms/rooms.module', () => ({
-  RoomsModule: jest.fn().mockImplementation(() => ({
+  RoomModule: jest.fn().mockImplementation(() => ({
     service: {},
     controller: {
       getRoutes: [],
@@ -62,8 +62,8 @@ describe('RedTetris', () => {
     expect(redTetris.socket.service.ioOn).toHaveBeenCalledWith(expect.any(Function));
   });
 
-  it('initializes the RoomsModule', () => {
-    expect(RoomsModule).toHaveBeenCalledWith(redTetris.socket.service);
+  it('initializes the RoomModule', () => {
+    expect(RoomModule).toHaveBeenCalledWith(redTetris.socket.service);
   });
 
   it('initializes the ChatsModule', () => {

@@ -17,7 +17,7 @@ process.on('SIGTERM', () => {
   app.cleanup();
 });
 // Listen for the exit event
-process.on('exit', () => {
-  console.log('Exiting process...');
-  app.cleanup();
-});
+// process.on('exit', (err) => {
+//   console.log('Exiting process...');
+//   app.cleanup();
+// });
