@@ -19,8 +19,6 @@ jobs:
           USER: ${{ secrets.VPS_SSH_USER }}
           PRIVATE_KEY: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
         run: |
-          cd /home/ubuntu
-
           # If the git repo doesn't exist, clone it. Otherwise, pull the latest changes.
           if [ ! -d raid-tetris ]; then
             git clone https://github.com/dz0nda/raid-tetris.git
