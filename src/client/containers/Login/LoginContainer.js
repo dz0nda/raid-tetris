@@ -13,7 +13,6 @@ import LoginRooms from '../../components/Login/LoginRooms';
 function LoginContainer(props) {
   const { name, room, games, reqLogin, reqPush } = props;
 
-  // console.log()
   if (name !== '' && room !== '') {
     reqPush(`/${room}[${name}]`);
   }
