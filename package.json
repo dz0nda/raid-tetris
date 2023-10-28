@@ -17,6 +17,7 @@
         "lint:fix": "eslint --fix src",
         "format": "prettier './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc.json",
         "format:fix": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
+        "coverage": "npm run test",
         "test": "npm run test:all",
         "test:all": "jest test/**/**/*.*.test.js --verbose --coverage --detectOpenHandles --forceExit",
         "test:client": "jest test/client/**/*.test.js --verbose --coverage",
