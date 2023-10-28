@@ -7,7 +7,10 @@ import ev from '../../../src/shared/events';
 import actions from '../../../src/client/actions';
 import store from '../../../src/client/store';
 
-import { mockMiddleware, id, mockSocket } from '../helpers/socketHelper';
+import { socketModule, mockMiddleware, id, mockSocket } from '../helpers/socketHelper';
+
+socketModule.SOCKETS[id] = mockSocket;
+socketModule.toggleInitStatus(id);
 
 describe('# Socket Tests - App Events', () => {
   describe('## Client Events', () => {
@@ -43,7 +46,7 @@ describe('# Socket Tests - App Events', () => {
 
     it('should handle res_UPDATE_APP_INFOS', () => {
       mockMiddleware(store)(() => true)({
-        type: `${id}_*`,
+        type: `${id}_server`,
         payload: {
           type: ev.res_UPDATE_APP_INFOS,
           data: {
@@ -60,7 +63,7 @@ describe('# Socket Tests - App Events', () => {
 
     it('should handle res_LOGIN', () => {
       mockMiddleware(store)(() => true)({
-        type: `${id}_*`,
+        type: `${id}_server`,
         payload: {
           type: ev.res_LOGIN,
           data: {
@@ -76,7 +79,7 @@ describe('# Socket Tests - App Events', () => {
       expect(store.dispatch).toHaveBeenCalled();
 
       mockMiddleware(store)(() => true)({
-        type: `${id}_*`,
+        type: `${id}_server`,
         payload: {
           type: ev.res_LOGIN,
           data: {
@@ -91,7 +94,7 @@ describe('# Socket Tests - App Events', () => {
 
     it('should handle res_LOGOUT', () => {
       mockMiddleware(store)(() => true)({
-        type: `${id}_*`,
+        type: `${id}_server`,
         payload: {
           type: ev.res_LOGOUT,
           data: {
@@ -104,7 +107,7 @@ describe('# Socket Tests - App Events', () => {
       expect(store.dispatch).toHaveBeenCalled();
 
       mockMiddleware(store)(() => true)({
-        type: `${id}_*`,
+        type: `${id}_server`,
         payload: {
           type: ev.res_LOGOUT,
           data: {

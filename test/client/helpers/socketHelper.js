@@ -1,9 +1,10 @@
-const appModule = require('../../../src/client/middleware/socketIoMiddleware');
+import params from '../../../src/shared/params';
+import * as socketIo from '../../../src/client/middleware/socketIo';
 
-export const socketModule = appModule.middleware;
-export const mockMiddleware = appModule.default;
-export const { id } = appModule;
+export const socketModule = socketIo;
+export const mockMiddleware = socketIo.socketio(params.socket.id);
 export const mockSocket = { emit: jest.fn() };
+export const { id } = params.socket;
 
-socketModule.SOCKETS[id] = mockSocket;
-socketModule.toggleInitStatus(id);
+// socketModule.SOCKETS[params.socket.id] = mockSocket;
+// socketModule.toggleInitStatus(params.socket.id);

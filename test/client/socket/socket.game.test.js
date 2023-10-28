@@ -7,7 +7,10 @@ import actions from '../../../src/client/actions';
 import store from '../../../src/client/store';
 import { gameState } from '../../../src/client/reducers/game';
 
-import { mockMiddleware, id, mockSocket } from '../helpers/socketHelper';
+import { mockMiddleware, id, mockSocket, socketModule } from '../helpers/socketHelper';
+
+socketModule.SOCKETS[id] = mockSocket;
+socketModule.toggleInitStatus(id);
 
 describe('# Socket Tests - Game Events', () => {
   describe('## Client Events', () => {
@@ -64,7 +67,7 @@ describe('# Socket Tests - Game Events', () => {
       };
 
       mockMiddleware(store)(() => true)({
-        type: `${id}_*`,
+        type: `${id}_server`,
         payload: {
           type: ev.res_UPDATE_GAME,
           data,
@@ -83,7 +86,7 @@ describe('# Socket Tests - Game Events', () => {
       };
 
       mockMiddleware(store)(() => true)({
-        type: `${id}_*`,
+        type: `${id}_server`,
         payload: {
           type: ev.res_UPDATE_GAME_CHAT,
           data,

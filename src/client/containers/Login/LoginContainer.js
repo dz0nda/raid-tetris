@@ -70,7 +70,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   reqLogin: actions.reqLogin,
-  reqPush: push,
+  reqPush: () => push,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginContainer));

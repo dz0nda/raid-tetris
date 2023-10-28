@@ -7,7 +7,10 @@ import actions from '../../../src/client/actions';
 import store from '../../../src/client/store';
 import { playerState } from '../../../src/client/reducers/player';
 
-import { mockMiddleware, id, mockSocket } from '../helpers/socketHelper';
+import { mockMiddleware, id, mockSocket, socketModule } from '../helpers/socketHelper';
+
+socketModule.SOCKETS[id] = mockSocket;
+socketModule.toggleInitStatus(id);
 
 describe('# Socket Tests - Player Events', () => {
   describe('## Client Events', () => {
@@ -40,7 +43,7 @@ describe('# Socket Tests - Player Events', () => {
       };
 
       mockMiddleware(store)(() => true)({
-        type: `${id}_*`,
+        type: `${id}_server`,
         payload: {
           type: ev.res_UPDATE_PLAYER,
           data,

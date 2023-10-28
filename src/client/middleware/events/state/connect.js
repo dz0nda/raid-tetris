@@ -5,6 +5,7 @@ const action = ev.CONNECT;
 
 // eslint-disable-next-line no-shadow
 const dispatch = (socket, store, next, action) => () => {
+  console.log('Socket connected.', socket, store);
   const { router } = store.getState();
 
   store.dispatch({

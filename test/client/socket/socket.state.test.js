@@ -4,10 +4,12 @@ import td from 'testdouble';
 
 import ev from '../../../src/shared/events';
 
-import actions from '../../../src/client/actions';
 import store from '../../../src/client/store';
 
-import { mockMiddleware, id, mockSocket } from '../helpers/socketHelper';
+import { mockMiddleware, id, mockSocket, socketModule } from '../helpers/socketHelper';
+
+socketModule.SOCKETS[id] = mockSocket;
+socketModule.toggleInitStatus(id);
 
 describe('# Socket Tests - State Events', () => {
   it('dispatches the CONNECT action', () => {

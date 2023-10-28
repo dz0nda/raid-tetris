@@ -19,7 +19,7 @@
         "format:fix": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
         "test": "npm run test:all",
         "test:all": "jest test/**/**/*.*.test.js --verbose --coverage",
-        "test:client": "jest test/client/**/*.*.test.js --verbose --coverage",
+        "test:client": "jest test/client/**/*.test.js --verbose --coverage",
         "test:server": "jest test/server/**/*.test.js --verbose --coverage",
         "test:watch": "npm test -- --watch-All"
     },
