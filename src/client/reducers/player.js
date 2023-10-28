@@ -6,10 +6,10 @@ export const playerState = {
   lines: 0,
   mallus: 0,
   rank: 0,
-  stage: Array.from(Array(20), () => new Array(10).fill([0, 'clear'])),
+  stage: Array.from(Array(20), () => new Array(10).fill([0, 'clear', 'blank'])),
   stagePiece: [
-    Array.from(Array(4), () => new Array(4).fill([0, 'clear'])),
-    Array.from(Array(4), () => new Array(4).fill([0, 'clear'])),
+    Array.from(Array(4), () => new Array(4).fill([0, 'clear', 'blank'])),
+    Array.from(Array(4), () => new Array(4).fill([0, 'clear', 'blank'])),
   ],
   piece: null,
   position: { x: 10 / 2 - 2, y: 0 },
