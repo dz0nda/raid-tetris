@@ -9,17 +9,18 @@ const randomstring = require('randomstring');
 const ev = require('../../../src/shared/events');
 const logger = require('../../../src/server/utils/logger');
 
-const { host, port } = params.server;
+const { host } = params.server;
+const { host: socketHost } = params.socket;
 
 describe('# Socket Tests - App Events', () => {
   let socket;
 
   beforeEach(async () => {
     server.listen({ host, port: 3001 }, () => {
-      logger.info(`Listening on port ${port}!`);
+      logger.info(`Listening on port 3001!`);
     });
 
-    socket = await initSocket(3001);
+    socket = await initSocket(socketHost, 3001);
   });
 
   afterEach(() => {
@@ -71,7 +72,7 @@ describe('# Socket Tests - App Events', () => {
 
     it('should logout success - not destroy the room', async () => {
       const room = randomstring.generate(7);
-      const socketNew = await initSocket(3001);
+      const socketNew = await initSocket(socketHost, 3001);
 
       socket.emit(ev.req_LOGIN, {
         name: randomstring.generate(7),

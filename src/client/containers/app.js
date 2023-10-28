@@ -11,7 +11,7 @@ import Footer from '../components/Footer/Footer';
 
 function App(props) {
   const { connected, reqConnect } = props;
-  const { host, port } = params.server;
+  const { host, port } = params.socket;
 
   useEffect(() => {
     if (!connected) {

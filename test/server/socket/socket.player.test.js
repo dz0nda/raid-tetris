@@ -11,17 +11,18 @@ const randomstring = require('randomstring');
 const ev = require('../../../src/shared/events');
 const logger = require('../../../src/server/utils/logger');
 
-const { host, port } = params.server;
+const { host } = params.server;
+const { host: socketHost } = params.socket;
 
 describe('# Socket Tests - Player Events', () => {
   let socket;
 
   beforeAll(async () => {
     server.listen({ host, port: 3003 }, () => {
-      logger.info(`Listening on port ${port}!`);
+      logger.info(`Listening on port 3003!`);
     });
 
-    socket = await initSocket(3003);
+    socket = await initSocket(socketHost, 3003);
     const payload = { name: randomstring.generate(7), room: randomstring.generate(7) };
     socket.emit(ev.req_LOGIN, payload);
     socket.emit(ev.req_START_GAME, payload);

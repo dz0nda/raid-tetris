@@ -3,10 +3,10 @@ const io = require('socket.io-client');
 // initSocket returns a promise
 // success: resolve a new socket object
 // fail: reject a error
-export const initSocket = (port) =>
+export const initSocket = (host = '0.0.0.0', port = 3000) =>
   new Promise((resolve, reject) => {
     // create socket for communication
-    const socket = io(`localhost:${port}`, {
+    const socket = io(`${host}:${port}`, {
       'reconnection delay': 0,
       'reopen delay': 0,
       'force new connection': true,
